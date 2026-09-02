@@ -18,13 +18,19 @@
   .wrap{max-width:640px;margin:0 auto;padding:16px 14px 40px}
   header{display:flex;align-items:center;gap:12px;padding:6px 2px 14px}
   .logo{width:44px;height:44px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;flex:none}
-  h1{font-size:19px;line-height:1.2}
-  .sub{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .hgroup{flex:1;min-width:0}
+  h1{font-size:19px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sub{font-size:12px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lang{display:flex;border:1px solid var(--edge);border-radius:9px;overflow:hidden;flex:none}
+  .lang button{border:none;background:transparent;color:var(--muted);font-size:12px;font-weight:700;padding:6px 9px;cursor:pointer;font-family:inherit}
+  .lang button.on{background:var(--accent);color:#fff}
   .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
   .item{background:var(--card);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
   .item.out{opacity:.55}
-  .ph{aspect-ratio:1/1;background:var(--edge);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:26px}
-  .ph img{width:100%;height:100%;object-fit:cover;display:block}
+  /* Square photo that works on OLD WebViews too: padding-top box + absolute img. */
+  .ph{position:relative;width:100%;padding-top:100%;overflow:hidden;background:var(--edge)}
+  .ph .emo{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:26px}
+  .ph img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block}
   .info{padding:10px 11px 12px;display:flex;flex-direction:column;gap:7px;flex:1}
   .name{font-size:13.5px;font-weight:600;line-height:1.3;min-height:2.6em}
   .pricerow{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
@@ -47,13 +53,17 @@
 <div class="wrap">
   <header>
     <div class="logo">A</div>
-    <div>
+    <div class="hgroup">
       <h1 id="storeName">…</h1>
       <div class="sub" id="storeSub"></div>
     </div>
+    <div class="lang">
+      <button id="langEn" type="button">EN</button>
+      <button id="langAm" type="button">አማ</button>
+    </div>
   </header>
   <div id="content"><div class="state"><div class="spin"></div></div></div>
-  <footer>Stock updates live from <b>Adulis</b> · ዕቃ ቆጠራ ከሱቁ ጋር በቀጥታ ይታደሳል</footer>
+  <footer id="footer"></footer>
 </div>
 <script>
 (function(){
@@ -62,14 +72,53 @@
   var q=new URLSearchParams(location.search);
   var slug=(q.get('s')||location.hash.replace(/^#s=/,'')||'').trim();
   var tg=window.Telegram&&window.Telegram.WebApp;
-  var T={in:['In stock · አለ','t-in'],low:['Low stock · ጥቂቱ','t-low'],out:['Sold out · አልቀረም','t-out']};
+
+  // ---- Language: the CUSTOMER picks; remembered; smart default from
+  // Telegram (mini app) or the phone, falling back to English.
+  var L={};
+  var STR={
+    en:{sub:'Browse · negotiate in Telegram', subNoUser:'Browse our items',
+        in:'In stock', low:'Low stock', out:'Sold out',
+        neg:'Negotiable', buy:'Negotiate', buyOut:'Sold out', buyNoUser:'Ask in DM',
+        empty:'No items listed yet.', unavailable:'This shop is not available right now.',
+        error:'Could not load the shop. Check your connection and try again.',
+        retry:'Retry', noslug:'No shop selected. Open this page from a shop\'s link.',
+        footer:'Live stock from <b>Adulis</b>',
+        dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';}},
+    am:{sub:'ይመለከቱ · ዋጋ በቴሌግራም ይደራደሩ', subNoUser:'ዕቃዎችን ይመለከቱ',
+        in:'አለ', low:'ጥቂቱ', out:'አልቀረም',
+        neg:'ይደራደሩ', buy:'ይደራደሩ', buyOut:'ተሽጧል', buyNoUser:'በውይይት ጠይቁ',
+        empty:'እስካሁን ዕቃ አልተረዳትም።', unavailable:'ይህ ሱቅ አሁን አይገኝም።',
+        error:'ሱቁን ማምጣት አልተቻለም። ኢንተርኔትዎን ያረጋግጡና እንደገና ይሞክሩ።',
+        retry:'እንደገና ይሞክሩ', noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል',
+        dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';}}
+  };
+  function detectLang(){
+    try{ if(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user){
+      var lc=tg.initDataUnsafe.user.language_code||'';
+      if(lc.indexOf('am')===0) return 'am'; } }catch(e){}
+    var nl=(navigator.language||'en').toLowerCase();
+    return nl.indexOf('am')===0?'am':'en';
+  }
+  function setLang(l){
+    L=STR[l]||STR.en;
+    try{localStorage.setItem('adulis_lang',l);}catch(e){}
+    document.getElementById('langEn').className=l==='en'?'on':'';
+    document.getElementById('langAm').className=l==='am'?'on':'';
+    document.getElementById('footer').innerHTML=L.footer;
+    if(window.__rows) render(window.__rows); // re-render in the new language
+  }
+  var saved='en';
+  try{saved=localStorage.getItem('adulis_lang')||detectLang();}catch(e){saved=detectLang();}
+  document.getElementById('langEn').onclick=function(){setLang('en');};
+  document.getElementById('langAm').onclick=function(){setLang('am');};
 
   // Adopt Telegram's theme when opened as a mini app.
   try{ if(tg&&tg.initData!==undefined){
     var tp=tg.themeParams||{}; var r=document.documentElement.style;
     var map={bg_color:'--bg',secondary_bg_color:'--card',text_color:'--ink',
-      hint_color:'--muted',button_color:'--accent',button_text_color:null,
-      link_color:'--accent'};
+      hint_color:'--muted',button_color:'--accent'};
     for(var k in map){ if(map[k]&&tp[k]) r.setProperty(map[k],'#'+tp[k]); }
     if(tp.button_color) r.setProperty('--accent-soft','rgba(120,170,220,0.15)');
     tg.ready(); tg.expand&&tg.expand();
@@ -84,16 +133,16 @@
     window.open(u,'_blank');
   }
 
+  window.__rows=null;
   function render(rows){
     var c=document.getElementById('content');
     if(!rows||!rows.length){
-      var s=msg('This shop is not available right now.\nይህ ሱቅ አሁን አይገኝም።');return;
+      msg(L.unavailable);return;
     }
+    window.__rows=rows;
     var store=rows[0], user=store.telegram_username;
     document.getElementById('storeName').textContent=store.store_name||'Shop';
-    document.getElementById('storeSub').textContent = user
-      ? 'Browse · ይመለከቱ   |   Negotiate in Telegram · ዋጋ በቴሌግራም ይደራባል'
-      : 'Browse · ይመለከቱ';
+    document.getElementById('storeSub').textContent = user?L.sub:L.subNoUser;
     document.title=(store.store_name||'Shop')+' · Adulis';
     c.innerHTML=''; var g=document.createElement('div'); g.className='grid';
     rows.forEach(function(r){
@@ -101,21 +150,22 @@
       var ph=document.createElement('div');ph.className='ph';
       if(r.image_url){var im=document.createElement('img');im.loading='lazy';im.decoding='async';
         im.alt=r.item_name;im.src=r.image_url;im.onerror=function(){im.remove();};ph.appendChild(im);}
-      else{ph.textContent='🛍️';}
+      else{var e=document.createElement('div');e.className='emo';e.textContent='🛍️';ph.appendChild(e);}
       var info=document.createElement('div');info.className='info';
       var nm=document.createElement('div');nm.className='name';nm.textContent=r.item_name;info.appendChild(nm);
       var pr=document.createElement('div');pr.className='pricerow';
       var a=document.createElement('span');a.className='price';a.textContent=money(r.sell_price);pr.appendChild(a);
-      var b=document.createElement('span');b.className='neg';b.textContent='Negotiable · ይደራባል';pr.appendChild(b);
+      if(r.tier!=='out'){var b=document.createElement('span');b.className='neg';b.textContent=L.neg;pr.appendChild(b);}
       info.appendChild(pr);
-      var t=T[r.tier]||T.in;var chip=document.createElement('span');chip.className='tier '+t[1];chip.textContent=t[0];info.appendChild(chip);
+      var tierCls={in:'t-in',low:'t-low',out:'t-out'}[r.tier]||'t-in';
+      var tierTxt={in:L.in,low:L.low,out:L.out}[r.tier]||L.in;
+      var chip=document.createElement('span');chip.className='tier '+tierCls;chip.textContent=tierTxt;info.appendChild(chip);
       var btn=document.createElement('button');btn.className='buy';
-      if(r.tier==='out'){btn.disabled=true;btn.textContent='Sold out · ተሽጧል';}
-      else if(!user){btn.disabled=true;btn.textContent='Ask in DM · በውይይት ጠይቁ';}
-      else{btn.textContent='Negotiate · ተደራቡ';
+      if(r.tier==='out'){btn.disabled=true;btn.textContent=L.buyOut;}
+      else if(!user){btn.disabled=true;btn.textContent=L.buyNoUser;}
+      else{btn.textContent=L.buy;
         btn.onclick=function(){
-          var text='Selam! '+r.item_name+' ('+money(r.sell_price)+') — is the price negotiable?\nሰላም! '+r.item_name+' ('+money(r.sell_price)+') — ዋጋው ይደራባል?';
-          openTg('https://t.me/'+encodeURIComponent(user)+'?text='+encodeURIComponent(text));
+          openTg('https://t.me/'+encodeURIComponent(user)+'?text='+encodeURIComponent(L.dm(r.item_name,money(r.sell_price))));
         };}
       info.appendChild(btn);
       card.appendChild(ph);card.appendChild(info);g.appendChild(card);
@@ -123,7 +173,9 @@
     c.appendChild(g);
   }
 
-  if(!slug){msg('No shop selected. Open this page from a shop\'s link.\nሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።');return;}
+  setLang(saved);
+
+  if(!slug){msg(L.noslug);return;}
 
   fetch(API+'/rest/v1/rpc/public_storefront_items',{
     method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
@@ -131,8 +183,8 @@
   }).then(function(r){return r.ok?r.json():Promise.reject();})
     .then(render)
     .catch(function(){
-      var s=msg('Could not load the shop. Check your connection and try again.\nሱቁን ማምጣት አልተቻለም። ኢንተርኔትዎን ያረጋግጡና እንደገና ይሞክሩ።');
-      var btn=document.createElement('button');btn.textContent='Retry · እንደገና';btn.onclick=location.reload;
+      var s=msg(L.error);
+      var btn=document.createElement('button');btn.textContent=L.retry;btn.onclick=location.reload;
       s.appendChild(document.createElement('br'));s.appendChild(btn);
     });
 })();
