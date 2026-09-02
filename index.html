@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>Adulis Storefront</title>
+<title>Adulis</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
   :root{
@@ -47,6 +47,22 @@
   @keyframes r{to{transform:rotate(360deg)}}
   footer{text-align:center;color:var(--muted);font-size:11px;padding:28px 0 6px}
   footer b{color:var(--accent)}
+  /* --- owner panel + create form --- */
+  .panel{background:var(--card);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+  .panel h2{font-size:16px}
+  .panel .note{font-size:12.5px;color:var(--muted);line-height:1.5}
+  .field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:0 0 5px 2px}
+  .field input{width:100%;border:1px solid var(--edge);border-radius:10px;background:var(--bg);color:var(--ink);font-size:15px;padding:11px 12px;font-family:inherit;outline:none}
+  .field input:focus{border-color:var(--accent)}
+  .btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;display:block}
+  .btn:active{transform:scale(.98)}
+  .btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+  .btn:disabled{opacity:.6;cursor:default}
+  .linkbox{background:var(--bg);border:1px dashed var(--accent);border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--accent);word-break:break-all;line-height:1.4}
+  .row{display:flex;gap:8px}
+  .row>*{flex:1}
+  .err{color:#c0392b;font-size:12.5px;line-height:1.4}
+  .okmsg{color:var(--ok);font-size:13px;font-weight:600}
 </style>
 </head>
 <body>
@@ -54,7 +70,7 @@
   <header>
     <div class="logo">A</div>
     <div class="hgroup">
-      <h1 id="storeName">…</h1>
+      <h1 id="storeName">Adulis</h1>
       <div class="sub" id="storeSub"></div>
     </div>
     <div class="lang">
@@ -69,30 +85,58 @@
 (function(){
   var API='https://xmvhctukvnbrwdwevfco.supabase.co';
   var KEY='sb_publishable_33p448jGnQfTZab7rB9nHw_y6NUkqjy';
+  var AUTHFN=API+'/functions/v1/telegram-auth';
+  var APK='https://github.com/natiminilike-source/adulis-releases/releases/latest/download/Adulis.apk';
+  var BASE=location.origin+location.pathname;
   var q=new URLSearchParams(location.search);
-  var slug=(q.get('s')||location.hash.replace(/^#s=/,'')||'').trim();
+  var slug=(q.get('s')||'').trim();
+  var mode=(q.get('mode')||'').trim();
   var tg=window.Telegram&&window.Telegram.WebApp;
+  var session=null; // access token — memory only, never stored
 
-  // ---- Language: the CUSTOMER picks; remembered; smart default from
-  // Telegram (mini app) or the phone, falling back to English.
+  // ---- Language: the CUSTOMER picks; remembered; smart default.
   var L={};
   var STR={
-    en:{sub:'Browse · negotiate in Telegram', subNoUser:'Browse our items',
+    en:{appSub:'Shops inside Telegram', sub:'Browse · negotiate in Telegram', subNoUser:'Browse our items',
         in:'In stock', low:'Low stock', out:'Sold out',
         neg:'Negotiable', buy:'Negotiate', buyOut:'Sold out', buyNoUser:'Ask in DM',
-        empty:'No items listed yet.', unavailable:'This shop is not available right now.',
-        error:'Could not load the shop. Check your connection and try again.',
-        retry:'Retry', noslug:'No shop selected. Open this page from a shop\'s link.',
+        unavailable:'This shop is not available right now.', retry:'Retry',
+        noslug:'No shop selected. Open this page from a shop\'s link.',
         footer:'Live stock from <b>Adulis</b>',
-        dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';}},
-    am:{sub:'ይመለከቱ · ዋጋ በቴሌግራም ይደራደሩ', subNoUser:'ዕቃዎችን ይመለከቱ',
+        dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
+        openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
+        createTitle:'Create your shop', createIntro:'Your shop inside Telegram — customers browse your items and DM you to buy.',
+        shopNameL:'Shop name', emailL:'Email', passL:'Password (8+ characters)',
+        createBtn:'Create my shop', creating:'Creating…',
+        created:'Shop created! 🎉', ownerTitle:'My shop',
+        yourLink:'Your shop link — share it in your channel:', openShopBtn:'🛍 Open my shop',
+        channelL:'Channel username (add @AdulisShopBot as admin first)', postBtn:'Post 🛍 to my channel',
+        posting:'Posting…', posted:'Posted! Check your channel.',
+        getApp:'Get the full Adulis app', getAppNote:'Manage stock, prices and sales from your phone — even offline.',
+        errName:'Enter your shop name (2+ letters).', errEmail:'Enter a valid email.',
+        errPass:'Password must be 8+ characters.', errTaken:'That email is already registered — use a different one.',
+        errHasStore:'You already have a shop — opening it.', errChannel:'Could not post. Make sure @AdulisShopBot is an ADMIN of that channel.',
+        errGeneric:'Something went wrong — try again.', signin:'Signing you in…'},
+    am:{appSub:'በቴሌግራም ውስጥ ሱቆች', sub:'ይመለከቱ · ዋጋ በቴሌግራም ይደራደሩ', subNoUser:'ዕቃዎችን ይመለከቱ',
         in:'አለ', low:'ጥቂቱ', out:'አልቀረም',
         neg:'ይደራደሩ', buy:'ይደራደሩ', buyOut:'ተሽጧል', buyNoUser:'በውይይት ጠይቁ',
-        empty:'እስካሁን ዕቃ አልተረዳትም።', unavailable:'ይህ ሱቅ አሁን አይገኝም።',
-        error:'ሱቁን ማምጣት አልተቻለም። ኢንተርኔትዎን ያረጋግጡና እንደገና ይሞክሩ።',
-        retry:'እንደገና ይሞክሩ', noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
+        unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
+        noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
         footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል',
-        dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';}}
+        dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
+        openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
+        createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'ሱቅዎ በቴሌግራም ውስጥ — ደኞች ዕቃዎችዎን ይመለከታሉ፣ ለመግዛት ይልኩልዎታል።',
+        shopNameL:'የሱቅ ስም', emailL:'ኢሜይል', passL:'የመግቢያ ቃል (8+ ፊደላት)',
+        createBtn:'ሱቄን ይፍጠሩ', creating:'በመፍጠር ላይ…',
+        created:'ሱቁ ተፈጥሯል! 🎉', ownerTitle:'ሱቄ',
+        yourLink:'የሱቁ አገናኝ — በቻናልዎ ይጋሩት፦', openShopBtn:'🛍 ሱቴን ክፈት',
+        channelL:'የቻናል ተጠቃሚ ስም (መጀመሪያ @AdulisShopBotን አስተዳዳሪ ያድርጉ)', postBtn:'🛍 ወደ ቻናሌ ላክ',
+        posting:'በመላክ ላይ…', posted:'ተልኳል! ቻናልዎን ይመልከቱ።',
+        getApp:'ሙሉ የአዱሊስ መተግበሪያ ያውርዱ', getAppNote:'ዕቃ፣ ዋጋና ሽያጭ ከስልክዎ ይቆጣጠሩ — ከኢንተርኔት ውጭ እንኳ።',
+        errName:'የሱቅ ስም ያስፈልጋል (ቢያንስ 2 ፊደላት)።', errEmail:'ትክክለኛ ኢሜይል ያስገቡ።',
+        errPass:'የመግቢያ ቃል ቢያንስ 8 ፊደላት መሆን አለበት።', errTaken:'ኢሜይሉ ቀድሞ ተመዝግቧል — ሌላ ይጠቀሙ።',
+        errHasStore:'ሱቅ ቀድሞ አለዎት — በመክፈት ላይ።', errChannel:'ልክ አልተቻለም። @AdulisShopBot የዚያ ቻናል አስተዳዳሪ መሆኑን ያረጋግጡ።',
+        errGeneric:'ችግር አጋጥሟል — እንደገና ይሞክሩ።', signin:'በማስገባት ላይ…'}
   };
   function detectLang(){
     try{ if(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user){
@@ -107,7 +151,7 @@
     document.getElementById('langEn').className=l==='en'?'on':'';
     document.getElementById('langAm').className=l==='am'?'on':'';
     document.getElementById('footer').innerHTML=L.footer;
-    if(window.__rows) render(window.__rows); // re-render in the new language
+    if(window.__mode) route();
   }
   var saved='en';
   try{saved=localStorage.getItem('adulis_lang')||detectLang();}catch(e){saved=detectLang();}
@@ -124,43 +168,45 @@
     tg.ready(); tg.expand&&tg.expand();
   }}catch(e){}
 
-  function msg(t){var s=document.getElementById('content');
-    s.innerHTML='<div class="state"></div>';s=s.firstChild;s.textContent=t;return s;}
   function money(n){return Number(n).toLocaleString('en-US')+' ETB';}
-
+  function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+  function content(){return document.getElementById('content');}
   function openTg(u){
     try{ if(tg&&tg.openTelegramLink){tg.openTelegramLink(u);return;} }catch(e){}
     window.open(u,'_blank');
   }
 
+  // =====================================================================
+  // SHOP MODE (?s=slug) — the customer storefront (unchanged behavior)
+  // =====================================================================
   window.__rows=null;
-  function render(rows){
-    var c=document.getElementById('content');
+  function renderShop(rows){
+    var c=content(); c.innerHTML='';
     if(!rows||!rows.length){
-      msg(L.unavailable);return;
+      c.appendChild(el('div','state',L.unavailable));return;
     }
     window.__rows=rows;
     var store=rows[0], user=store.telegram_username;
     document.getElementById('storeName').textContent=store.store_name||'Shop';
     document.getElementById('storeSub').textContent = user?L.sub:L.subNoUser;
     document.title=(store.store_name||'Shop')+' · Adulis';
-    c.innerHTML=''; var g=document.createElement('div'); g.className='grid';
+    var g=el('div','grid');
     rows.forEach(function(r){
-      var card=document.createElement('div');card.className='item'+(r.tier==='out'?' out':'');
-      var ph=document.createElement('div');ph.className='ph';
+      var card=el('div','item'+(r.tier==='out'?' out':''));
+      var ph=el('div','ph');
       if(r.image_url){var im=document.createElement('img');im.loading='lazy';im.decoding='async';
         im.alt=r.item_name;im.src=r.image_url;im.onerror=function(){im.remove();};ph.appendChild(im);}
-      else{var e=document.createElement('div');e.className='emo';e.textContent='🛍️';ph.appendChild(e);}
-      var info=document.createElement('div');info.className='info';
-      var nm=document.createElement('div');nm.className='name';nm.textContent=r.item_name;info.appendChild(nm);
-      var pr=document.createElement('div');pr.className='pricerow';
-      var a=document.createElement('span');a.className='price';a.textContent=money(r.sell_price);pr.appendChild(a);
-      if(r.tier!=='out'){var b=document.createElement('span');b.className='neg';b.textContent=L.neg;pr.appendChild(b);}
+      else{ph.appendChild(el('div','emo','🛍️'));}
+      var info=el('div','info');
+      info.appendChild(el('div','name',r.item_name));
+      var pr=el('div','pricerow');
+      pr.appendChild(el('span','price',money(r.sell_price)));
+      if(r.tier!=='out')pr.appendChild(el('span','neg',L.neg));
       info.appendChild(pr);
       var tierCls={in:'t-in',low:'t-low',out:'t-out'}[r.tier]||'t-in';
       var tierTxt={in:L.in,low:L.low,out:L.out}[r.tier]||L.in;
-      var chip=document.createElement('span');chip.className='tier '+tierCls;chip.textContent=tierTxt;info.appendChild(chip);
-      var btn=document.createElement('button');btn.className='buy';
+      info.appendChild(el('span','tier '+tierCls,tierTxt));
+      var btn=el('button','buy');
       if(r.tier==='out'){btn.disabled=true;btn.textContent=L.buyOut;}
       else if(!user){btn.disabled=true;btn.textContent=L.buyNoUser;}
       else{btn.textContent=L.buy;
@@ -172,21 +218,177 @@
     });
     c.appendChild(g);
   }
+  function loadShop(){
+    fetch(API+'/rest/v1/rpc/public_storefront_items',{
+      method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({p_slug:slug})
+    }).then(function(r){return r.ok?r.json():Promise.reject();})
+      .then(renderShop)
+      .catch(function(){
+        var c=content();c.innerHTML='';
+        var s=el('div','state',L.errGeneric||'Could not load.');
+        var b=el('button',null,L.retry);b.onclick=location.reload;
+        s.appendChild(document.createElement('br'));s.appendChild(b);c.appendChild(s);
+      });
+  }
 
+  // =====================================================================
+  // OWNER MODES (?mode=home / ?mode=create) — merchant panel
+  // =====================================================================
+  function initDataOK(){ return !!(tg&&tg.initData&&tg.initData.length); }
+  function exchangeToken(tokenHash){
+    return fetch(API+'/auth/v1/verify',{
+      method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({type:'magiclink',token_hash:tokenHash,redirect_to:BASE})
+    }).then(function(r){return r.ok?r.json():Promise.reject();});
+  }
+  function authCall(action,body){
+    return fetch(AUTHFN,{method:'POST',
+      headers:Object.assign({'Content-Type':'application/json','apikey':KEY},
+        session?{Authorization:'Bearer '+session}:{}),
+      body:JSON.stringify(Object.assign({action:action},body||{}))
+    }).then(function(r){return r.json().then(function(j){j._status=r.status;return j;});});
+  }
+
+  function needBotHint(p){
+    p.appendChild(el('div','note',L.openBot));
+    var b=el('a','btn ghost','@AdulisShopBot');
+    b.href='https://t.me/AdulisShopBot';
+    p.appendChild(b);
+  }
+
+  function renderCreate(errMsg){
+    window.__mode='create';
+    var c=content();c.innerHTML='';
+    document.getElementById('storeName').textContent=L.createTitle;
+    document.getElementById('storeSub').textContent=L.appSub;
+    var p=el('div','panel');
+    p.appendChild(el('h2',null,L.createTitle));
+    p.appendChild(el('div','note',L.createIntro));
+    if(!initDataOK()) needBotHint(p);
+    var f1=el('div','field');f1.appendChild(el('label',null,L.shopNameL));
+    var iName=document.createElement('input');iName.maxLength=60;f1.appendChild(iName);
+    var f2=el('div','field');f2.appendChild(el('label',null,L.emailL));
+    var iMail=document.createElement('input');iMail.type='email';iMail.autocomplete='off';f2.appendChild(iMail);
+    var f3=el('div','field');f3.appendChild(el('label',null,L.passL));
+    var iPass=document.createElement('input');iPass.type='password';iPass.autocomplete='new-password';f3.appendChild(iPass);
+    var err=el('div','err',errMsg||'');
+    var btn=el('button','btn',L.createBtn);
+    btn.disabled=!initDataOK();
+    btn.onclick=function(){
+      err.textContent='';
+      var name=iName.value.trim(),mail=iMail.value.trim(),pass=iPass.value;
+      if(name.length<2){err.textContent=L.errName;return;}
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){err.textContent=L.errEmail;return;}
+      if(pass.length<8){err.textContent=L.errPass;return;}
+      btn.disabled=true;btn.textContent=L.creating;
+      authCall('signup',{initData:tg.initData,shopName:name,email:mail,password:pass})
+        .then(function(j){
+          if(j.ok&&j.token_hash){
+            return exchangeToken(j.token_hash).then(function(s){
+              session=s.access_token;
+              renderOwner({name:name,slug:j.slug},true);
+            });
+          }
+          if(j.error==='already_has_store'){err.textContent=L.errHasStore;
+            setTimeout(function(){location.href=BASE+'?mode=home';},900);return;}
+          if(j.error==='email_taken'){err.textContent=L.errTaken;return;}
+          throw new Error(j.error||'x');
+        })
+        .catch(function(){err.textContent=L.errGeneric;})
+        .then(function(){btn.disabled=false;btn.textContent=L.createBtn;});
+    };
+    p.appendChild(f1);p.appendChild(f2);p.appendChild(f3);p.appendChild(err);p.appendChild(btn);
+    c.appendChild(p);
+  }
+
+  function renderOwner(store,fresh){
+    window.__mode='owner';
+    var c=content();c.innerHTML='';
+    document.getElementById('storeName').textContent=store.name;
+    document.getElementById('storeSub').textContent=L.ownerTitle+' · '+L.appSub;
+    var p=el('div','panel');
+    if(fresh)p.appendChild(el('div','okmsg',L.created));
+    p.appendChild(el('h2',null,store.name));
+    p.appendChild(el('div','note',L.yourLink));
+    p.appendChild(el('div','linkbox',BASE+'?s='+store.slug));
+    var row=el('div','row');
+    var bCopy=el('button','btn ghost',detectCur()==='am'?'ቅዳ':'Copy');
+    bCopy.onclick=function(){
+      var t=BASE+'?s='+store.slug;
+      try{navigator.clipboard.writeText(t);}catch(e){}
+      bCopy.textContent='✓';
+      setTimeout(function(){bCopy.textContent=detectCur()==='am'?'ቅዳ':'Copy';},1200);
+    };
+    var bOpen=el('a','btn',L.openShopBtn);
+    bOpen.href=BASE+'?s='+store.slug;
+    row.appendChild(bCopy);row.appendChild(bOpen);
+    p.appendChild(row);
+
+    var fc=el('div','field');fc.appendChild(el('label',null,L.channelL));
+    var iCh=document.createElement('input');iCh.placeholder='@myshopchannel';
+    if(store.channel)iCh.value='@'+store.channel;
+    fc.appendChild(iCh);
+    var err=el('div','err');
+    var bPost=el('button','btn',L.postBtn);
+    bPost.onclick=function(){
+      err.textContent='';
+      var ch=iCh.value.trim().replace(/^@/,'');
+      if(!ch){err.textContent=L.errChannel;return;}
+      bPost.disabled=true;bPost.textContent=L.posting;
+      authCall('post_channel',{channel:ch})
+        .then(function(j){
+          if(j.ok){err.textContent='';bPost.textContent=L.posted;}
+          else{err.textContent=L.errChannel;bPost.textContent=L.postBtn;}
+          bPost.disabled=false;
+        })
+        .catch(function(){err.textContent=L.errGeneric;bPost.disabled=false;bPost.textContent=L.postBtn;});
+    };
+    p.appendChild(fc);p.appendChild(bPost);p.appendChild(err);
+
+    var gap=el('div');gap.style.height='6px';p.appendChild(gap);
+    p.appendChild(el('div','note',L.getAppNote));
+    var bApk=el('a','btn ghost',L.getApp);bApk.href=APK;bApk.target='_blank';
+    p.appendChild(bApk);
+    c.appendChild(p);
+  }
+  function detectCur(){return document.getElementById('langAm').className.indexOf('on')>=0?'am':'en';}
+
+  function renderHome(){
+    window.__mode='home';
+    var c=content();c.innerHTML='';
+    if(!initDataOK()){
+      document.getElementById('storeName').textContent='Adulis';
+      document.getElementById('storeSub').textContent=L.appSub;
+      renderCreate();return;
+    }
+    c.appendChild(el('div','state',L.signin));
+    authCall('signin',{initData:tg.initData})
+      .then(function(j){
+        if(j.needsSignup){renderCreate();return;}
+        if(!j.ok||!j.token_hash) throw new Error('x');
+        return exchangeToken(j.token_hash).then(function(s){
+          session=s.access_token;
+          renderOwner({name:j.name,slug:j.slug});
+        });
+      })
+      .catch(function(){
+        var cc=content();cc.innerHTML='';
+        var st=el('div','state',L.errGeneric);
+        var b=el('button',null,L.retry);b.onclick=location.reload;
+        st.appendChild(document.createElement('br'));st.appendChild(b);cc.appendChild(st);
+      });
+  }
+
+  // ---- Routing ----
+  function route(){
+    if(slug){document.getElementById('storeName').textContent='…';loadShop();}
+    else if(mode==='create'){renderCreate();}
+    else if(mode==='home'){renderHome();}
+    else{renderHome();}
+  }
   setLang(saved);
-
-  if(!slug){msg(L.noslug);return;}
-
-  fetch(API+'/rest/v1/rpc/public_storefront_items',{
-    method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
-    body:JSON.stringify({p_slug:slug})
-  }).then(function(r){return r.ok?r.json():Promise.reject();})
-    .then(render)
-    .catch(function(){
-      var s=msg(L.error);
-      var btn=document.createElement('button');btn.textContent=L.retry;btn.onclick=location.reload;
-      s.appendChild(document.createElement('br'));s.appendChild(btn);
-    });
+  route();
 })();
 </script>
 </body>
