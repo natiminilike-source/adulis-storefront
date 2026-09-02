@@ -13,6 +13,15 @@
     --warn:#c07c0a; --warn-soft:#fbf1dd; --out:#8a9099; --out-soft:#eceef0;
     --edge:#e3e5e8;
   }
+  /* Complete dark palette — applied when Telegram declares dark mode so a
+     partial themeParams set can never mix dark backgrounds with dark text. */
+  :root.dark{
+    --bg:#17212b; --card:#1c2733; --ink:#f5f7fa; --muted:#8fa3b3;
+    --ok:#5ec38f; --ok-soft:#16301f;
+    --warn:#e0a84a; --warn-soft:#33290f;
+    --out:#93a1ad; --out-soft:#26313c;
+    --edge:#2a3a4a; --accent-soft:rgba(64,140,204,0.18);
+  }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-tap-highlight-color:transparent}
   .wrap{max-width:640px;margin:0 auto;padding:16px 14px 40px}
@@ -62,6 +71,7 @@
   .row{display:flex;gap:8px}
   .row>*{flex:1}
   .err{color:#c0392b;font-size:12.5px;line-height:1.4}
+  :root.dark .err{color:#ff9e94}
   .okmsg{color:var(--ok);font-size:13px;font-weight:600}
 </style>
 </head>
@@ -105,9 +115,11 @@
         footer:'Live stock from <b>Adulis</b>',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
-        createTitle:'Create your shop', createIntro:'Your shop inside Telegram — customers browse your items and DM you to buy.',
+        createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
         shopNameL:'Shop name', emailL:'Email', passL:'Password (8+ characters)',
         createBtn:'Create my shop', creating:'Creating…',
+        credTitle:'Use in the Adulis app', credNote:'Set an email + password once to also sign into the full Adulis app on your phone.',
+        saveBtn:'Save', credSaved:'Saved! Use this email + password in the Adulis app.',
         created:'Shop created! 🎉', ownerTitle:'My shop',
         yourLink:'Your shop link — share it in your channel:', openShopBtn:'🛍 Open my shop',
         channelL:'Channel username (add @AdulisShopBot as admin first)', postBtn:'Post 🛍 to my channel',
@@ -125,9 +137,11 @@
         footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
-        createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'ሱቅዎ በቴሌግራም ውስጥ — ደኞች ዕቃዎችዎን ይመለከታሉ፣ ለመግዛት ይልኩልዎታል።',
+        createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
         shopNameL:'የሱቅ ስም', emailL:'ኢሜይል', passL:'የመግቢያ ቃል (8+ ፊደላት)',
         createBtn:'ሱቄን ይፍጠሩ', creating:'በመፍጠር ላይ…',
+        credTitle:'በአዱሊስ መተግበሪያ ይጠቀሙ', credNote:'ኢሜይልዎንና የመግቢያ ቃል አንድ ጊዜ አዘጋጅተው በስልክዎ በሙሉ መተግበሪያው ለመግባት ይጠቀሙ።',
+        saveBtn:'አስቀምጥ', credSaved:'ተቀምጧል! ይህን ኢሜይልና ቃል በአዱሊስ መተግበሪያ ይጠቀሙ።',
         created:'ሱቁ ተፈጥሯል! 🎉', ownerTitle:'ሱቄ',
         yourLink:'የሱቁ አገናኝ — በቻናልዎ ይጋሩት፦', openShopBtn:'🛍 ሱቴን ክፈት',
         channelL:'የቻናል ተጠቃሚ ስም (መጀመሪያ @AdulisShopBotን አስተዳዳሪ ያድርጉ)', postBtn:'🛍 ወደ ቻናሌ ላክ',
@@ -158,13 +172,16 @@
   document.getElementById('langEn').onclick=function(){setLang('en');};
   document.getElementById('langAm').onclick=function(){setLang('am');};
 
-  // Adopt Telegram's theme when opened as a mini app.
+  // Adopt Telegram's theme when opened as a mini app. colorScheme is the
+  // MASTER switch (complete palette per mode); themeParams refine on top —
+  // a partial param set can never break contrast again.
   try{ if(tg&&tg.initData!==undefined){
+    if(tg.colorScheme==='dark') document.documentElement.classList.add('dark');
     var tp=tg.themeParams||{}; var r=document.documentElement.style;
     var map={bg_color:'--bg',secondary_bg_color:'--card',text_color:'--ink',
       hint_color:'--muted',button_color:'--accent'};
     for(var k in map){ if(map[k]&&tp[k]) r.setProperty(map[k],'#'+tp[k]); }
-    if(tp.button_color) r.setProperty('--accent-soft','rgba(120,170,220,0.15)');
+    if(tp.button_color) r.setProperty('--accent-soft','rgba(64,140,204,0.18)');
     tg.ready(); tg.expand&&tg.expand();
   }}catch(e){}
 
@@ -267,22 +284,16 @@
     p.appendChild(el('div','note',L.createIntro));
     if(!initDataOK()) needBotHint(p);
     var f1=el('div','field');f1.appendChild(el('label',null,L.shopNameL));
-    var iName=document.createElement('input');iName.maxLength=60;f1.appendChild(iName);
-    var f2=el('div','field');f2.appendChild(el('label',null,L.emailL));
-    var iMail=document.createElement('input');iMail.type='email';iMail.autocomplete='off';f2.appendChild(iMail);
-    var f3=el('div','field');f3.appendChild(el('label',null,L.passL));
-    var iPass=document.createElement('input');iPass.type='password';iPass.autocomplete='new-password';f3.appendChild(iPass);
+    var iName=document.createElement('input');iName.maxLength=60;iName.placeholder='…';f1.appendChild(iName);
     var err=el('div','err',errMsg||'');
     var btn=el('button','btn',L.createBtn);
     btn.disabled=!initDataOK();
     btn.onclick=function(){
       err.textContent='';
-      var name=iName.value.trim(),mail=iMail.value.trim(),pass=iPass.value;
+      var name=iName.value.trim();
       if(name.length<2){err.textContent=L.errName;return;}
-      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){err.textContent=L.errEmail;return;}
-      if(pass.length<8){err.textContent=L.errPass;return;}
       btn.disabled=true;btn.textContent=L.creating;
-      authCall('signup',{initData:tg.initData,shopName:name,email:mail,password:pass})
+      authCall('signup',{initData:tg.initData,shopName:name})
         .then(function(j){
           if(j.ok&&j.token_hash){
             return exchangeToken(j.token_hash).then(function(s){
@@ -292,13 +303,12 @@
           }
           if(j.error==='already_has_store'){err.textContent=L.errHasStore;
             setTimeout(function(){location.href=BASE+'?mode=home';},900);return;}
-          if(j.error==='email_taken'){err.textContent=L.errTaken;return;}
           throw new Error(j.error||'x');
         })
         .catch(function(){err.textContent=L.errGeneric;})
         .then(function(){btn.disabled=false;btn.textContent=L.createBtn;});
     };
-    p.appendChild(f1);p.appendChild(f2);p.appendChild(f3);p.appendChild(err);p.appendChild(btn);
+    p.appendChild(f1);p.appendChild(err);p.appendChild(btn);
     c.appendChild(p);
   }
 
@@ -347,6 +357,35 @@
     p.appendChild(fc);p.appendChild(bPost);p.appendChild(err);
 
     var gap=el('div');gap.style.height='6px';p.appendChild(gap);
+    // One-time APK bridge: set email+password while holding the
+    // Telegram-signed session.
+    p.appendChild(el('h2',null,L.credTitle));
+    p.appendChild(el('div','note',L.credNote));
+    var fe=el('div','field');fe.appendChild(el('label',null,L.emailL));
+    var iEm=document.createElement('input');iEm.type='email';iEm.autocomplete='off';fe.appendChild(iEm);
+    var fp=el('div','field');fp.appendChild(el('label',null,L.passL));
+    var iPw=document.createElement('input');iPw.type='password';iPw.autocomplete='new-password';fp.appendChild(iPw);
+    var cerr=el('div','err');
+    var cmsg=el('div','okmsg');
+    var bSave=el('button','btn',L.saveBtn);
+    bSave.onclick=function(){
+      cerr.textContent='';cmsg.textContent='';
+      var em=iEm.value.trim(),pw=iPw.value;
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){cerr.textContent=L.errEmail;return;}
+      if(pw.length<8){cerr.textContent=L.errPass;return;}
+      bSave.disabled=true;
+      authCall('set_credentials',{email:em,password:pw})
+        .then(function(j){
+          if(j.ok){cmsg.textContent=L.credSaved;iPw.value='';}
+          else if(j.error==='email_taken'){cerr.textContent=L.errTaken;}
+          else{cerr.textContent=L.errGeneric;}
+        })
+        .catch(function(){cerr.textContent=L.errGeneric;})
+        .then(function(){bSave.disabled=false;});
+    };
+    p.appendChild(fe);p.appendChild(fp);p.appendChild(cerr);p.appendChild(cmsg);p.appendChild(bSave);
+
+    var gap2=el('div');gap2.style.height='6px';p.appendChild(gap2);
     p.appendChild(el('div','note',L.getAppNote));
     var bApk=el('a','btn ghost',L.getApp);bApk.href=APK;bApk.target='_blank';
     p.appendChild(bApk);
