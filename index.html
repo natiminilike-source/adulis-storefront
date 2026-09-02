@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Adulis Storefront</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root{
+    --bg:#ffffff; --card:#f2f3f5; --ink:#1c1e21; --muted:#7c838c;
+    --accent:#2481cc; --accent-soft:#e6f0fb; --ok:#1e9e5a; --ok-soft:#e3f6ec;
+    --warn:#c07c0a; --warn-soft:#fbf1dd; --out:#8a9099; --out-soft:#eceef0;
+    --edge:#e3e5e8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-tap-highlight-color:transparent}
+  .wrap{max-width:640px;margin:0 auto;padding:16px 14px 40px}
+  header{display:flex;align-items:center;gap:12px;padding:6px 2px 14px}
+  .logo{width:44px;height:44px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;flex:none}
+  h1{font-size:19px;line-height:1.2}
+  .sub{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .item{background:var(--card);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+  .item.out{opacity:.55}
+  .ph{aspect-ratio:1/1;background:var(--edge);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:26px}
+  .ph img{width:100%;height:100%;object-fit:cover;display:block}
+  .info{padding:10px 11px 12px;display:flex;flex-direction:column;gap:7px;flex:1}
+  .name{font-size:13.5px;font-weight:600;line-height:1.3;min-height:2.6em}
+  .pricerow{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+  .price{font-size:15px;font-weight:700}
+  .neg{font-size:10.5px;color:var(--accent);background:var(--accent-soft);padding:2px 7px;border-radius:8px;font-weight:600}
+  .tier{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:8px;align-self:flex-start}
+  .t-in{color:var(--ok);background:var(--ok-soft)} .t-low{color:var(--warn);background:var(--warn-soft)} .t-out{color:var(--out);background:var(--out-soft)}
+  .buy{margin-top:auto;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:9px 10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+  .buy:active{transform:scale(.97)}
+  .buy:disabled{background:var(--out-soft);color:var(--out);cursor:default}
+  .state{padding:60px 20px;text-align:center;color:var(--muted);font-size:14px;line-height:1.6}
+  .state button{margin-top:14px;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+  .spin{width:34px;height:34px;border:3px solid var(--edge);border-top-color:var(--accent);border-radius:50%;margin:0 auto 16px;animation:r 0.8s linear infinite}
+  @keyframes r{to{transform:rotate(360deg)}}
+  footer{text-align:center;color:var(--muted);font-size:11px;padding:28px 0 6px}
+  footer b{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">A</div>
+    <div>
+      <h1 id="storeName">…</h1>
+      <div class="sub" id="storeSub"></div>
+    </div>
+  </header>
+  <div id="content"><div class="state"><div class="spin"></div></div></div>
+  <footer>Stock updates live from <b>Adulis</b> · ዕቃ ቆጠራ ከሱቁ ጋር በቀጥታ ይታደሳል</footer>
+</div>
+<script>
+(function(){
+  var API='https://xmvhctukvnbrwdwevfco.supabase.co';
+  var KEY='sb_publishable_33p448jGnQfTZab7rB9nHw_y6NUkqjy';
+  var q=new URLSearchParams(location.search);
+  var slug=(q.get('s')||location.hash.replace(/^#s=/,'')||'').trim();
+  var tg=window.Telegram&&window.Telegram.WebApp;
+  var T={in:['In stock · አለ','t-in'],low:['Low stock · ጥቂቱ','t-low'],out:['Sold out · አልቀረም','t-out']};
+
+  // Adopt Telegram's theme when opened as a mini app.
+  try{ if(tg&&tg.initData!==undefined){
+    var tp=tg.themeParams||{}; var r=document.documentElement.style;
+    var map={bg_color:'--bg',secondary_bg_color:'--card',text_color:'--ink',
+      hint_color:'--muted',button_color:'--accent',button_text_color:null,
+      link_color:'--accent'};
+    for(var k in map){ if(map[k]&&tp[k]) r.setProperty(map[k],'#'+tp[k]); }
+    if(tp.button_color) r.setProperty('--accent-soft','rgba(120,170,220,0.15)');
+    tg.ready(); tg.expand&&tg.expand();
+  }}catch(e){}
+
+  function msg(t){var s=document.getElementById('content');
+    s.innerHTML='<div class="state"></div>';s=s.firstChild;s.textContent=t;return s;}
+  function money(n){return Number(n).toLocaleString('en-US')+' ETB';}
+
+  function openTg(u){
+    try{ if(tg&&tg.openTelegramLink){tg.openTelegramLink(u);return;} }catch(e){}
+    window.open(u,'_blank');
+  }
+
+  function render(rows){
+    var c=document.getElementById('content');
+    if(!rows||!rows.length){
+      var s=msg('This shop is not available right now.\nይህ ሱቅ አሁን አይገኝም።');return;
+    }
+    var store=rows[0], user=store.telegram_username;
+    document.getElementById('storeName').textContent=store.store_name||'Shop';
+    document.getElementById('storeSub').textContent = user
+      ? 'Browse · ይመለከቱ   |   Negotiate in Telegram · ዋጋ በቴሌግራም ይደራባል'
+      : 'Browse · ይመለከቱ';
+    document.title=(store.store_name||'Shop')+' · Adulis';
+    c.innerHTML=''; var g=document.createElement('div'); g.className='grid';
+    rows.forEach(function(r){
+      var card=document.createElement('div');card.className='item'+(r.tier==='out'?' out':'');
+      var ph=document.createElement('div');ph.className='ph';
+      if(r.image_url){var im=document.createElement('img');im.loading='lazy';im.decoding='async';
+        im.alt=r.item_name;im.src=r.image_url;im.onerror=function(){im.remove();};ph.appendChild(im);}
+      else{ph.textContent='🛍️';}
+      var info=document.createElement('div');info.className='info';
+      var nm=document.createElement('div');nm.className='name';nm.textContent=r.item_name;info.appendChild(nm);
+      var pr=document.createElement('div');pr.className='pricerow';
+      var a=document.createElement('span');a.className='price';a.textContent=money(r.sell_price);pr.appendChild(a);
+      var b=document.createElement('span');b.className='neg';b.textContent='Negotiable · ይደራባል';pr.appendChild(b);
+      info.appendChild(pr);
+      var t=T[r.tier]||T.in;var chip=document.createElement('span');chip.className='tier '+t[1];chip.textContent=t[0];info.appendChild(chip);
+      var btn=document.createElement('button');btn.className='buy';
+      if(r.tier==='out'){btn.disabled=true;btn.textContent='Sold out · ተሽጧል';}
+      else if(!user){btn.disabled=true;btn.textContent='Ask in DM · በውይይት ጠይቁ';}
+      else{btn.textContent='Negotiate · ተደራቡ';
+        btn.onclick=function(){
+          var text='Selam! '+r.item_name+' ('+money(r.sell_price)+') — is the price negotiable?\nሰላም! '+r.item_name+' ('+money(r.sell_price)+') — ዋጋው ይደራባል?';
+          openTg('https://t.me/'+encodeURIComponent(user)+'?text='+encodeURIComponent(text));
+        };}
+      info.appendChild(btn);
+      card.appendChild(ph);card.appendChild(info);g.appendChild(card);
+    });
+    c.appendChild(g);
+  }
+
+  if(!slug){msg('No shop selected. Open this page from a shop\'s link.\nሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።');return;}
+
+  fetch(API+'/rest/v1/rpc/public_storefront_items',{
+    method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({p_slug:slug})
+  }).then(function(r){return r.ok?r.json():Promise.reject();})
+    .then(render)
+    .catch(function(){
+      var s=msg('Could not load the shop. Check your connection and try again.\nሱቁን ማምጣት አልተቻለም። ኢንተርኔትዎን ያረጋግጡና እንደገና ይሞክሩ።');
+      var btn=document.createElement('button');btn.textContent='Retry · እንደገና';btn.onclick=location.reload;
+      s.appendChild(document.createElement('br'));s.appendChild(btn);
+    });
+})();
+</script>
+</body>
+</html>
