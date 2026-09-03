@@ -115,6 +115,7 @@
         in:'In stock', low:'Low stock', out:'Sold out',
         neg:'Negotiable', buy:'Negotiate', buyOut:'Sold out', buyNoUser:'Ask in DM',
         unavailable:'This shop is not available right now.', retry:'Retry',
+        emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
         footer:'Live stock from <b>Adulis</b>',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
@@ -137,6 +138,7 @@
         in:'አለ', low:'ጥቂቱ', out:'አልቀረም',
         neg:'ይደራደሩ', buy:'ይደራደሩ', buyOut:'ተሽጧል', buyNoUser:'በውይይት ጠይቁ',
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
+        emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
         footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
@@ -198,7 +200,25 @@
   function renderShop(rows){
     var c=content(); c.innerHTML='';
     if(!rows||!rows.length){
-      c.appendChild(el('div','state',L.unavailable));return;
+      // Zero item-rows: distinguish "exists but empty" from "not found".
+      fetch(API+'/rest/v1/rpc/public_storefront_header',{
+        method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({p_slug:slug})
+      }).then(function(r){return r.ok?r.json():Promise.reject();})
+      .then(function(h){
+        if(h&&h.length){
+          var store=h[0];
+          document.getElementById('storeName').textContent=store.store_name;
+          document.getElementById('storeSub').textContent=L.subNoUser;
+          var s=el('div','state',L.emptyShop);
+          var b=el('a','btn',L.getApp);b.href=APK;b.target='_blank';
+          s.appendChild(b);c.appendChild(s);
+        }else{
+          c.appendChild(el('div','state',L.unavailable));
+        }
+      })
+      .catch(function(){c.appendChild(el('div','state',L.unavailable));});
+      return;
     }
     window.__rows=rows;
     var store=rows[0], user=store.telegram_username;
@@ -234,17 +254,30 @@
     c.appendChild(g);
   }
   function loadShop(){
-    fetch(API+'/rest/v1/rpc/public_storefront_items',{
-      method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
-      body:JSON.stringify({p_slug:slug})
-    }).then(function(r){return r.ok?r.json():Promise.reject();})
+    var attempt=0;
+    function run(){
+      fetch(API+'/rest/v1/rpc/public_storefront_items',{
+        method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({p_slug:slug})
+      }).then(function(r){
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        return r.json();
+      })
       .then(renderShop)
-      .catch(function(){
-        var c=content();c.innerHTML='';
-        var s=el('div','state',L.errGeneric||'Could not load.');
-        var b=el('button',null,L.retry);b.onclick=location.reload;
-        s.appendChild(document.createElement('br'));s.appendChild(b);c.appendChild(s);
+      .catch(function(e){
+        if(attempt++<1){run();return;}      // one silent retry
+        renderShopError(e.message||'network');
       });
+    }
+    run();
+  }
+  function renderShopError(detail){
+    var c=content();c.innerHTML='';
+    var s=el('div','state',L.errGeneric);
+    var d=el('div','err','ⓘ '+detail);d.style.marginTop='8px';
+    s.appendChild(d);
+    var b=el('button',null,L.retry);b.onclick=location.reload;
+    s.appendChild(document.createElement('br'));s.appendChild(b);c.appendChild(s);
   }
 
   // =====================================================================
@@ -284,15 +317,18 @@
     var f1=el('div','field');f1.appendChild(el('label',null,L.shopNameL));
     var iName=document.createElement('input');iName.maxLength=60;iName.placeholder='…';f1.appendChild(iName);
     var err=el('div','err',errMsg||'');
+    var detail=el('div','err','');detail.style.fontSize='11px';detail.style.marginTop='-6px';
+    var lastCode='';
     var btn=el('button','btn',L.createBtn);
     btn.disabled=!initDataOK();
     btn.onclick=function(){
-      err.textContent='';
+      err.textContent='';detail.textContent='';
       var name=iName.value.trim();
       if(name.length<2){err.textContent=L.errName;return;}
       btn.disabled=true;btn.textContent=L.creating;
       authCall('signup',{initData:tg.initData,shopName:name})
         .then(function(j){
+          lastCode=(j.error||'')+(j.fields?' ['+j.fields.join(',')+']':'')+(j._status?' · HTTP '+j._status:'');
           if(j.ok&&j.token_hash){
             return exchangeToken(j.token_hash).then(function(s){
               session=s.access_token;
@@ -315,10 +351,13 @@
           }
           throw new Error(j.error||'x');
         })
-        .catch(function(){err.textContent=L.errGeneric;})
+        .catch(function(e){
+          err.textContent=L.errGeneric;
+          detail.textContent='ⓘ '+(lastCode||e.message||'network');
+        })
         .then(function(){btn.disabled=false;btn.textContent=L.createBtn;});
     };
-    p.appendChild(f1);p.appendChild(err);p.appendChild(btn);
+    p.appendChild(f1);p.appendChild(err);p.appendChild(detail);p.appendChild(btn);
     c.appendChild(p);
   }
 
@@ -412,18 +451,22 @@
       renderCreate();return;
     }
     c.appendChild(el('div','state',L.signin));
+    var lastCode='';
     authCall('signin',{initData:tg.initData})
       .then(function(j){
+        lastCode=(j.error||'')+(j.fields?' ['+j.fields.join(',')+']':'')+(j._status?' · HTTP '+j._status:'');
         if(j.needsSignup){renderCreate();return;}
-        if(!j.ok||!j.token_hash) throw new Error('x');
+        if(!j.ok||!j.token_hash) throw new Error(j.error||'x');
         return exchangeToken(j.token_hash).then(function(s){
           session=s.access_token;
           renderOwner({name:j.name,slug:j.slug});
         });
       })
-      .catch(function(){
+      .catch(function(e){
         var cc=content();cc.innerHTML='';
         var st=el('div','state',L.errGeneric);
+        var d=el('div','err','ⓘ '+(lastCode||e.message||'network'));d.style.marginTop='8px';
+        st.appendChild(d);
         var b=el('button',null,L.retry);b.onclick=location.reload;
         st.appendChild(document.createElement('br'));st.appendChild(b);cc.appendChild(st);
       });
