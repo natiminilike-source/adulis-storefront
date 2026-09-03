@@ -30,7 +30,8 @@
   body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-tap-highlight-color:transparent}
   .wrap{max-width:640px;margin:0 auto;padding:16px 14px 40px}
   header{display:flex;align-items:center;gap:12px;padding:6px 2px 14px}
-  .logo{width:44px;height:44px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;flex:none}
+  .logo{width:44px;height:44px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;flex:none;overflow:hidden}
+  .logo img{width:100%;height:100%;object-fit:cover;display:block}
   .hgroup{flex:1;min-width:0}
   h1{font-size:19px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .sub{font-size:12px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -117,7 +118,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v4',
+        footer:'Live stock from <b>Adulis</b> · v5',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -144,7 +145,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v4',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v5',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -199,6 +200,15 @@
   function money(n){return Number(n).toLocaleString('en-US')+' ETB';}
   function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
   function content(){return document.getElementById('content');}
+  // Shop header badge: the merchant's own logo when they've sent one to
+  // the bot, the generic "A" otherwise.
+  function setLogo(url){
+    var box=document.querySelector('.logo');
+    if(!box)return;
+    box.innerHTML='';
+    if(url){var im=document.createElement('img');im.src=url;im.alt='';im.onerror=function(){setLogo(null);};box.appendChild(im);}
+    else{box.textContent='A';}
+  }
   function openTg(u){
     try{ if(tg&&tg.openTelegramLink){tg.openTelegramLink(u);return;} }catch(e){}
     window.open(u,'_blank');
@@ -221,6 +231,7 @@
           var store=h[0];
           document.getElementById('storeName').textContent=store.store_name;
           document.getElementById('storeSub').textContent=L.subNoUser;
+          setLogo(store.logo_url);
           var s=el('div','state',L.emptyShop);
           var b=el('a','btn',L.getApp);b.href=APK;b.target='_blank';
           s.appendChild(b);c.appendChild(s);
@@ -235,6 +246,7 @@
     var store=rows[0], user=store.telegram_username;
     document.getElementById('storeName').textContent=store.store_name||'Shop';
     document.getElementById('storeSub').textContent = user?L.sub:L.subNoUser;
+    setLogo(store.logo_url);
     document.title=(store.store_name||'Shop')+' · Adulis';
     var g=el('div','grid');
     rows.forEach(function(r){
@@ -317,10 +329,24 @@
     parent.appendChild(b);
   }
   function exchangeToken(tokenHash){
+    // redirect_to deliberately OMITTED: this Supabase auth generation
+    // rejects /auth/v1/verify with "Only the token_hash and type should
+    // be provided" (HTTP 400) whenever any extra field rides along —
+    // the page-side exchange had never worked until that was found.
     return fetch(API+'/auth/v1/verify',{
       method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
-      body:JSON.stringify({type:'magiclink',token_hash:tokenHash,redirect_to:BASE})
+      body:JSON.stringify({type:'magiclink',token_hash:tokenHash})
     }).then(function(r){return r.ok?r.json():Promise.reject();});
+  }
+  // Take the session out of a server reply: prefer the ready-made
+  // access_token (minted server-side), fall back to exchanging the
+  // token_hash. Resolves true when `session` is set.
+  function takeSession(j){
+    if(j&&j.access_token){session=j.access_token;return Promise.resolve(true);}
+    if(j&&j.ok&&j.token_hash){
+      return exchangeToken(j.token_hash).then(function(s){session=s.access_token;return true;});
+    }
+    return Promise.resolve(false);
   }
   function authCall(action,body){
     return fetch(AUTHFN,{method:'POST',
@@ -347,6 +373,7 @@
     var c=content();c.innerHTML='';
     document.getElementById('storeName').textContent='Adulis';
     document.getElementById('storeSub').textContent=L.appSub;
+    setLogo(null);
     var p=el('div','panel');
     p.appendChild(el('h2',null,L.codeTitle));
     p.appendChild(el('div','note',L.codeSent));
@@ -361,9 +388,10 @@
       if(!/^\d{6}$/.test(code)){err.textContent=L.errCode;return;}
       b.disabled=true;b.textContent=L.verifying;err.textContent='';
       retry(code).then(function(j){
-        if(j.ok&&j.token_hash){
-          return exchangeToken(j.token_hash).then(function(s){
-            session=s.access_token;onSuccess(j);
+        if(j.ok&&(j.access_token||j.token_hash)){
+          return takeSession(j).then(function(ok){
+            if(ok){onSuccess(j);return;}
+            throw new Error(j.error||'session');
           });
         }
         b.disabled=false;b.textContent=L.verifyBtn;
@@ -382,6 +410,7 @@
     var c=content();c.innerHTML='';
     document.getElementById('storeName').textContent=L.createTitle;
     document.getElementById('storeSub').textContent=L.appSub;
+    setLogo(null);
     var p=el('div','panel');
     p.appendChild(el('h2',null,L.createTitle));
     p.appendChild(el('div','note',L.createIntro));
@@ -401,29 +430,28 @@
       authCall('signup',{initData:tg.initData,shopName:name})
         .then(function(j){
           lastCode=errDetail(j);
-          if(j.ok&&j.token_hash){
-            return exchangeToken(j.token_hash).then(function(s){
-              session=s.access_token;
-              renderOwner({name:name,slug:j.slug},true);
+          if(j.ok&&(j.access_token||j.token_hash)){
+            return takeSession(j).then(function(ok){
+              if(!ok)throw new Error(j.error||'session');
+              renderOwner({name:j.name||name,slug:j.slug},!j.had_store);
             });
           }
           if(j.code_required){
             renderCodeStep(function(code){
               return authCall('signup',{initData:tg.initData,shopName:name,code:code});
             },function(k){
-              renderOwner({name:name,slug:k.slug},true);
+              renderOwner({name:k.name||name,slug:k.slug},!k.had_store);
             });
             return;
           }
           if(j.error==='already_has_store'){
-            // Shop exists (e.g. an earlier attempt landed halfway) —
-            // sign straight into it, no error, no redirect.
+            // Old-server safety: the fixed server signs straight in for
+            // existing stores, but if this reply ever appears, sign in.
             btn.textContent=L.signin;
             return authCall('signin',{initData:tg.initData}).then(function(k){
-              if(k.ok&&k.token_hash){
-                return exchangeToken(k.token_hash).then(function(s){
-                  session=s.access_token;
-                  renderOwner({name:k.name,slug:k.slug});
+              if(k.ok&&(k.access_token||k.token_hash)){
+                return takeSession(k).then(function(ok){
+                  if(ok)renderOwner({name:k.name,slug:k.slug});
                 });
               }
               if(k.code_required){
@@ -553,9 +581,9 @@
           });
           return;
         }
-        if(!j.ok||!j.token_hash) throw new Error(j.error||'x');
-        return exchangeToken(j.token_hash).then(function(s){
-          session=s.access_token;
+        if(!(j.ok&&(j.access_token||j.token_hash))) throw new Error(j.error||'x');
+        return takeSession(j).then(function(ok){
+          if(!ok)throw new Error(j.error||'session');
           renderOwner({name:j.name,slug:j.slug});
         });
       })
