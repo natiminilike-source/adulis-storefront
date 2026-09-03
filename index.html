@@ -117,7 +117,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v3',
+        footer:'Live stock from <b>Adulis</b> · v4',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -133,14 +133,18 @@
         errName:'Enter your shop name (2+ letters).', errEmail:'Enter a valid email.',
         errPass:'Password must be 8+ characters.', errTaken:'That email is already registered — use a different one.',
         errHasStore:'You already have a shop — opening it.', errChannel:'Could not post. Make sure @AdulisShopBot is an ADMIN of that channel.',
-        errGeneric:'Something went wrong — try again.', signin:'Signing you in…'},
+        errGeneric:'Something went wrong — try again.', signin:'Signing you in…',
+        codeTitle:'Confirm it\'s you', codeSent:'We sent a 6-digit code in Telegram — open the @AdulisShopBot chat and type it below.',
+        codeL:'6-digit code', verifyBtn:'Verify', verifying:'Verifying…',
+        errCode:'Wrong or expired code — check @AdulisShopBot and try again.',
+        codeWait:'A code was just sent — open @AdulisShopBot (a new one in 45s).'},
     am:{appSub:'በቴሌግራም ውስጥ ሱቆች', sub:'ይመለከቱ · ዋጋ በቴሌግራም ይደራደሩ', subNoUser:'ዕቃዎችን ይመለከቱ',
         in:'አለ', low:'ጥቂቱ', out:'አልቀረም',
         neg:'ይደራደሩ', buy:'ይደራደሩ', buyOut:'ተሽጧል', buyNoUser:'በውይይት ጠይቁ',
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v3',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v4',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -156,7 +160,11 @@
         errName:'የሱቅ ስም ያስፈልጋል (ቢያንስ 2 ፊደላት)።', errEmail:'ትክክለኛ ኢሜይል ያስገቡ።',
         errPass:'የመግቢያ ቃል ቢያንስ 8 ፊደላት መሆን አለበት።', errTaken:'ኢሜይሉ ቀድሞ ተመዝግቧል — ሌላ ይጠቀሙ።',
         errHasStore:'ሱቅ ቀድሞ አለዎት — በመክፈት ላይ።', errChannel:'ልክ አልተቻለም። @AdulisShopBot የዚያ ቻናል አስተዳዳሪ መሆኑን ያረጋግጡ።',
-        errGeneric:'ችግር አጋጥሟል — እንደገና ይሞክሩ።', signin:'በማስገባት ላይ…'}
+        errGeneric:'ችግር አጋጥሟል — እንደገና ይሞክሩ።', signin:'በማስገባት ላይ…',
+        codeTitle:'ማንነትዎን ያረጋግጡ', codeSent:'የ6-አሃዝ ኮድ በቴሌግራም ተልኳል — የ@AdulisShopBot ውይይት ክፈተው እዚህ ይጻፉት።',
+        codeL:'የ6-አሃዝ ኮድ', verifyBtn:'አረጋግጥ', verifying:'በማረጋገጥ ላይ…',
+        errCode:'ኮዱ ልክ ወይም ጊዜው አልፏል — @AdulisShopBotን መርምረው እንደገና ይሞክሩ።',
+        codeWait:'ኮድ በቅርቡ ተልኳል — @AdulisShopBotን ይመልከቱ (አዲስ በ45 ሰከንድ)።'}
   };
   function detectLang(){
     try{ if(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user){
@@ -330,6 +338,45 @@
     p.appendChild(b);
   }
 
+  // OTP step: this Telegram build's signature couldn't be verified, so the
+  // server sent a 6-digit code to the user's own @AdulisShopBot chat —
+  // receiving it IS the proof of identity. retry(code) re-runs the original
+  // action with the code; onSuccess(j) renders the result exactly as the
+  // direct (signature-verified) path would have.
+  function renderCodeStep(retry,onSuccess){
+    var c=content();c.innerHTML='';
+    document.getElementById('storeName').textContent='Adulis';
+    document.getElementById('storeSub').textContent=L.appSub;
+    var p=el('div','panel');
+    p.appendChild(el('h2',null,L.codeTitle));
+    p.appendChild(el('div','note',L.codeSent));
+    var f=el('div','field');f.appendChild(el('label',null,L.codeL));
+    var iCode=document.createElement('input');iCode.inputMode='numeric';
+    iCode.autocomplete='one-time-code';iCode.maxLength=6;iCode.placeholder='······';
+    f.appendChild(iCode);p.appendChild(f);
+    var err=el('div','err');
+    var b=el('button','btn',L.verifyBtn);
+    b.onclick=function(){
+      var code=iCode.value.trim();
+      if(!/^\d{6}$/.test(code)){err.textContent=L.errCode;return;}
+      b.disabled=true;b.textContent=L.verifying;err.textContent='';
+      retry(code).then(function(j){
+        if(j.ok&&j.token_hash){
+          return exchangeToken(j.token_hash).then(function(s){
+            session=s.access_token;onSuccess(j);
+          });
+        }
+        b.disabled=false;b.textContent=L.verifyBtn;
+        if(j.error==='bad_code'){err.textContent=L.errCode;return;}
+        if(j.code_required){err.textContent=L.codeWait;return;}
+        if(j.needsSignup){renderCreate();return;}
+        err.textContent=L.errGeneric+'  ⓘ '+errDetail(j);
+      }).catch(function(){b.disabled=false;b.textContent=L.verifyBtn;err.textContent=L.errGeneric;});
+    };
+    p.appendChild(b);p.appendChild(err);c.appendChild(p);
+    setTimeout(function(){try{iCode.focus();}catch(e){}},50);
+  }
+
   function renderCreate(errMsg){
     window.__mode='create';
     var c=content();c.innerHTML='';
@@ -360,6 +407,14 @@
               renderOwner({name:name,slug:j.slug},true);
             });
           }
+          if(j.code_required){
+            renderCodeStep(function(code){
+              return authCall('signup',{initData:tg.initData,shopName:name,code:code});
+            },function(k){
+              renderOwner({name:name,slug:k.slug},true);
+            });
+            return;
+          }
           if(j.error==='already_has_store'){
             // Shop exists (e.g. an earlier attempt landed halfway) —
             // sign straight into it, no error, no redirect.
@@ -370,6 +425,14 @@
                   session=s.access_token;
                   renderOwner({name:k.name,slug:k.slug});
                 });
+              }
+              if(k.code_required){
+                renderCodeStep(function(code){
+                  return authCall('signin',{initData:tg.initData,code:code});
+                },function(m){
+                  renderOwner({name:m.name,slug:m.slug});
+                });
+                return;
               }
               throw new Error(k.error||'x');
             });
@@ -482,6 +545,14 @@
       .then(function(j){
         lastCode=errDetail(j);
         if(j.needsSignup){renderCreate();return;}
+        if(j.code_required){
+          renderCodeStep(function(code){
+            return authCall('signin',{initData:tg.initData,code:code});
+          },function(k){
+            renderOwner({name:k.name,slug:k.slug});
+          });
+          return;
+        }
         if(!j.ok||!j.token_hash) throw new Error(j.error||'x');
         return exchangeToken(j.token_hash).then(function(s){
           session=s.access_token;
