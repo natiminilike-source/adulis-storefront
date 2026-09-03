@@ -117,7 +117,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b>',
+        footer:'Live stock from <b>Adulis</b> · v3',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -140,7 +140,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v3',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -171,7 +171,10 @@
     document.getElementById('langEn').className=l==='en'?'on':'';
     document.getElementById('langAm').className=l==='am'?'on':'';
     document.getElementById('footer').innerHTML=L.footer;
-    if(window.__mode) route();
+    // Repaint whatever is on screen in the new language:
+    // shop grid repaints instantly from the already-loaded rows.
+    if(window.__rows){renderShop(window.__rows);}
+    else if(window.__mode){route();}
   }
   var saved='en';
   try{saved=localStorage.getItem('adulis_lang')||detectLang();}catch(e){saved=detectLang();}
@@ -474,7 +477,7 @@
 
   // ---- Routing ----
   function route(){
-    if(slug){document.getElementById('storeName').textContent='…';loadShop();}
+    if(slug){window.__mode='shop';document.getElementById('storeName').textContent='…';loadShop();}
     else if(mode==='create'){renderCreate();}
     else if(mode==='home'){renderHome();}
     else{renderHome();}
