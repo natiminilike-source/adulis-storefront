@@ -287,6 +287,27 @@
   // OWNER MODES (?mode=home / ?mode=create) — merchant panel
   // =====================================================================
   function initDataOK(){ return !!(tg&&tg.initData&&tg.initData.length); }
+  function errDetail(j){
+    var parts=[j.error||''];
+    if(j.fields&&j.fields.length)parts.push('['+j.fields.join(',')+']');
+    if(typeof j.got_len==='number')parts.push('len:'+j.got_len);
+    if(j._status)parts.push('HTTP '+j._status);
+    if(j._net)parts.push(j._net);
+    return parts.filter(Boolean).join(' ');
+  }
+  // On identity failures: one tap copies the phone's RAW identity string
+  // so the exact Telegram payload can be analyzed server-side.
+  function diagButton(parent){
+    var b=el('button','btn ghost','📋 Copy diagnostics — paste to developer');
+    b.style.marginTop='8px';
+    b.onclick=function(){
+      var blob='ADULIS-DIAG\nurl: '+location.href+'\ninitDataLen: '+((tg&&tg.initData)||'').length+'\ninitData: '+((tg&&tg.initData)||'(empty)')+'\n';
+      try{navigator.clipboard.writeText(blob);}catch(e){}
+      b.textContent='✓ Copied — paste it in the chat';
+      setTimeout(function(){b.textContent='📋 Copy diagnostics — paste to developer';},2000);
+    };
+    parent.appendChild(b);
+  }
   function exchangeToken(tokenHash){
     return fetch(API+'/auth/v1/verify',{
       method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
@@ -298,7 +319,8 @@
       headers:Object.assign({'Content-Type':'application/json','apikey':KEY},
         session?{Authorization:'Bearer '+session}:{}),
       body:JSON.stringify(Object.assign({action:action},body||{}))
-    }).then(function(r){return r.json().then(function(j){j._status=r.status;return j;});});
+    }).then(function(r){return r.json().then(function(j){j._status=r.status;return j;});})
+      .catch(function(e){return {_status:0,error:'network',_net:(e&&e.message)||''};});
   }
 
   function needBotHint(p){
@@ -331,7 +353,7 @@
       btn.disabled=true;btn.textContent=L.creating;
       authCall('signup',{initData:tg.initData,shopName:name})
         .then(function(j){
-          lastCode=(j.error||'')+(j.fields?' ['+j.fields.join(',')+']':'')+(j._status?' · HTTP '+j._status:'');
+          lastCode=errDetail(j);
           if(j.ok&&j.token_hash){
             return exchangeToken(j.token_hash).then(function(s){
               session=s.access_token;
@@ -357,6 +379,7 @@
         .catch(function(e){
           err.textContent=L.errGeneric;
           detail.textContent='ⓘ '+(lastCode||e.message||'network');
+          if(/bad_init_data/.test(lastCode))diagButton(p);
         })
         .then(function(){btn.disabled=false;btn.textContent=L.createBtn;});
     };
@@ -457,7 +480,7 @@
     var lastCode='';
     authCall('signin',{initData:tg.initData})
       .then(function(j){
-        lastCode=(j.error||'')+(j.fields?' ['+j.fields.join(',')+']':'')+(j._status?' · HTTP '+j._status:'');
+        lastCode=errDetail(j);
         if(j.needsSignup){renderCreate();return;}
         if(!j.ok||!j.token_hash) throw new Error(j.error||'x');
         return exchangeToken(j.token_hash).then(function(s){
@@ -470,6 +493,7 @@
         var st=el('div','state',L.errGeneric);
         var d=el('div','err','ⓘ '+(lastCode||e.message||'network'));d.style.marginTop='8px';
         st.appendChild(d);
+        if(/bad_init_data/.test(lastCode))diagButton(st);
         var b=el('button',null,L.retry);b.onclick=location.reload;
         st.appendChild(document.createElement('br'));st.appendChild(b);cc.appendChild(st);
       });
