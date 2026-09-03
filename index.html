@@ -13,14 +13,18 @@
     --warn:#c07c0a; --warn-soft:#fbf1dd; --out:#8a9099; --out-soft:#eceef0;
     --edge:#e3e5e8;
   }
-  /* Complete dark palette — applied when Telegram declares dark mode so a
-     partial themeParams set can never mix dark backgrounds with dark text. */
+  /* Complete dark palette — applied when Telegram declares dark mode.
+     We deliberately do NOT copy Telegram's themeParams: partial or
+     low-contrast sets caused invisible buttons/text on real phones. Our
+     two complete palettes guarantee contrast; Telegram's mode is the
+     only signal we take from the host. */
   :root.dark{
     --bg:#17212b; --card:#1c2733; --ink:#f5f7fa; --muted:#8fa3b3;
+    --accent:#4aa3ec;
     --ok:#5ec38f; --ok-soft:#16301f;
     --warn:#e0a84a; --warn-soft:#33290f;
     --out:#93a1ad; --out-soft:#26313c;
-    --edge:#2a3a4a; --accent-soft:rgba(64,140,204,0.18);
+    --edge:#2a3a4a; --accent-soft:rgba(74,163,236,0.16);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-tap-highlight-color:transparent}
@@ -172,16 +176,10 @@
   document.getElementById('langEn').onclick=function(){setLang('en');};
   document.getElementById('langAm').onclick=function(){setLang('am');};
 
-  // Adopt Telegram's theme when opened as a mini app. colorScheme is the
-  // MASTER switch (complete palette per mode); themeParams refine on top —
-  // a partial param set can never break contrast again.
+  // Theme: Telegram's declared mode is the ONLY thing we take from the
+  // host — our complete palettes do the rest. No themeParams copying.
   try{ if(tg&&tg.initData!==undefined){
     if(tg.colorScheme==='dark') document.documentElement.classList.add('dark');
-    var tp=tg.themeParams||{}; var r=document.documentElement.style;
-    var map={bg_color:'--bg',secondary_bg_color:'--card',text_color:'--ink',
-      hint_color:'--muted',button_color:'--accent'};
-    for(var k in map){ if(map[k]&&tp[k]) r.setProperty(map[k],'#'+tp[k]); }
-    if(tp.button_color) r.setProperty('--accent-soft','rgba(64,140,204,0.18)');
     tg.ready(); tg.expand&&tg.expand();
   }}catch(e){}
 
@@ -301,8 +299,20 @@
               renderOwner({name:name,slug:j.slug},true);
             });
           }
-          if(j.error==='already_has_store'){err.textContent=L.errHasStore;
-            setTimeout(function(){location.href=BASE+'?mode=home';},900);return;}
+          if(j.error==='already_has_store'){
+            // Shop exists (e.g. an earlier attempt landed halfway) —
+            // sign straight into it, no error, no redirect.
+            btn.textContent=L.signin;
+            return authCall('signin',{initData:tg.initData}).then(function(k){
+              if(k.ok&&k.token_hash){
+                return exchangeToken(k.token_hash).then(function(s){
+                  session=s.access_token;
+                  renderOwner({name:k.name,slug:k.slug});
+                });
+              }
+              throw new Error(k.error||'x');
+            });
+          }
           throw new Error(j.error||'x');
         })
         .catch(function(){err.textContent=L.errGeneric;})
