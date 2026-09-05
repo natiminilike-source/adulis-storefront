@@ -64,7 +64,7 @@
   /* --- owner panel + create form --- */
   .panel{background:var(--card);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
   .panel h2{font-size:16px}
-  .panel .note{font-size:12.5px;color:var(--muted);line-height:1.5}
+  .panel .note{font-size:12.5px;color:var(--muted);line-height:1.5;white-space:pre-line}
   .field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:0 0 5px 2px}
   .field input{width:100%;border:1px solid var(--edge);border-radius:10px;background:var(--bg);color:var(--ink);font-size:15px;padding:11px 12px;font-family:inherit;outline:none}
   .field input:focus{border-color:var(--accent)}
@@ -118,21 +118,24 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v5',
+        footer:'Live stock from <b>Adulis</b> · v6',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
-        shopNameL:'Shop name', emailL:'Email', passL:'Password (8+ characters)',
+        shopNameL:'Shop name', emailL:'Email', passL:'Password (6+ characters)',
         createBtn:'Create my shop', creating:'Creating…',
-        credTitle:'Use in the Adulis app', credNote:'Set an email + password once to also sign into the full Adulis app on your phone.',
+        credTitle:'Use in the Adulis app',
+        credNote:'Already use the Adulis app? Enter that email + password — this Telegram shop connects to your existing store.\nNew here? This becomes your app login.',
         saveBtn:'Save', credSaved:'Saved! Use this email + password in the Adulis app.',
+        linkedOk:'Connected! This Telegram shop now runs your Adulis store.',
+        errLogin:'Wrong password for that email — check it and try again.',
         created:'Shop created! 🎉', ownerTitle:'My shop',
         yourLink:'Your shop link — share it in your channel:', openShopBtn:'🛍 Open my shop',
         channelL:'Channel username (add @AdulisShopBot as admin first)', postBtn:'Post 🛍 to my channel',
         posting:'Posting…', posted:'Posted! Check your channel.',
         getApp:'Get the full Adulis app', getAppNote:'Manage stock, prices and sales from your phone — even offline.',
         errName:'Enter your shop name (2+ letters).', errEmail:'Enter a valid email.',
-        errPass:'Password must be 8+ characters.', errTaken:'That email is already registered — use a different one.',
+        errPass:'Password must be 6+ characters.', errTaken:'That email is already registered — use a different one.',
         errHasStore:'You already have a shop — opening it.', errChannel:'Could not post. Make sure @AdulisShopBot is an ADMIN of that channel.',
         errGeneric:'Something went wrong — try again.', signin:'Signing you in…',
         codeTitle:'Confirm it\'s you', codeSent:'We sent a 6-digit code in Telegram — open the @AdulisShopBot chat and type it below.',
@@ -145,21 +148,24 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v5',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v6',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
-        shopNameL:'የሱቅ ስም', emailL:'ኢሜይል', passL:'የመግቢያ ቃል (8+ ፊደላት)',
+        shopNameL:'የሱቅ ስም', emailL:'ኢሜይል', passL:'የመግቢያ ቃል (6+ ፊደላት)',
         createBtn:'ሱቄን ይፍጠሩ', creating:'በመፍጠር ላይ…',
-        credTitle:'በአዱሊስ መተግበሪያ ይጠቀሙ', credNote:'ኢሜይልዎንና የመግቢያ ቃል አንድ ጊዜ አዘጋጅተው በስልክዎ በሙሉ መተግበሪያው ለመግባት ይጠቀሙ።',
+        credTitle:'በአዱሊስ መተግበሪያ ይጠቀሙ',
+        credNote:'አዱሊስ መተግበሪያ አሁንም ይጠቀማሉ? ያንን ኢሜይልና ቃል ይጻፉ — የቴሌግራም ሱቁ ከነባር ሱቅዎ ጋር ይገናኛል።\nአዲስ ነዎት? ይህ የመተግበሪያዎ መግቢያ ይሆናል።',
         saveBtn:'አስቀምጥ', credSaved:'ተቀምጧል! ይህን ኢሜይልና ቃል በአዱሊስ መተግበሪያ ይጠቀሙ።',
+        linkedOk:'ተገናኝቷል! ይህ የቴሌግራም ሱቅ አሁን የአዱሊስ ሱቅዎ ሆኖ ይሠራል።',
+        errLogin:'ለዚያ ኢሜይል ቃሉ አልኮነነም — መርምረው እንደገና ይሞክሩ።',
         created:'ሱቁ ተፈጥሯል! 🎉', ownerTitle:'ሱቄ',
         yourLink:'የሱቁ አገናኝ — በቻናልዎ ይጋሩት፦', openShopBtn:'🛍 ሱቴን ክፈት',
         channelL:'የቻናል ተጠቃሚ ስም (መጀመሪያ @AdulisShopBotን አስተዳዳሪ ያድርጉ)', postBtn:'🛍 ወደ ቻናሌ ላክ',
         posting:'በመላክ ላይ…', posted:'ተልኳል! ቻናልዎን ይመልከቱ።',
         getApp:'ሙሉ የአዱሊስ መተግበሪያ ያውርዱ', getAppNote:'ዕቃ፣ ዋጋና ሽያጭ ከስልክዎ ይቆጣጠሩ — ከኢንተርኔት ውጭ እንኳ።',
         errName:'የሱቅ ስም ያስፈልጋል (ቢያንስ 2 ፊደላት)።', errEmail:'ትክክለኛ ኢሜይል ያስገቡ።',
-        errPass:'የመግቢያ ቃል ቢያንስ 8 ፊደላት መሆን አለበት።', errTaken:'ኢሜይሉ ቀድሞ ተመዝግቧል — ሌላ ይጠቀሙ።',
+        errPass:'የመግቢያ ቃል ቢያንስ 6 ፊደላት መሆን አለበት።', errTaken:'ኢሜይሉ ቀድሞ ተመዝግቧል — ሌላ ይጠቀሙ።',
         errHasStore:'ሱቅ ቀድሞ አለዎት — በመክፈት ላይ።', errChannel:'ልክ አልተቻለም። @AdulisShopBot የዚያ ቻናል አስተዳዳሪ መሆኑን ያረጋግጡ።',
         errGeneric:'ችግር አጋጥሟል — እንደገና ይሞክሩ።', signin:'በማስገባት ላይ…',
         codeTitle:'ማንነትዎን ያረጋግጡ', codeSent:'የ6-አሃዝ ኮድ በቴሌግራም ተልኳል — የ@AdulisShopBot ውይይት ክፈተው እዚህ ይጻፉት።',
@@ -484,7 +490,8 @@
     document.getElementById('storeName').textContent=store.name;
     document.getElementById('storeSub').textContent=L.ownerTitle+' · '+L.appSub;
     var p=el('div','panel');
-    if(fresh)p.appendChild(el('div','okmsg',L.created));
+    if(fresh==='linked')p.appendChild(el('div','okmsg',L.linkedOk));
+    else if(fresh)p.appendChild(el('div','okmsg',L.created));
     p.appendChild(el('h2',null,store.name));
     p.appendChild(el('div','note',L.yourLink));
     p.appendChild(el('div','linkbox',BASE+'?s='+store.slug));
@@ -538,13 +545,24 @@
       cerr.textContent='';cmsg.textContent='';
       var em=iEm.value.trim(),pw=iPw.value;
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){cerr.textContent=L.errEmail;return;}
-      if(pw.length<8){cerr.textContent=L.errPass;return;}
+      if(pw.length<6){cerr.textContent=L.errPass;return;}
       bSave.disabled=true;
       authCall('set_credentials',{email:em,password:pw})
         .then(function(j){
+          // Linked to an EXISTING Adulis account: swap the panel to the
+          // real store with a session for it.
+          if(j.ok&&j.linked&&(j.access_token||j.token_hash)){
+            takeSession(j).then(function(done){
+              if(done)renderOwner({name:j.name,slug:j.slug},'linked');
+              else{cerr.textContent=L.errGeneric;bSave.disabled=false;}
+            });
+            return;
+          }
           if(j.ok){cmsg.textContent=L.credSaved;iPw.value='';}
+          else if(j.error==='bad_login'){cerr.textContent=L.errLogin;}
           else if(j.error==='email_taken'){cerr.textContent=L.errTaken;}
-          else{cerr.textContent=L.errGeneric;}
+          else if(j.error==='bad_password'){cerr.textContent=L.errPass;}
+          else{cerr.textContent=L.errGeneric+'  ⓘ '+errDetail(j);}
         })
         .catch(function(){cerr.textContent=L.errGeneric;})
         .then(function(){bSave.disabled=false;});
