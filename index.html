@@ -106,7 +106,7 @@
   /* --- item cards (APK-products-like spacing, big touch targets) --- */
   .item-card{background:var(--bg);border:1px solid var(--edge);border-radius:12px;padding:12px;margin-bottom:12px}
   .ic-top{display:flex;gap:12px;align-items:center}
-  .ic-thumb{width:64px;height:64px;border-radius:10px;background:var(--edge);flex:none;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:24px;position:relative}
+  .ic-thumb{width:84px;height:84px;border-radius:10px;background:var(--edge);flex:none;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:28px;position:relative}
   .ic-thumb img{width:100%;height:100%;object-fit:cover;display:block}
   .ic-main{flex:1;min-width:0}
   .ic-name{font-size:15px;font-weight:700;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -116,6 +116,15 @@
   .ph-pick{display:flex;align-items:center;gap:10px;margin-top:4px}
   .ph-prev{width:54px;height:54px;border-radius:9px;background:var(--edge);overflow:hidden;flex:none}
   .ph-prev img{width:100%;height:100%;object-fit:cover;display:block}
+  /* --- owner tab bar (three tabs max — analysis-paralysis rule) --- */
+  .tabbar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:6px;
+    background:var(--card);border-top:1px solid var(--edge);
+    padding:7px 8px calc(7px + env(safe-area-inset-bottom));z-index:50;
+    box-shadow:0 -2px 10px rgba(0,0,0,.06)}
+  .tabbtn{flex:1;border:none;background:transparent;color:var(--muted);
+    font-size:11.5px;font-weight:700;padding:9px 2px;border-radius:10px;
+    cursor:pointer;font-family:inherit;white-space:nowrap}
+  .tabbtn.on{background:var(--accent-soft);color:var(--accent)}
 </style>
 </head>
 <body>
@@ -157,7 +166,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v9',
+        footer:'Live stock from <b>Adulis</b> · v10',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -192,14 +201,17 @@
         hotTitle:'🔥 Selling — last 7 days', lagTitle:'💤 Not moving', statNone:'Nothing sold in this period yet.',
         funnel:function(v,n,b,s){return v+' shop visits · '+n+' negotiate/buy taps · '+s+' sales marked';},
         buyBtn:'Buy',
-        dmBuy:function(n,p){return 'Selam! I want to buy '+n+' ('+p+'). Is it available?';}},
+        dmBuy:function(n,p){return 'Selam! I want to buy '+n+' ('+p+'). Is it available?';},
+        tabItems:'Items', tabSales:'Sales', tabShop:'Shop',
+        p7:'7 days', p30:'30 days', pall:'All', showMore:'Show more', shareL:'Share',
+        noSales:'No sales in this period yet.', histL:'Sales'},
     am:{appSub:'በቴሌግራም ውስጥ ሱቆች', sub:'ይመለከቱ · ዋጋ በቴሌግራም ይደራደሩ', subNoUser:'ዕቃዎችን ይመለከቱ',
         in:'አለ', low:'ጥቂቱ', out:'አልቀረም',
         neg:'ይደራደሩ', buy:'ይደራደሩ', buyOut:'ተሽጧል', buyNoUser:'በውይይት ጠይቁ',
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v9',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v10',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -234,7 +246,10 @@
         hotTitle:'🔥 እየሸጠ — ያለፉት 7 ቀናት', lagTitle:'💤 ያልተንቀሳቀሱ', statNone:'በዚህ ጊዜ የተመዘገበ ሽያጭ የለም።',
         funnel:function(v,n,b,s){return v+' የሱቅ ጉብኝቶች · '+n+' የደራደር/ግዛ ንክኪዎች · '+s+' የተመዘገቡ ሽያጮች';},
         buyBtn:'ግዛ',
-        dmBuy:function(n,p){return 'ሰላም! '+n+' ('+p+') መግዛት እፈልጋለሁ። አለ?';}}
+        dmBuy:function(n,p){return 'ሰላም! '+n+' ('+p+') መግዛት እፈልጋለሁ። አለ?';},
+        tabItems:'ዕቃዎች', tabSales:'ሽያጭ', tabShop:'ሱቅ',
+        p7:'7 ቀናት', p30:'30 ቀናት', pall:'ሁሉም', showMore:'ተጨማሪ አሳይ', shareL:'ያጋሩ',
+        noSales:'በዚህ ጊዜ ሽያጭ የለምም።', histL:'ሽያጮች'}
   };
   function detectLang(){
     try{ if(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user){
@@ -577,15 +592,60 @@
     c.appendChild(p);
   }
 
+  // ---- Owner panel: three tabs (APK mental model, three max) ----------
   function renderOwner(store,fresh){
     window.__mode='owner';
     window.__ownerStore=store;
-    var c=content();c.innerHTML='';
+    if(!window.__tab)window.__tab='items';
     document.getElementById('storeName').textContent=store.name;
     document.getElementById('storeSub').textContent=L.ownerTitle+' · '+L.appSub;
+    renderOwnerTab(window.__tab,fresh);
+    drawTabBar();
+  }
+  function killTabBar(){
+    var b=document.getElementById('tabbar');if(b)b.remove();
+    var w=document.querySelector('.wrap');if(w)w.style.paddingBottom='';
+  }
+  function drawTabBar(){
+    killTabBar();
+    var bar=el('div','tabbar');bar.id='tabbar';
+    [['items','🛍',L.tabItems],['sales','📊',L.tabSales],['shop','⚙️',L.tabShop]].forEach(function(t){
+      var b=el('button','tabbtn'+(window.__tab===t[0]?' on':''),t[1]+' '+t[2]);
+      b.onclick=function(){window.__tab=t[0];renderOwnerTab(t[0]);drawTabBar();};
+      bar.appendChild(b);
+    });
+    var w=document.querySelector('.wrap');
+    if(w){w.style.paddingBottom='84px';w.appendChild(bar);}
+  }
+  function renderOwnerTab(tab,fresh){
+    var c=content();c.innerHTML='';
     var p=el('div','panel');
     if(fresh==='linked')p.appendChild(el('div','okmsg',L.linkedOk));
     else if(fresh)p.appendChild(el('div','okmsg',L.created));
+    var store=window.__ownerStore;
+
+    if(tab==='items'){
+      p.appendChild(el('h2',null,L.itemsTitle));
+      var bAdd=el('button','btn ghost',L.addItemBtn);
+      bAdd.style.marginBottom='10px';
+      bAdd.onclick=function(){renderItemForm(null);};
+      p.appendChild(bAdd);
+      var itemsBox=el('div');itemsBox.id='itemsBox';
+      itemsBox.appendChild(el('div','note','…'));
+      p.appendChild(itemsBox);
+      c.appendChild(p);
+      loadOwnerItems();
+      return;
+    }
+
+    if(tab==='sales'){
+      p.appendChild(el('h2',null,L.tabSales));
+      renderSalesTab(p);
+      c.appendChild(p);
+      return;
+    }
+
+    // ---- SHOP tab: link, share, channel, credentials, APK ----
     p.appendChild(el('h2',null,store.name));
     p.appendChild(el('div','note',L.yourLink));
     p.appendChild(el('div','linkbox',BASE+'?s='+store.slug));
@@ -597,31 +657,17 @@
       bCopy.textContent='✓';
       setTimeout(function(){bCopy.textContent=detectCur()==='am'?'ቅዳ':'Copy';},1200);
     };
+    var bShare=el('button','btn ghost','📣 '+L.shareL);
+    bShare.onclick=function(){
+      var link=BASE+'?s='+store.slug;
+      openTg('https://t.me/share/url?url='+encodeURIComponent(link)+
+        '&text='+encodeURIComponent((store.name||'My shop')+' 🛍'));
+    };
+    row.appendChild(bCopy);row.appendChild(bShare);
+    p.appendChild(row);
     var bOpen=el('a','btn',L.openShopBtn);
     bOpen.href=BASE+'?s='+store.slug;
-    row.appendChild(bCopy);row.appendChild(bOpen);
-    p.appendChild(row);
-
-    // ITEMS — the main activity, right under the shop link.
-    var sectI=el('div','sect');
-    sectI.appendChild(el('h3',null,L.itemsTitle));
-    var bAdd=el('button','btn ghost',L.addItemBtn);
-    bAdd.style.marginBottom='10px';
-    bAdd.onclick=function(){renderItemForm(null);};
-    sectI.appendChild(bAdd);
-    var itemsBox=el('div');itemsBox.id='itemsBox';
-    itemsBox.appendChild(el('div','note','…'));
-    sectI.appendChild(itemsBox);
-    p.appendChild(sectI);
-
-    // STATS — hot / lagging / funnel (server arithmetic, no AI).
-    var sectS=el('div','sect');
-    sectS.appendChild(el('h3',null,L.hotTitle));
-    var statsBox=el('div');statsBox.id='statsBox';
-    sectS.appendChild(statsBox);
-    p.appendChild(sectS);
-
-    var gap=el('div');gap.style.height='6px';p.appendChild(gap);
+    p.appendChild(bOpen);
 
     var fc=el('div','field');fc.appendChild(el('label',null,L.channelL));
     var iCh=document.createElement('input');iCh.placeholder='@myshopchannel';
@@ -647,9 +693,6 @@
     // One-time APK bridge — hidden once real credentials exist (server
     // says needs_credentials:false after linking or setting them).
     if(window.__needsCreds!==false){
-    var gap=el('div');gap.style.height='6px';p.appendChild(gap);
-    // One-time APK bridge: set email+password while holding the
-    // Telegram-signed session.
     p.appendChild(el('h2',null,L.credTitle));
     p.appendChild(el('div','note',L.credNote));
     var fe=el('div','field');fe.appendChild(el('label',null,L.emailL));
@@ -693,8 +736,71 @@
     var bApk=el('a','btn ghost',L.getApp);bApk.href=APK;bApk.target='_blank';
     p.appendChild(bApk);
     c.appendChild(p);
-    loadOwnerItems();
-    loadOwnerStats();
+  }
+
+  // ---- SALES tab: period chips → history + best/worst + funnel --------
+  function renderSalesTab(p){
+    var cur=window.__salesDays||7;
+    var chips=el('div','ir-sub');chips.style.marginBottom='10px';
+    var box=el('div');box.id='salesBox';
+    box.appendChild(el('div','note','…'));
+    function load(){
+      box.innerHTML='';box.appendChild(el('div','note','…'));
+      authCall('sales_history',{days:cur}).then(function(j){
+        box.innerHTML='';
+        if(!j.ok){box.appendChild(el('div','note','ⓘ '+(j.error||'sales')));return;}
+        var f=j.funnel||{visit:0,negotiate:0,buy:0};
+        var soldTotal=(j.sales||[]).reduce(function(a,s){return a+(s.qty||0);},0);
+        box.appendChild(el('div','funnel',L.funnel(f.visit,f.negotiate+f.buy,0,soldTotal)));
+        if(j.best&&j.best.length){
+          var h=el('div','sect');h.appendChild(el('h3',null,L.hotTitle));box.appendChild(h);
+          j.best.forEach(function(b){
+            var line=el('div','hotline');
+            line.appendChild(el('span',null,b.name+' — ×'+b.qty));
+            line.appendChild(el('b',null,money(b.amount)));
+            box.appendChild(line);
+          });
+        }
+        if(j.worst&&j.worst.length){
+          var h2=el('div','sect');h2.appendChild(el('h3',null,L.lagTitle));box.appendChild(h2);
+          j.worst.forEach(function(w){
+            var line=el('div','hotline');
+            line.appendChild(el('span',null,w.name));
+            line.appendChild(el('b',null,money(w.sell_price)));
+            box.appendChild(line);
+          });
+        }
+        var hs=el('div','sect');hs.appendChild(el('h3',null,L.tabSales));box.appendChild(hs);
+        if(!j.sales||!j.sales.length){box.appendChild(el('div','note',L.noSales));return;}
+        j.sales.forEach(function(s){
+          var line=el('div','hotline');
+          line.appendChild(el('span',null,s.name+(s.size?' ('+shortSize(s.size)+')':'')+' ×'+s.qty));
+          var right=el('span',null,money(s.amount)+' · '+chLabel(s.channel)+' · '+fmtWhen(s.at));
+          right.style.color='var(--muted)';right.style.fontSize='11px';
+          line.appendChild(right);
+          box.appendChild(line);
+        });
+      });
+    }
+    [[7,L.p7],[30,L.p30],['all',L.pall]].forEach(function(pair){
+      var b=el('button','mbtn'+(cur===pair[0]?' on':''),pair[1]);
+      b.onclick=function(){
+        cur=pair[0];window.__salesDays=cur;
+        Array.prototype.forEach.call(chips.children,function(x){x.classList.remove('on');});
+        b.classList.add('on');load();
+      };
+      chips.appendChild(b);
+    });
+    p.appendChild(chips);p.appendChild(box);
+    load();
+  }
+  function chLabel(ch){
+    var am=detectCur()==='am';
+    return {telebirr:am?'ቴሌብር':'Telebirr',cbe:'CBE',cash:am?'ጥሬ':'Cash',other:'·'}[ch]||ch;
+  }
+  function fmtWhen(iso){
+    var d=new Date(iso);
+    return (d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
   }
 
   // ---- Owner items list + sheets ----------------------------------------
@@ -711,7 +817,23 @@
     if(!box)return;
     box.innerHTML='';
     if(!items.length){box.appendChild(el('div','note',L.noneYet));return;}
-    items.forEach(function(it){
+    // Ten at a time + one big "Show more" — an endless scroll on a phone
+    // buries the buttons; a short page keeps every action reachable.
+    var CHUNK=10,shown=0,moreBtn=null;
+    function drawChunk(){
+      var end=Math.min(shown+CHUNK,items.length);
+      for(;shown<end;shown++){box.appendChild(itemCard(items[shown]));}
+      if(moreBtn)moreBtn.remove();
+      if(shown<items.length){
+        moreBtn=el('button','btn ghost',L.showMore);
+        moreBtn.style.marginTop='6px';
+        moreBtn.onclick=drawChunk;
+        box.appendChild(moreBtn);
+      }
+    }
+    drawChunk();
+  }
+  function itemCard(it){
       var total=it.sizes.reduce(function(a,s){return a+(s.qty||0);},0);
       var card=el('div','item-card');
       var top=el('div','ic-top');
@@ -755,8 +877,7 @@
       };
       btns.appendChild(bE);btns.appendChild(bS);btns.appendChild(bH);
       card.appendChild(btns);
-      box.appendChild(card);
-    });
+      return card;
   }
 
   // Gallery → compress → upload for an EXISTING item card (the 📷 badge).
@@ -1086,6 +1207,7 @@
 
   // ---- Routing ----
   function route(){
+    killTabBar();
     if(slug){window.__mode='shop';document.getElementById('storeName').textContent='…';loadShop();}
     else if(mode==='create'){renderCreate();}
     else if(mode==='home'){renderHome();}
