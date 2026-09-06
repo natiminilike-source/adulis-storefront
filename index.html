@@ -181,7 +181,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v13',
+        footer:'Live stock from <b>Adulis</b> · v14',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -222,6 +222,7 @@
         segBest:'Best sellers', segLag:'Not moving', segSales:'Sales',
         p7:'7 days', p30:'30 days', pall:'All', showMore:'Show more', shareL:'Share',
         noUserNote:'Customers can browse your shop, but the Buy / Negotiate buttons stay off until you set a Telegram username: Telegram Settings → Edit Profile → Username. It takes 20 seconds.',
+        noUserShop:'This shop hasn\u2019t turned on messaging yet — check back soon.',
         noSales:'No sales in this period yet.', histL:'Sales'},
     am:{appSub:'በቴሌግራም ውስጥ ሱቆች', sub:'ይመለከቱ · ዋጋ በቴሌግራም ይደራደሩ', subNoUser:'ዕቃዎችን ይመለከቱ',
         in:'አለ', low:'ጥቂቱ', out:'አልቀረም',
@@ -229,7 +230,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v13',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v14',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -270,6 +271,7 @@
         segBest:'እየሸጡ', segLag:'ዝጉት', segSales:'ሽያጮች',
         p7:'7 ቀናት', p30:'30 ቀናት', pall:'ሁሉም', showMore:'ተጨማሪ አሳይ', shareL:'ያጋሩ',
         noUserNote:'ደኞች ሱቁን ማየት ይችላሉ፣ ነገር ግን የቴሌግራም ተጠቃሚ ስም እስክያዘጋጁ ድረስ የመግዛት/የመደራደር አዝራሮች አይሠሩም፦ ቴሌግራም Settings → Edit Profile → Username።',
+        noUserShop:'ይህ ሱቅ እስካሁን መልእክት አላከፈተም — በቅርቡ ይመለሱ።',
         noSales:'በዚህ ጊዜ ሽያጭ የለምም።', histL:'ሽያጮች'}
   };
   function detectLang(){
@@ -364,6 +366,15 @@
     window.__rows=rows;
     if(!window.__visited){window.__visited=true;beacon('visit');}
     var store=rows[0], user=store.telegram_username;
+    // Opened in a plain browser (WhatsApp/bio links)? Offer the jump
+    // into Telegram's fullscreen mini app — the browser stays a fallback.
+    if(!(tg&&tg.initData&&tg.initData.length)){
+      var inTg=el('a','btn','Open in Telegram');
+      inTg.href='https://t.me/AdulisShopBot?start='+encodeURIComponent(slug);
+      inTg.style.marginBottom='10px';
+      var c0=content();
+      c0.insertBefore(inTg,c0.firstChild);
+    }
     document.getElementById('storeName').textContent=store.store_name||'Shop';
     document.getElementById('storeSub').textContent = user?L.sub:L.subNoUser;
     setLogo(store.logo_url);
@@ -402,6 +413,7 @@
           openTg('https://t.me/'+encodeURIComponent(user)+'?text='+encodeURIComponent(msg));
         };}
       info.appendChild(btn);
+      if(r.tier!=='out'&&!user)info.appendChild(el('div','note',L.noUserShop));
       card.appendChild(ph);card.appendChild(info);g.appendChild(card);
     });
     c.appendChild(g);
