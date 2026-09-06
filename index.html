@@ -33,7 +33,7 @@
   .logo{width:44px;height:44px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;flex:none;overflow:hidden}
   .logo img{width:100%;height:100%;object-fit:cover;display:block}
   .hgroup{flex:1;min-width:0}
-  h1{font-size:19px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  h1{font-size:22px;line-height:1.2;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .sub{font-size:12px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .lang{display:flex;border:1px solid var(--edge);border-radius:9px;overflow:hidden;flex:none}
   .lang button{border:none;background:transparent;color:var(--muted);font-size:12px;font-weight:700;padding:6px 9px;cursor:pointer;font-family:inherit}
@@ -48,11 +48,11 @@
   .info{padding:10px 11px 12px;display:flex;flex-direction:column;gap:7px;flex:1}
   .name{font-size:13.5px;font-weight:600;line-height:1.3;min-height:2.6em}
   .pricerow{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
-  .price{font-size:15px;font-weight:700}
+  .price{font-size:17px;font-weight:800;color:var(--ok)}
   .neg{font-size:10.5px;color:var(--accent);background:var(--accent-soft);padding:2px 7px;border-radius:8px;font-weight:600}
   .tier{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:8px;align-self:flex-start}
   .t-in{color:var(--ok);background:var(--ok-soft)} .t-low{color:var(--warn);background:var(--warn-soft)} .t-out{color:var(--out);background:var(--out-soft)}
-  .buy{margin-top:auto;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:9px 10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+  .buy{margin-top:auto;background:var(--accent);color:#fff;border:none;border-radius:22px;padding:12px 10px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
   .buy:active{transform:scale(.97)}
   .buy:disabled{background:var(--out-soft);color:var(--out);cursor:default}
   .state{padding:60px 20px;text-align:center;color:var(--muted);font-size:14px;line-height:1.6}
@@ -89,7 +89,8 @@
   .ir-name{font-size:13.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .ir-sub{font-size:11px;color:var(--muted);margin-top:2px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
   .ir-btns{display:flex;flex-direction:column;gap:4px;flex:none}
-  .mbtn{border:1px solid var(--edge);background:var(--bg);color:var(--ink);border-radius:7px;font-size:11px;font-weight:700;padding:4px 8px;cursor:pointer;font-family:inherit}
+  .mbtn{border:1px solid var(--edge);background:var(--bg);color:var(--ink);border-radius:9px;font-size:13px;font-weight:700;padding:12px 10px;cursor:pointer;font-family:inherit}
+  .mbtn:active{transform:scale(.97)}
   .mbtn.on{background:var(--accent);border-color:var(--accent);color:#fff}
   .mbtn.warn{color:#c0392b;border-color:#c0392b33}
   .szline{display:flex;align-items:center;gap:6px;margin-top:6px}
@@ -125,12 +126,20 @@
   /* --- owner tab bar (three tabs max — analysis-paralysis rule) --- */
   .tabbar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:6px;
     background:var(--card);border-top:1px solid var(--edge);
-    padding:7px 8px calc(7px + env(safe-area-inset-bottom));z-index:50;
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom));z-index:50;
     box-shadow:0 -2px 10px rgba(0,0,0,.06)}
   .tabbtn{flex:1;border:none;background:transparent;color:var(--muted);
-    font-size:12px;font-weight:700;padding:10px 2px;border-radius:10px;
-    cursor:pointer;font-family:inherit;white-space:nowrap}
+    font-size:11px;font-weight:700;padding:9px 2px;border-radius:12px;
+    cursor:pointer;font-family:inherit;white-space:nowrap;
+    display:flex;flex-direction:column;align-items:center;gap:3px}
+  .tabbtn svg{display:block}
   .tabbtn.on{background:var(--accent-soft);color:var(--accent)}
+  .tabbtn:active{transform:scale(.97)}
+  /* segmented toggle (Best sellers / Not moving / Sales) */
+  .seg{display:flex;background:var(--card);border-radius:12px;padding:3px;gap:3px;margin-bottom:12px}
+  .seg button{flex:1;border:none;background:transparent;color:var(--muted);
+    font-size:12px;font-weight:700;padding:10px 4px;border-radius:9px;cursor:pointer;font-family:inherit}
+  .seg button.on{background:var(--accent);color:#fff}
 </style>
 </head>
 <body>
@@ -172,7 +181,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v11',
+        footer:'Live stock from <b>Adulis</b> · v12',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -209,6 +218,7 @@
         buyBtn:'Buy',
         dmBuy:function(n,p){return 'Selam! I want to buy '+n+' ('+p+'). Is it available?';},
         tabItems:'Items', tabSales:'Sales', tabShop:'Shop',
+        segBest:'Best sellers', segLag:'Not moving', segSales:'Sales',
         p7:'7 days', p30:'30 days', pall:'All', showMore:'Show more', shareL:'Share',
         noUserNote:'Customers can browse your shop, but the Buy / Negotiate buttons stay off until you set a Telegram username: Telegram Settings → Edit Profile → Username. It takes 20 seconds.',
         noSales:'No sales in this period yet.', histL:'Sales'},
@@ -218,7 +228,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v11',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v12',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -255,6 +265,7 @@
         buyBtn:'ግዛ',
         dmBuy:function(n,p){return 'ሰላም! '+n+' ('+p+') መግዛት እፈልጋለሁ። አለ?';},
         tabItems:'ዕቃዎች', tabSales:'ሽያጭ', tabShop:'ሱቅ',
+        segBest:'እየሸጡ', segLag:'ዝጉት', segSales:'ሽያጮች',
         p7:'7 ቀናት', p30:'30 ቀናት', pall:'ሁሉም', showMore:'ተጨማሪ አሳይ', shareL:'ያጋሩ',
         noUserNote:'ደኞች ሱቁን ማየት ይችላሉ፣ ነገር ግን የቴሌግራም ተጠቃሚ ስም እስክያዘጋጁ ድረስ የመግዛት/የመደራደር አዝራሮች አይሠሩም፦ ቴሌግራም Settings → Edit Profile → Username።',
         noSales:'በዚህ ጊዜ ሽያጭ የለምም።', histL:'ሽያጮች'}
@@ -382,7 +393,7 @@
       var fixed=r.negotiable===false;
       if(r.tier==='out'){btn.disabled=true;btn.textContent=L.buyOut;}
       else if(!user){btn.disabled=true;btn.textContent=L.buyNoUser;}
-      else{btn.textContent=fixed?L.buyBtn:L.buy;
+      else{btn.textContent=L.buyBtn;
         btn.onclick=function(){
           beacon(fixed?'buy':'negotiate');
           var msg=fixed?L.dmBuy(r.item_name,money(r.sell_price)):L.dm(r.item_name,money(r.sell_price));
@@ -615,16 +626,22 @@
     var b=document.getElementById('tabbar');if(b)b.remove();
     var w=document.querySelector('.wrap');if(w)w.style.paddingBottom='';
   }
+  var TAB_ICONS={
+    items:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l1.2 13H4.8L6 7z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg>',
+    sales:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 20v-6"/><path d="M12 20V4"/><path d="M19 20v-9"/></svg>',
+    shop:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/></svg>'
+  };
   function drawTabBar(){
     killTabBar();
     var bar=el('div','tabbar');bar.id='tabbar';
     [['items',L.tabItems],['sales',L.tabSales],['shop',L.tabShop]].forEach(function(t){
-      var b=el('button','tabbtn'+(window.__tab===t[0]?' on':''),t[1]);
+      var b=el('button','tabbtn'+(window.__tab===t[0]?' on':''));
+      b.innerHTML=TAB_ICONS[t[0]]+'<span>'+t[1]+'</span>';
       b.onclick=function(){window.__tab=t[0];renderOwnerTab(t[0]);drawTabBar();};
       bar.appendChild(b);
     });
     var w=document.querySelector('.wrap');
-    if(w){w.style.paddingBottom='84px';w.appendChild(bar);}
+    if(w){w.style.paddingBottom='92px';w.appendChild(bar);}
   }
   function renderOwnerTab(tab,fresh){
     var c=content();c.innerHTML='';
@@ -756,54 +773,79 @@
     c.appendChild(p);
   }
 
-  // ---- SALES tab: period chips → history + best/worst + funnel --------
+  // ---- SALES tab: period chips + segmented sections (APK-style) -------
   function renderSalesTab(p){
     var cur=window.__salesDays||7;
-    var chips=el('div','ir-sub');chips.style.marginBottom='10px';
-    var box=el('div');box.id='salesBox';
-    box.appendChild(el('div','note','…'));
+    var sec=window.__salesSec||'best';
+    var periodRow=el('div','ir-sub');periodRow.style.marginBottom='8px';
+    var funnelBox=el('div');
+    var seg=el('div','seg');
+    var bodies={best:el('div'),lag:el('div'),sales:el('div')};
+    function showSec(k){
+      sec=k;window.__salesSec=k;
+      Object.keys(bodies).forEach(function(key){bodies[key].style.display=(key===k)?'':'none';});
+      var order=['best','lag','sales'];
+      Array.prototype.forEach.call(seg.children,function(x,i){x.classList.toggle('on',order[i]===k);});
+    }
+    [['best',L.segBest],['lag',L.segLag],['sales',L.segSales]].forEach(function(pair){
+      var b=el('button',null,pair[1]);
+      b.onclick=function(){showSec(pair[0]);};
+      seg.appendChild(b);
+    });
     function load(){
-      box.innerHTML='';box.appendChild(el('div','note','…'));
+      funnelBox.innerHTML='';
+      Object.keys(bodies).forEach(function(k){
+        bodies[k].innerHTML='';bodies[k].appendChild(el('div','note','…'));
+      });
       authCall('sales_history',{days:cur}).then(function(j){
-        box.innerHTML='';
-        if(!j.ok){box.appendChild(el('div','note','ⓘ '+(j.error||'sales')));return;}
+        Object.keys(bodies).forEach(function(k){bodies[k].innerHTML='';});
+        if(!j.ok){
+          bodies.best.appendChild(el('div','note','ⓘ '+(j.error||'sales')));
+          showSec(sec);return;
+        }
         var f=j.funnel||{visit:0,negotiate:0,buy:0};
         var soldTotal=(j.sales||[]).reduce(function(a,s){return a+(s.qty||0);},0);
-        box.appendChild(el('div','funnel',L.funnel(f.visit,f.negotiate+f.buy,0,soldTotal)));
+        funnelBox.appendChild(el('div','funnel',L.funnel(f.visit,f.negotiate+f.buy,0,soldTotal)));
+        // BEST
         if(j.best&&j.best.length){
-          var h=el('div','sect');h.appendChild(el('h3',null,L.hotTitle));box.appendChild(h);
           j.best.forEach(function(b){
-            box.appendChild(saleRow(b.img,b.name+' — ×'+b.qty,money(b.amount),''));
+            bodies.best.appendChild(saleRow(b.img,b.name+' — ×'+b.qty,money(b.amount),''));
           });
-        }
+        }else{bodies.best.appendChild(el('div','note',L.noSales));}
+        // LAGGING
         if(j.worst&&j.worst.length){
-          var h2=el('div','sect');h2.appendChild(el('h3',null,L.lagTitle));box.appendChild(h2);
           j.worst.forEach(function(w){
-            box.appendChild(saleRow(w.img,w.name,money(w.sell_price),''));
+            bodies.lag.appendChild(saleRow(w.img,w.name,money(w.sell_price),''));
           });
-        }
-        var hs=el('div','sect');hs.appendChild(el('h3',null,L.tabSales));box.appendChild(hs);
-        if(!j.sales||!j.sales.length){box.appendChild(el('div','note',L.noSales));return;}
-        j.sales.forEach(function(s){
-          box.appendChild(saleRow(
-            s.img,
-            s.name+(s.size?' ('+shortSize(s.size)+')':'')+' ×'+s.qty,
-            money(s.amount),
-            chLabel(s.channel)+' · '+fmtWhen(s.at)
-          ));
-        });
+        }else{bodies.lag.appendChild(el('div','note',L.noneYet));}
+        // SALES LIST
+        if(j.sales&&j.sales.length){
+          j.sales.forEach(function(s){
+            bodies.sales.appendChild(saleRow(
+              s.img,
+              s.name+(s.size?' ('+shortSize(s.size)+')':'')+' ×'+s.qty,
+              money(s.amount),
+              chLabel(s.channel)+' · '+fmtWhen(s.at)
+            ));
+          });
+        }else{bodies.sales.appendChild(el('div','note',L.noSales));}
+        showSec(sec);
       });
     }
     [[7,L.p7],[30,L.p30],['all',L.pall]].forEach(function(pair){
       var b=el('button','mbtn'+(cur===pair[0]?' on':''),pair[1]);
+      b.style.padding='8px 12px';b.style.fontSize='12px';
       b.onclick=function(){
         cur=pair[0];window.__salesDays=cur;
-        Array.prototype.forEach.call(chips.children,function(x){x.classList.remove('on');});
+        Array.prototype.forEach.call(periodRow.children,function(x){x.classList.remove('on');});
         b.classList.add('on');load();
       };
-      chips.appendChild(b);
+      periodRow.appendChild(b);
     });
-    p.appendChild(chips);p.appendChild(box);
+    p.appendChild(periodRow);
+    p.appendChild(funnelBox);
+    p.appendChild(seg);
+    Object.keys(bodies).forEach(function(k){p.appendChild(bodies[k]);});
     load();
   }
   // One sales/history row: photo · label · (amount / sub-line).
