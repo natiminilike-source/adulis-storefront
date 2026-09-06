@@ -169,6 +169,14 @@
   var slug=(q.get('s')||'').trim();
   var mode=(q.get('mode')||'').trim();
   var tg=window.Telegram&&window.Telegram.WebApp;
+  // Direct mini-app links (t.me/<bot>/app?startapp=<slug>) hand the slug
+  // to the page through start_param — no query string involved. Bio
+  // links land customers straight on the right shop.
+  try{
+    if(!slug&&!mode&&tg&&tg.initDataUnsafe&&tg.initDataUnsafe.start_param){
+      slug=String(tg.initDataUnsafe.start_param).trim().toLowerCase().replace(/[^a-z0-9_-]/g,'');
+    }
+  }catch(e){}
   var session=null; // access token — memory only, never stored
   window.__needsCreds=true; // server clears this via needs_credentials:false
 
@@ -181,7 +189,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v15',
+        footer:'Live stock from <b>Adulis</b> · v16',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -219,6 +227,7 @@
         dmBuy:function(n,p){return 'Selam! I want to buy '+n+' ('+p+'). Is it available?';},
         tabItems:'Items', tabSales:'Sales', tabShop:'Shop',
         pickItems:'Choose items to feature', deepNote:'Posted with the bot-link button — the shop opens as a mini app after one tap.',
+        bioLink:'Your Telegram link — put it in your bio or share anywhere (opens your shop directly):',
         segBest:'Best sellers', segLag:'Not moving', segSales:'Sales',
         p7:'7 days', p30:'30 days', pall:'All', showMore:'Show more', shareL:'Share',
         noUserNote:'Customers can browse your shop, but the Buy / Negotiate buttons stay off until you set a Telegram username: Telegram Settings → Edit Profile → Username. It takes 20 seconds.',
@@ -230,7 +239,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v15',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v16',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -268,6 +277,7 @@
         dmBuy:function(n,p){return 'ሰላም! '+n+' ('+p+') መግዛት እፈልጋለሁ። አለ?';},
         tabItems:'ዕቃዎች', tabSales:'ሽያጭ', tabShop:'ሱቅ',
         pickItems:'ለማሳየት ዕቃዎችን ይምረጡ', deepNote:'በቦት-አገናኝ ተልኳል — ከአንድ ንክኪ በኋላ ሱቁ እንደ ሚኒ አፕ ይከፈታል።',
+        bioLink:'የቴሌግራም አገናኝዎ — በባዮ ወይም ማንኛውም ቦታ ይጋሩት (ሱቁን በቀጥታ ይከፈታል)፦',
         segBest:'እየሸጡ', segLag:'ዝጉት', segSales:'ሽያጮች',
         p7:'7 ቀናት', p30:'30 ቀናት', pall:'ሁሉም', showMore:'ተጨማሪ አሳይ', shareL:'ያጋሩ',
         noUserNote:'ደኞች ሱቁን ማየት ይችላሉ፣ ነገር ግን የቴሌግራም ተጠቃሚ ስም እስክያዘጋጁ ድረስ የመግዛት/የመደራደር አዝራሮች አይሠሩም፦ ቴሌግራም Settings → Edit Profile → Username።',
@@ -305,6 +315,7 @@
   }}catch(e){}
 
   function money(n){return Number(n).toLocaleString('en-US')+' ETB';}
+  function appLink(s){return 'https://t.me/AdulisShopBot/app?startapp='+encodeURIComponent(s);}
   function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
   function content(){return document.getElementById('content');}
   // Shop header badge: the merchant's own logo when they've sent one to
@@ -370,7 +381,7 @@
     // into Telegram's fullscreen mini app — the browser stays a fallback.
     if(!(tg&&tg.initData&&tg.initData.length)){
       var inTg=el('a','btn','Open in Telegram');
-      inTg.href='https://t.me/AdulisShopBot?start='+encodeURIComponent(slug);
+      inTg.href=appLink(slug);
       inTg.style.marginBottom='10px';
       var c0=content();
       c0.insertBefore(inTg,c0.firstChild);
@@ -716,6 +727,19 @@
     };
     row.appendChild(bCopy);row.appendChild(bShare);
     p.appendChild(row);
+    // The merchant's personal Telegram link — opens the shop as the
+    // fullscreen mini app from any bio, chat, or WhatsApp.
+    p.appendChild(el('div','note',L.bioLink));
+    p.appendChild(el('div','linkbox',appLink(store.slug)));
+    var rowB=el('div','row');
+    var bCopyB=el('button','btn ghost',detectCur()==='am'?'ቅዳ':'Copy');
+    bCopyB.onclick=function(){
+      try{navigator.clipboard.writeText(appLink(store.slug));}catch(e){}
+      bCopyB.textContent='✓';
+      setTimeout(function(){bCopyB.textContent=detectCur()==='am'?'ቅዳ':'Copy';},1200);
+    };
+    rowB.appendChild(bCopyB);
+    p.appendChild(rowB);
     var bOpen=el('a','btn',L.openShopBtn);
     bOpen.href=BASE+'?s='+store.slug;
     p.appendChild(bOpen);
