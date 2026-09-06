@@ -103,6 +103,19 @@
   .hotline b{font-weight:700}
   .funnel{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
   .back{margin-bottom:10px}
+  /* --- item cards (APK-products-like spacing, big touch targets) --- */
+  .item-card{background:var(--bg);border:1px solid var(--edge);border-radius:12px;padding:12px;margin-bottom:12px}
+  .ic-top{display:flex;gap:12px;align-items:center}
+  .ic-thumb{width:64px;height:64px;border-radius:10px;background:var(--edge);flex:none;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:24px;position:relative}
+  .ic-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .ic-main{flex:1;min-width:0}
+  .ic-name{font-size:15px;font-weight:700;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ic-sub{font-size:12px;color:var(--muted);margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .ic-btns{display:flex;gap:8px;margin-top:11px}
+  .ic-btns .mbtn{flex:1;padding:12px 4px;font-size:13px;border-radius:9px}
+  .ph-pick{display:flex;align-items:center;gap:10px;margin-top:4px}
+  .ph-prev{width:54px;height:54px;border-radius:9px;background:var(--edge);overflow:hidden;flex:none}
+  .ph-prev img{width:100%;height:100%;object-fit:cover;display:block}
 </style>
 </head>
 <body>
@@ -133,6 +146,7 @@
   var mode=(q.get('mode')||'').trim();
   var tg=window.Telegram&&window.Telegram.WebApp;
   var session=null; // access token — memory only, never stored
+  window.__needsCreds=true; // server clears this via needs_credentials:false
 
   // ---- Language: the CUSTOMER picks; remembered; smart default.
   var L={};
@@ -143,7 +157,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v8',
+        footer:'Live stock from <b>Adulis</b> · v9',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -185,7 +199,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v8',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v9',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -423,7 +437,11 @@
   // access_token (minted server-side), fall back to exchanging the
   // token_hash. Resolves true when `session` is set.
   function takeSession(j){
-    if(j&&j.access_token){session=j.access_token;return Promise.resolve(true);}
+    if(j&&j.access_token){
+      session=j.access_token;
+      if(j.needs_credentials!==undefined)window.__needsCreds=j.needs_credentials;
+      return Promise.resolve(true);
+    }
     if(j&&j.ok&&j.token_hash){
       return exchangeToken(j.token_hash).then(function(s){session=s.access_token;return true;});
     }
@@ -584,6 +602,27 @@
     row.appendChild(bCopy);row.appendChild(bOpen);
     p.appendChild(row);
 
+    // ITEMS — the main activity, right under the shop link.
+    var sectI=el('div','sect');
+    sectI.appendChild(el('h3',null,L.itemsTitle));
+    var bAdd=el('button','btn ghost',L.addItemBtn);
+    bAdd.style.marginBottom='10px';
+    bAdd.onclick=function(){renderItemForm(null);};
+    sectI.appendChild(bAdd);
+    var itemsBox=el('div');itemsBox.id='itemsBox';
+    itemsBox.appendChild(el('div','note','…'));
+    sectI.appendChild(itemsBox);
+    p.appendChild(sectI);
+
+    // STATS — hot / lagging / funnel (server arithmetic, no AI).
+    var sectS=el('div','sect');
+    sectS.appendChild(el('h3',null,L.hotTitle));
+    var statsBox=el('div');statsBox.id='statsBox';
+    sectS.appendChild(statsBox);
+    p.appendChild(sectS);
+
+    var gap=el('div');gap.style.height='6px';p.appendChild(gap);
+
     var fc=el('div','field');fc.appendChild(el('label',null,L.channelL));
     var iCh=document.createElement('input');iCh.placeholder='@myshopchannel';
     if(store.channel)iCh.value='@'+store.channel;
@@ -605,6 +644,9 @@
     };
     p.appendChild(fc);p.appendChild(bPost);p.appendChild(err);
 
+    // One-time APK bridge — hidden once real credentials exist (server
+    // says needs_credentials:false after linking or setting them).
+    if(window.__needsCreds!==false){
     var gap=el('div');gap.style.height='6px';p.appendChild(gap);
     // One-time APK bridge: set email+password while holding the
     // Telegram-signed session.
@@ -644,29 +686,9 @@
         .then(function(){bSave.disabled=false;});
     };
     p.appendChild(fe);p.appendChild(fp);p.appendChild(cerr);p.appendChild(cmsg);p.appendChild(bSave);
+    } // end needs-credentials gate
 
     var gap2=el('div');gap2.style.height='6px';p.appendChild(gap2);
-
-    // ITEMS — the shop editor (add / edit / mark sold / hide).
-    var sectI=el('div','sect');
-    sectI.appendChild(el('h3',null,L.itemsTitle));
-    var bAdd=el('button','btn ghost',L.addItemBtn);
-    bAdd.style.marginBottom='8px';
-    bAdd.onclick=function(){renderItemForm(null);};
-    sectI.appendChild(bAdd);
-    var itemsBox=el('div');itemsBox.id='itemsBox';
-    itemsBox.appendChild(el('div','note','…'));
-    sectI.appendChild(itemsBox);
-    p.appendChild(sectI);
-
-    // STATS — hot / lagging / funnel (server arithmetic, no AI).
-    var sectS=el('div','sect');
-    sectS.appendChild(el('h3',null,L.hotTitle));
-    var statsBox=el('div');statsBox.id='statsBox';
-    sectS.appendChild(statsBox);
-    p.appendChild(sectS);
-
-    var gap3=el('div');gap3.style.height='6px';p.appendChild(gap3);
     p.appendChild(el('div','note',L.getAppNote));
     var bApk=el('a','btn ghost',L.getApp);bApk.href=APK;bApk.target='_blank';
     p.appendChild(bApk);
@@ -691,41 +713,87 @@
     if(!items.length){box.appendChild(el('div','note',L.noneYet));return;}
     items.forEach(function(it){
       var total=it.sizes.reduce(function(a,s){return a+(s.qty||0);},0);
-      var row=el('div','item-row');
-      var th=el('div','thumb');
+      var card=el('div','item-card');
+      var top=el('div','ic-top');
+      var th=el('div','ic-thumb');
       if(it.image_url){var im=document.createElement('img');im.src=it.image_url;im.alt='';th.appendChild(im);}
-      else{th.textContent='🛍️';}
-      row.appendChild(th);
-      var main=el('div','ir-main');
-      main.appendChild(el('div','ir-name',(it.is_active?'':'· ')+(it.name||'')+(it.is_active?'':' · '+L.hiddenTag)));
-      var sub=el('div','ir-sub');
+      else{
+        th.textContent='🛍️';
+        var bCam=el('button','mbtn','📷');
+        bCam.style.position='absolute';bCam.style.bottom='2px';bCam.style.right='2px';
+        bCam.style.padding='3px 6px';bCam.style.background='var(--accent)';bCam.style.color='#fff';
+        bCam.style.border='none';bCam.style.borderRadius='6px';
+        bCam.onclick=function(){uploadPhotoFor(it.id);};
+        th.appendChild(bCam);
+      }
+      top.appendChild(th);
+      var main=el('div','ic-main');
+      main.appendChild(el('div','ic-name',(it.is_active?'':'🔕 ')+it.name));
+      var sub=el('div','ic-sub');
       sub.appendChild(el('span',null,money(it.sell_price)+(it.negotiable===false?'':' · '+L.neg)));
       var tcls=total===0?'t-out':total<=5?'t-low':'t-in';
       var ttxt=total===0?L.out:total<=5?L.low:L.in;
       sub.appendChild(el('span','tier '+tcls,ttxt));
       main.appendChild(sub);
       if(it.sizes.length){
-        var sz=el('div','ir-sub');
+        var sz=el('div','ic-sub');
         it.sizes.forEach(function(s){
-          var chip=el('span','tier '+(s.qty>0?'t-in':'t-out'),shortSize(s.label)+(s.qty>0?' ×'+s.qty:' · 0'));
-          sz.appendChild(chip);
+          sz.appendChild(el('span','tier '+(s.qty>0?'t-in':'t-out'),shortSize(s.label)+' ×'+s.qty));
         });
         main.appendChild(sz);
       }
-      row.appendChild(main);
-      var btns=el('div','ir-btns');
+      top.appendChild(main);
+      card.appendChild(top);
+      var btns=el('div','ic-btns');
       var bE=el('button','mbtn',L.editBtn);
       bE.onclick=function(){renderItemForm(it);};
-      var bS=el('button','mbtn',L.soldBtn);
+      var bS=el('button','mbtn on',L.soldBtn);
       bS.onclick=function(){renderSoldSheet(it);};
       var bH=el('button','mbtn'+(it.is_active?' warn':''),it.is_active?L.hideBtn:L.showBtn);
       bH.onclick=function(){
         authCall('item_update',{item_id:it.id,is_active:!it.is_active}).then(function(){loadOwnerItems();});
       };
       btns.appendChild(bE);btns.appendChild(bS);btns.appendChild(bH);
-      row.appendChild(btns);
-      box.appendChild(row);
+      card.appendChild(btns);
+      box.appendChild(card);
     });
+  }
+
+  // Gallery → compress → upload for an EXISTING item card (the 📷 badge).
+  function uploadPhotoFor(itemId){
+    var iFile=document.createElement('input');
+    iFile.type='file';iFile.accept='image/*';iFile.style.display='none';
+    iFile.onchange=function(){
+      var f=iFile.files&&iFile.files[0];
+      if(!f)return;
+      compressImage(f,function(b64){
+        authCall('item_photo',{item_id:itemId,image_b64:b64}).then(function(j){
+          if(j.ok)loadOwnerItems();
+        });
+      });
+    };
+    document.body.appendChild(iFile);
+    iFile.click();
+    setTimeout(function(){iFile.remove();},60000);
+  }
+
+  // Same compression discipline as the APK: max 1080px, JPEG q0.8
+  // (~150–250KB — light for merchants on mobile data).
+  function compressImage(file,cb){
+    var img=new Image();
+    var url=URL.createObjectURL(file);
+    img.onload=function(){
+      var MAX=1080;
+      var sc=Math.min(1,MAX/Math.max(img.width,img.height));
+      var cv=document.createElement('canvas');
+      cv.width=Math.max(1,Math.round(img.width*sc));
+      cv.height=Math.max(1,Math.round(img.height*sc));
+      cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+      URL.revokeObjectURL(url);
+      cb(cv.toDataURL('image/jpeg',0.8).split(',')[1]);
+    };
+    img.onerror=function(){URL.revokeObjectURL(url);};
+    img.src=url;
   }
 
   // Add / edit sheet: name, price, negotiable, size matrix (chips +
@@ -755,6 +823,28 @@
     var tg=el('label','toggle');
     var iNeg=document.createElement('input');iNeg.type='checkbox';iNeg.checked=editing?item.negotiable!==false:true;
     tg.appendChild(iNeg);tg.appendChild(el('span',null,L.negToggleL));p.appendChild(tg);
+
+    // Photo picked in the sheet (gallery → compressed in-page → uploaded
+    // right after save). The bot-photo flow remains the fallback.
+    var pickedB64=null;
+    var phRow=el('div','ph-pick');
+    var phPrev=el('div','ph-prev');
+    var bPhoto=el('button','btn ghost','📷 '+(detectCur()==='am'?'ምስል':'Photo'));
+    var iFile=document.createElement('input');iFile.type='file';iFile.accept='image/*';iFile.style.display='none';
+    bPhoto.onclick=function(){iFile.click();};
+    iFile.onchange=function(){
+      var f=iFile.files&&iFile.files[0];
+      if(!f)return;
+      compressImage(f,function(b64){
+        pickedB64=b64;
+        phPrev.innerHTML='';
+        var im=document.createElement('img');im.src='data:image/jpeg;base64,'+b64;
+        phPrev.appendChild(im);
+        bPhoto.textContent='📷 ✓';
+      });
+    };
+    phRow.appendChild(bPhoto);phRow.appendChild(phPrev);phRow.appendChild(iFile);
+    p.appendChild(phRow);
 
     p.appendChild(el('h3',null,L.sizesL));
     var sizeRows=el('div');p.appendChild(sizeRows);
@@ -810,15 +900,24 @@
       call.then(function(j){
         btn.disabled=false;btn.textContent=L.saveItemBtn;
         if(!j.ok){err.textContent=L.errGeneric+'  ⓘ '+errDetail(j);return;}
-        if(editing){
-          okm.textContent=L.updDone;
-          setTimeout(function(){renderOwner(window.__ownerStore);},700);
-        }else{
-          okm.textContent=L.updDone;
-          var hint=el('div','note',L.photoHint);hint.style.marginTop='8px';
-          p.appendChild(hint);
-          btn.textContent='✓';
-        }
+        var finish=function(){
+          if(editing){
+            okm.textContent=L.updDone;
+            setTimeout(function(){renderOwner(window.__ownerStore);},700);
+          }else{
+            okm.textContent=L.updDone;
+            if(!pickedB64){
+              var hint=el('div','note',L.photoHint);hint.style.marginTop='8px';
+              p.appendChild(hint);
+            }
+            btn.textContent='✓';
+          }
+        };
+        if(pickedB64){
+          authCall('item_photo',{item_id:j.id||item.id,image_b64:pickedB64})
+            .then(function(k){ if(!k.ok){err.textContent=L.errGeneric+'  ⓘ '+(k.error||'photo');} finish(); })
+            .catch(function(){finish();});
+        }else{finish();}
       }).catch(function(){btn.disabled=false;btn.textContent=L.saveItemBtn;err.textContent=L.errGeneric;});
     };
     p.appendChild(btn);
@@ -839,7 +938,10 @@
     p.appendChild(back);
     p.appendChild(el('h2',null,L.soldTitle+' — '+item.name));
 
-    var avail=item.sizes.filter(function(s){return s.qty>0;});
+    // ALL sizes with their counts — including 0 — so the section is
+    // never empty and recording an unlisted sale stays possible
+    // (stock decrements floor at 0; truth beats bookkeeping).
+    var avail=item.sizes.slice();
     var chosenSize=avail.length===1?avail[0]:null;
     p.appendChild(el('h3',null,L.sizeL));
     var sizeLine=el('div','ir-sub');
