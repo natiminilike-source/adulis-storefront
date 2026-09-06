@@ -98,18 +98,24 @@
   .szdel{border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:15px;padding:0 4px}
   .toggle{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;user-select:none}
   .toggle input{width:18px;height:18px;accent-color:var(--accent)}
-  .hotline{display:flex;justify-content:space-between;font-size:12.5px;padding:4px 0;border-bottom:1px dashed var(--edge)}
+  .hotline{display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px dashed var(--edge)}
   .hotline:last-child{border-bottom:none}
-  .hotline b{font-weight:700}
+  .s-thumb{width:40px;height:40px;border-radius:8px;background:var(--edge);flex:none;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:15px}
+  .s-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .hl-main{flex:1;min-width:0;font-size:12.5px}
+  .hl-right{text-align:right;flex:none}
+  .hl-right b{font-weight:700;display:block;font-size:12.5px}
+  .hl-right span{color:var(--muted);font-size:10.5px}
   .funnel{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .panel h2{font-size:18px}
   .back{margin-bottom:10px}
   /* --- item cards (APK-products-like spacing, big touch targets) --- */
   .item-card{background:var(--bg);border:1px solid var(--edge);border-radius:12px;padding:12px;margin-bottom:12px}
-  .ic-top{display:flex;gap:12px;align-items:center}
-  .ic-thumb{width:84px;height:84px;border-radius:10px;background:var(--edge);flex:none;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:28px;position:relative}
+  .ic-top{display:flex;gap:12px;align-items:flex-start}
+  .ic-thumb{width:110px;height:110px;border-radius:10px;background:var(--edge);flex:none;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:30px;position:relative}
   .ic-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-  .ic-main{flex:1;min-width:0}
-  .ic-name{font-size:15px;font-weight:700;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ic-main{flex:1;min-width:0;padding-top:2px}
+  .ic-name{font-size:16px;font-weight:700;line-height:1.3}
   .ic-sub{font-size:12px;color:var(--muted);margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
   .ic-btns{display:flex;gap:8px;margin-top:11px}
   .ic-btns .mbtn{flex:1;padding:12px 4px;font-size:13px;border-radius:9px}
@@ -122,7 +128,7 @@
     padding:7px 8px calc(7px + env(safe-area-inset-bottom));z-index:50;
     box-shadow:0 -2px 10px rgba(0,0,0,.06)}
   .tabbtn{flex:1;border:none;background:transparent;color:var(--muted);
-    font-size:11.5px;font-weight:700;padding:9px 2px;border-radius:10px;
+    font-size:12px;font-weight:700;padding:10px 2px;border-radius:10px;
     cursor:pointer;font-family:inherit;white-space:nowrap}
   .tabbtn.on{background:var(--accent-soft);color:var(--accent)}
 </style>
@@ -166,7 +172,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v10',
+        footer:'Live stock from <b>Adulis</b> · v11',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -178,7 +184,7 @@
         linkedOk:'Connected! This Telegram shop now runs your Adulis store.',
         errLogin:'Wrong password for that email — check it and try again.',
         created:'Shop created! 🎉', ownerTitle:'My shop',
-        yourLink:'Your shop link — share it in your channel:', openShopBtn:'🛍 Open my shop',
+        yourLink:'Your shop link — share it in your channel:', openShopBtn:'Open my shop',
         channelL:'Channel username (add @AdulisShopBot as admin first)', postBtn:'Post 🛍 to my channel',
         posting:'Posting…', posted:'Posted! Check your channel.',
         getApp:'Get the full Adulis app', getAppNote:'Manage stock, prices and sales from your phone — even offline.',
@@ -198,12 +204,13 @@
         updDone:'Saved ✓', errPrice:'Enter a valid price.', errSizes:'Add at least one size with a count.',
         soldTitle:'Mark as sold', sizeL:'Size', qtyL:'How many', amountL:'Amount received (ETB)',
         payChL:'How were you paid?', markBtn:'Record sale', soldDone:'Sale recorded ✓', errSoldQty:'Enter how many were sold.',
-        hotTitle:'🔥 Selling — last 7 days', lagTitle:'💤 Not moving', statNone:'Nothing sold in this period yet.',
+        hotTitle:'Best sellers — last 7 days', lagTitle:'Not moving', statNone:'Nothing sold in this period yet.',
         funnel:function(v,n,b,s){return v+' shop visits · '+n+' negotiate/buy taps · '+s+' sales marked';},
         buyBtn:'Buy',
         dmBuy:function(n,p){return 'Selam! I want to buy '+n+' ('+p+'). Is it available?';},
         tabItems:'Items', tabSales:'Sales', tabShop:'Shop',
         p7:'7 days', p30:'30 days', pall:'All', showMore:'Show more', shareL:'Share',
+        noUserNote:'Customers can browse your shop, but the Buy / Negotiate buttons stay off until you set a Telegram username: Telegram Settings → Edit Profile → Username. It takes 20 seconds.',
         noSales:'No sales in this period yet.', histL:'Sales'},
     am:{appSub:'በቴሌግራም ውስጥ ሱቆች', sub:'ይመለከቱ · ዋጋ በቴሌግራም ይደራደሩ', subNoUser:'ዕቃዎችን ይመለከቱ',
         in:'አለ', low:'ጥቂቱ', out:'አልቀረም',
@@ -211,7 +218,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v10',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v11',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -223,7 +230,7 @@
         linkedOk:'ተገናኝቷል! ይህ የቴሌግራም ሱቅ አሁን የአዱሊስ ሱቅዎ ሆኖ ይሠራል።',
         errLogin:'ለዚያ ኢሜይል ቃሉ አልኮነነም — መርምረው እንደገና ይሞክሩ።',
         created:'ሱቁ ተፈጥሯል! 🎉', ownerTitle:'ሱቄ',
-        yourLink:'የሱቁ አገናኝ — በቻናልዎ ይጋሩት፦', openShopBtn:'🛍 ሱቴን ክፈት',
+        yourLink:'የሱቁ አገናኝ — በቻናልዎ ይጋሩት፦', openShopBtn:'ሱቴን ክፈት',
         channelL:'የቻናል ተጠቃሚ ስም (መጀመሪያ @AdulisShopBotን አስተዳዳሪ ያድርጉ)', postBtn:'🛍 ወደ ቻናሌ ላክ',
         posting:'በመላክ ላይ…', posted:'ተልኳል! ቻናልዎን ይመልከቱ።',
         getApp:'ሙሉ የአዱሊስ መተግበሪያ ያውርዱ', getAppNote:'ዕቃ፣ ዋጋና ሽያጭ ከስልክዎ ይቆጣጠሩ — ከኢንተርኔት ውጭ እንኳ።',
@@ -243,12 +250,13 @@
         updDone:'ተቀምጧል ✓', errPrice:'ትክክለኛ ዋጋ ያስገቡ።', errSizes:'ቢያንስ አንድ ግዝፈት ከብዛት ጋር ይጨምሩ።',
         soldTitle:'ሽያጭ መዝግብ', sizeL:'ግዝፈት', qtyL:'ስንት ተሽጧል', amountL:'የተቀበሉት መጠን (ብር)',
         payChL:'እንዴት ተከፈለ?', markBtn:'ሽያጩን መዝግብ', soldDone:'ሽያጭ ተመዝግቧል ✓', errSoldQty:'ስንት መሽጫቸው እንደሆነ ይጻፉ።',
-        hotTitle:'🔥 እየሸጠ — ያለፉት 7 ቀናት', lagTitle:'💤 ያልተንቀሳቀሱ', statNone:'በዚህ ጊዜ የተመዘገበ ሽያጭ የለም።',
+        hotTitle:'እየሸጡ · ያለፉት 7 ቀናት', lagTitle:'ያልተንቀሳቀሱ', statNone:'በዚህ ጊዜ የተመዘገበ ሽያጭ የለም።',
         funnel:function(v,n,b,s){return v+' የሱቅ ጉብኝቶች · '+n+' የደራደር/ግዛ ንክኪዎች · '+s+' የተመዘገቡ ሽያጮች';},
         buyBtn:'ግዛ',
         dmBuy:function(n,p){return 'ሰላም! '+n+' ('+p+') መግዛት እፈልጋለሁ። አለ?';},
         tabItems:'ዕቃዎች', tabSales:'ሽያጭ', tabShop:'ሱቅ',
         p7:'7 ቀናት', p30:'30 ቀናት', pall:'ሁሉም', showMore:'ተጨማሪ አሳይ', shareL:'ያጋሩ',
+        noUserNote:'ደኞች ሱቁን ማየት ይችላሉ፣ ነገር ግን የቴሌግራም ተጠቃሚ ስም እስክያዘጋጁ ድረስ የመግዛት/የመደራደር አዝራሮች አይሠሩም፦ ቴሌግራም Settings → Edit Profile → Username።',
         noSales:'በዚህ ጊዜ ሽያጭ የለምም።', histL:'ሽያጮች'}
   };
   function detectLang(){
@@ -455,6 +463,7 @@
     if(j&&j.access_token){
       session=j.access_token;
       if(j.needs_credentials!==undefined)window.__needsCreds=j.needs_credentials;
+      if(j.telegram_username!==undefined)window.__ownerUsername=j.telegram_username;
       return Promise.resolve(true);
     }
     if(j&&j.ok&&j.token_hash){
@@ -609,8 +618,8 @@
   function drawTabBar(){
     killTabBar();
     var bar=el('div','tabbar');bar.id='tabbar';
-    [['items','🛍',L.tabItems],['sales','📊',L.tabSales],['shop','⚙️',L.tabShop]].forEach(function(t){
-      var b=el('button','tabbtn'+(window.__tab===t[0]?' on':''),t[1]+' '+t[2]);
+    [['items',L.tabItems],['sales',L.tabSales],['shop',L.tabShop]].forEach(function(t){
+      var b=el('button','tabbtn'+(window.__tab===t[0]?' on':''),t[1]);
       b.onclick=function(){window.__tab=t[0];renderOwnerTab(t[0]);drawTabBar();};
       bar.appendChild(b);
     });
@@ -647,6 +656,15 @@
 
     // ---- SHOP tab: link, share, channel, credentials, APK ----
     p.appendChild(el('h2',null,store.name));
+    // Channel-less + username-less merchants get guided, not stuck:
+    // without a @username the shop's Buy/Negotiate buttons can't open a
+    // DM (Telegram has no link to reach them).
+    if(window.__ownerUsername===null||window.__ownerUsername===''){
+      var un=el('div','note',L.noUserNote);
+      un.style.border='1px solid var(--warn)';un.style.borderRadius='10px';
+      un.style.padding='8px 10px';un.style.marginBottom='10px';
+      p.appendChild(un);
+    }
     p.appendChild(el('div','note',L.yourLink));
     p.appendChild(el('div','linkbox',BASE+'?s='+store.slug));
     var row=el('div','row');
@@ -657,7 +675,7 @@
       bCopy.textContent='✓';
       setTimeout(function(){bCopy.textContent=detectCur()==='am'?'ቅዳ':'Copy';},1200);
     };
-    var bShare=el('button','btn ghost','📣 '+L.shareL);
+    var bShare=el('button','btn ghost',L.shareL);
     bShare.onclick=function(){
       var link=BASE+'?s='+store.slug;
       openTg('https://t.me/share/url?url='+encodeURIComponent(link)+
@@ -755,30 +773,24 @@
         if(j.best&&j.best.length){
           var h=el('div','sect');h.appendChild(el('h3',null,L.hotTitle));box.appendChild(h);
           j.best.forEach(function(b){
-            var line=el('div','hotline');
-            line.appendChild(el('span',null,b.name+' — ×'+b.qty));
-            line.appendChild(el('b',null,money(b.amount)));
-            box.appendChild(line);
+            box.appendChild(saleRow(b.img,b.name+' — ×'+b.qty,money(b.amount),''));
           });
         }
         if(j.worst&&j.worst.length){
           var h2=el('div','sect');h2.appendChild(el('h3',null,L.lagTitle));box.appendChild(h2);
           j.worst.forEach(function(w){
-            var line=el('div','hotline');
-            line.appendChild(el('span',null,w.name));
-            line.appendChild(el('b',null,money(w.sell_price)));
-            box.appendChild(line);
+            box.appendChild(saleRow(w.img,w.name,money(w.sell_price),''));
           });
         }
         var hs=el('div','sect');hs.appendChild(el('h3',null,L.tabSales));box.appendChild(hs);
         if(!j.sales||!j.sales.length){box.appendChild(el('div','note',L.noSales));return;}
         j.sales.forEach(function(s){
-          var line=el('div','hotline');
-          line.appendChild(el('span',null,s.name+(s.size?' ('+shortSize(s.size)+')':'')+' ×'+s.qty));
-          var right=el('span',null,money(s.amount)+' · '+chLabel(s.channel)+' · '+fmtWhen(s.at));
-          right.style.color='var(--muted)';right.style.fontSize='11px';
-          line.appendChild(right);
-          box.appendChild(line);
+          box.appendChild(saleRow(
+            s.img,
+            s.name+(s.size?' ('+shortSize(s.size)+')':'')+' ×'+s.qty,
+            money(s.amount),
+            chLabel(s.channel)+' · '+fmtWhen(s.at)
+          ));
         });
       });
     }
@@ -793,6 +805,20 @@
     });
     p.appendChild(chips);p.appendChild(box);
     load();
+  }
+  // One sales/history row: photo · label · (amount / sub-line).
+  function saleRow(img,label,amount,sub){
+    var line=el('div','hotline');
+    var th=el('div','s-thumb');
+    if(img){var im=document.createElement('img');im.src=img;im.alt='';th.appendChild(im);}
+    else{th.textContent='·';}
+    line.appendChild(th);
+    line.appendChild(el('div','hl-main',label));
+    var right=el('div','hl-right');
+    right.appendChild(el('b',null,amount));
+    if(sub)right.appendChild(el('span',null,sub));
+    line.appendChild(right);
+    return line;
   }
   function chLabel(ch){
     var am=detectCur()==='am';
@@ -850,7 +876,7 @@
       }
       top.appendChild(th);
       var main=el('div','ic-main');
-      main.appendChild(el('div','ic-name',(it.is_active?'':'🔕 ')+it.name));
+      main.appendChild(el('div','ic-name',(it.is_active?'':L.hiddenTag+' · ')+it.name));
       var sub=el('div','ic-sub');
       sub.appendChild(el('span',null,money(it.sell_price)+(it.negotiable===false?'':' · '+L.neg)));
       var tcls=total===0?'t-out':total<=5?'t-low':'t-in';
