@@ -226,7 +226,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v20',
+        footer:'Live stock from <b>Adulis</b> · v21',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -284,7 +284,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v20',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v21',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -588,11 +588,9 @@
     bSug.style.flex='1';
     bSug.disabled=!window.__cart.length;
     bSug.onclick=function(){
+      window.__pendingAsk=L.suggestQ;
       chat.remove();
       renderAsk();
-      window.__chat.push({role:'user',content:L.suggestQ});
-      var ev=new Event('adulis:asksuggest');
-      window.dispatchEvent(ev);
     };
     var bSend=el('button',null,L.cartSend);
     bSend.style.flex='1';
@@ -654,26 +652,31 @@
       if(!found.length)return;
       var wrap=el('div','chat-quick');wrap.style.padding='2px 0 6px';
       found.forEach(function(r){
-        var card=el('div','s-thumb');
-        card.style.width='44px';card.style.height='56px';card.style.flexDirection='column';
-        card.style.position='relative';
-        if(r.image_url){var im=document.createElement('img');im.src=r.image_url;im.alt='';card.appendChild(im);}
+        var card=el('div');
+        card.style.cssText='width:74px;flex:none;display:flex;flex-direction:column;gap:3px';
+        var ph=el('div','s-thumb');
+        ph.style.cssText='width:74px;height:88px;position:relative;border-radius:10px';
+        if(r.image_url){var im=document.createElement('img');im.src=r.image_url;im.alt='';ph.appendChild(im);}
         var plus=el('button','addbtn','+');
-        plus.style.top='auto';plus.style.bottom='4px';plus.style.right='4px';
-        plus.style.width='24px';plus.style.height='24px';plus.style.fontSize='15px';
+        plus.style.top='4px';plus.style.right='4px';
+        plus.style.width='26px';plus.style.height='26px';plus.style.fontSize='16px';
         plus.onclick=function(){
           cartAdd({name:r.item_name,price:Number(r.sell_price)});
           plus.textContent='✓';
           setTimeout(function(){plus.textContent='+';},800);
         };
-        card.appendChild(plus);
+        ph.appendChild(plus);
+        var nm=el('div');
+        nm.style.cssText='font-size:10px;color:var(--muted);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
+        nm.textContent=r.item_name+' · '+money(r.sell_price);
+        card.appendChild(ph);card.appendChild(nm);
         wrap.appendChild(card);
       });
       var lbl=el('div','typing',L.tapToAdd);
       parent.appendChild(wrap);parent.appendChild(lbl);
     }
-    function send(){
-      var t=iIn.value.trim();
+    function send(preset){
+      var t=String(preset||iIn.value||'').trim();
       if(!t)return;
       iIn.value='';
       window.__chat.push({role:'user',content:t});
@@ -699,9 +702,12 @@
     chat.appendChild(bar);
     document.body.appendChild(chat);
     draw();
-    window.removeEventListener('adulis:asksuggest',autoAsk);
-    function autoAsk(){send();}
-    window.addEventListener('adulis:asksuggest',autoAsk);
+    // A question queued by the cart's "Suggest matching items" button is
+    // sent for real — straight through send(), never just displayed.
+    if(window.__pendingAsk){
+      var pq=window.__pendingAsk;window.__pendingAsk=null;
+      setTimeout(function(){send(pq);},120);
+    }
     setTimeout(function(){try{iIn.focus();}catch(e){}},60);
   }
 
