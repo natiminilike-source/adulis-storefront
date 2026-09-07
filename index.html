@@ -185,11 +185,11 @@
   var STR={
     en:{appSub:'Shops inside Telegram', sub:'Browse · negotiate in Telegram', subNoUser:'Browse our items',
         in:'In stock', low:'Low stock', out:'Sold out',
-        neg:'Negotiable', buy:'Negotiate', buyOut:'Sold out', buyNoUser:'Ask in DM',
+        neg:'Negotiable', buyOut:'Sold out', buyNoUser:'Ask in DM',
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v16',
+        footer:'Live stock from <b>Adulis</b> · v17',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -200,8 +200,7 @@
         saveBtn:'Save', credSaved:'Saved! Use this email + password in the Adulis app.',
         linkedOk:'Connected! This Telegram shop now runs your Adulis store.',
         errLogin:'Wrong password for that email — check it and try again.',
-        created:'Shop created! 🎉', ownerTitle:'My shop',
-        yourLink:'Your shop link — share it in your channel:', openShopBtn:'Open my shop',
+        created:'Shop created! 🎉', ownerTitle:'My shop', openShopBtn:'Open my shop',
         channelL:'Channel username (add @AdulisShopBot as admin first)', postBtn:'Post 🛍 to my channel',
         posting:'Posting…', posted:'Posted! Check your channel.',
         getApp:'Get the full Adulis app', getAppNote:'Manage stock, prices and sales from your phone — even offline.',
@@ -221,25 +220,25 @@
         updDone:'Saved ✓', errPrice:'Enter a valid price.', errSizes:'Add at least one size with a count.',
         soldTitle:'Mark as sold', sizeL:'Size', qtyL:'How many', amountL:'Amount received (ETB)',
         payChL:'How were you paid?', markBtn:'Record sale', soldDone:'Sale recorded ✓', errSoldQty:'Enter how many were sold.',
-        hotTitle:'Best sellers — last 7 days', lagTitle:'Not moving', statNone:'Nothing sold in this period yet.',
         funnel:function(v,n,b,s){return v+' shop visits · '+n+' negotiate/buy taps · '+s+' sales marked';},
         buyBtn:'Buy',
         dmBuy:function(n,p){return 'Selam! I want to buy '+n+' ('+p+'). Is it available?';},
         tabItems:'Items', tabSales:'Sales', tabShop:'Shop',
         pickItems:'Choose items to feature', deepNote:'Posted with the bot-link button — the shop opens as a mini app after one tap.',
         bioLink:'Your Telegram link — put it in your bio or share anywhere (opens your shop directly):',
+        webLinkNote:'Web link — also works without Telegram:',
         segBest:'Best sellers', segLag:'Not moving', segSales:'Sales',
         p7:'7 days', p30:'30 days', pall:'All', showMore:'Show more', shareL:'Share',
         noUserNote:'Customers can browse your shop, but the Buy / Negotiate buttons stay off until you set a Telegram username: Telegram Settings → Edit Profile → Username. It takes 20 seconds.',
         noUserShop:'This shop hasn\u2019t turned on messaging yet — check back soon.',
-        noSales:'No sales in this period yet.', histL:'Sales'},
+        noSales:'No sales in this period yet.'},
     am:{appSub:'በቴሌግራም ውስጥ ሱቆች', sub:'ይመለከቱ · ዋጋ በቴሌግራም ይደራደሩ', subNoUser:'ዕቃዎችን ይመለከቱ',
         in:'አለ', low:'ጥቂቱ', out:'አልቀረም',
-        neg:'ይደራደሩ', buy:'ይደራደሩ', buyOut:'ተሽጧል', buyNoUser:'በውይይት ጠይቁ',
+        neg:'ይደራደሩ', buyOut:'ተሽጧል', buyNoUser:'በውይይት ጠይቁ',
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v16',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v17',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -250,8 +249,7 @@
         saveBtn:'አስቀምጥ', credSaved:'ተቀምጧል! ይህን ኢሜይልና ቃል በአዱሊስ መተግበሪያ ይጠቀሙ።',
         linkedOk:'ተገናኝቷል! ይህ የቴሌግራም ሱቅ አሁን የአዱሊስ ሱቅዎ ሆኖ ይሠራል።',
         errLogin:'ለዚያ ኢሜይል ቃሉ አልኮነነም — መርምረው እንደገና ይሞክሩ።',
-        created:'ሱቁ ተፈጥሯል! 🎉', ownerTitle:'ሱቄ',
-        yourLink:'የሱቁ አገናኝ — በቻናልዎ ይጋሩት፦', openShopBtn:'ሱቴን ክፈት',
+        created:'ሱቁ ተፈጥሯል! 🎉', ownerTitle:'ሱቄ', openShopBtn:'ሱቴን ክፈት',
         channelL:'የቻናል ተጠቃሚ ስም (መጀመሪያ @AdulisShopBotን አስተዳዳሪ ያድርጉ)', postBtn:'🛍 ወደ ቻናሌ ላክ',
         posting:'በመላክ ላይ…', posted:'ተልኳል! ቻናልዎን ይመልከቱ።',
         getApp:'ሙሉ የአዱሊስ መተግበሪያ ያውርዱ', getAppNote:'ዕቃ፣ ዋጋና ሽያጭ ከስልክዎ ይቆጣጠሩ — ከኢንተርኔት ውጭ እንኳ።',
@@ -271,18 +269,18 @@
         updDone:'ተቀምጧል ✓', errPrice:'ትክክለኛ ዋጋ ያስገቡ።', errSizes:'ቢያንስ አንድ ግዝፈት ከብዛት ጋር ይጨምሩ።',
         soldTitle:'ሽያጭ መዝግብ', sizeL:'ግዝፈት', qtyL:'ስንት ተሽጧል', amountL:'የተቀበሉት መጠን (ብር)',
         payChL:'እንዴት ተከፈለ?', markBtn:'ሽያጩን መዝግብ', soldDone:'ሽያጭ ተመዝግቧል ✓', errSoldQty:'ስንት መሽጫቸው እንደሆነ ይጻፉ።',
-        hotTitle:'እየሸጡ · ያለፉት 7 ቀናት', lagTitle:'ያልተንቀሳቀሱ', statNone:'በዚህ ጊዜ የተመዘገበ ሽያጭ የለም።',
         funnel:function(v,n,b,s){return v+' የሱቅ ጉብኝቶች · '+n+' የደራደር/ግዛ ንክኪዎች · '+s+' የተመዘገቡ ሽያጮች';},
         buyBtn:'ግዛ',
         dmBuy:function(n,p){return 'ሰላም! '+n+' ('+p+') መግዛት እፈልጋለሁ። አለ?';},
         tabItems:'ዕቃዎች', tabSales:'ሽያጭ', tabShop:'ሱቅ',
         pickItems:'ለማሳየት ዕቃዎችን ይምረጡ', deepNote:'በቦት-አገናኝ ተልኳል — ከአንድ ንክኪ በኋላ ሱቁ እንደ ሚኒ አፕ ይከፈታል።',
         bioLink:'የቴሌግራም አገናኝዎ — በባዮ ወይም ማንኛውም ቦታ ይጋሩት (ሱቁን በቀጥታ ይከፈታል)፦',
+        webLinkNote:'የድረ-ገጽ አገናኝ — ከቴሌግራም ውጭም ይሠራል፦',
         segBest:'እየሸጡ', segLag:'ዝጉት', segSales:'ሽያጮች',
         p7:'7 ቀናት', p30:'30 ቀናት', pall:'ሁሉም', showMore:'ተጨማሪ አሳይ', shareL:'ያጋሩ',
         noUserNote:'ደኞች ሱቁን ማየት ይችላሉ፣ ነገር ግን የቴሌግራም ተጠቃሚ ስም እስክያዘጋጁ ድረስ የመግዛት/የመደራደር አዝራሮች አይሠሩም፦ ቴሌግራም Settings → Edit Profile → Username።',
         noUserShop:'ይህ ሱቅ እስካሁን መልእክት አላከፈተም — በቅርቡ ይመለሱ።',
-        noSales:'በዚህ ጊዜ ሽያጭ የለምም።', histL:'ሽያጮች'}
+        noSales:'በዚህ ጊዜ ሽያጭ የለምም።'}
   };
   function detectLang(){
     try{ if(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user){
@@ -709,39 +707,39 @@
       un.style.padding='8px 10px';un.style.marginBottom='10px';
       p.appendChild(un);
     }
-    p.appendChild(el('div','note',L.yourLink));
-    p.appendChild(el('div','linkbox',BASE+'?s='+store.slug));
+    // HERO: the Telegram mini-app link — bio, channels, WhatsApp; opens
+    // the shop as the fullscreen overlay for anyone with Telegram.
+    p.appendChild(el('div','note',L.bioLink));
+    p.appendChild(el('div','linkbox',appLink(store.slug)));
     var row=el('div','row');
     var bCopy=el('button','btn ghost',detectCur()==='am'?'ቅዳ':'Copy');
     bCopy.onclick=function(){
-      var t=BASE+'?s='+store.slug;
-      try{navigator.clipboard.writeText(t);}catch(e){}
+      try{navigator.clipboard.writeText(appLink(store.slug));}catch(e){}
       bCopy.textContent='✓';
       setTimeout(function(){bCopy.textContent=detectCur()==='am'?'ቅዳ':'Copy';},1200);
     };
     var bShare=el('button','btn ghost',L.shareL);
     bShare.onclick=function(){
-      var link=BASE+'?s='+store.slug;
-      openTg('https://t.me/share/url?url='+encodeURIComponent(link)+
+      openTg('https://t.me/share/url?url='+encodeURIComponent(appLink(store.slug))+
         '&text='+encodeURIComponent((store.name||'My shop')+' 🛍'));
     };
     row.appendChild(bCopy);row.appendChild(bShare);
     p.appendChild(row);
-    // The merchant's personal Telegram link — opens the shop as the
-    // fullscreen mini app from any bio, chat, or WhatsApp.
-    p.appendChild(el('div','note',L.bioLink));
-    p.appendChild(el('div','linkbox',appLink(store.slug)));
+    // Secondary: the web link — works without Telegram AND keeps every
+    // shop alive if the bot ever has to be replaced (independence link).
+    p.appendChild(el('div','note',L.webLinkNote));
+    p.appendChild(el('div','linkbox',BASE+'?s='+store.slug));
     var rowB=el('div','row');
     var bCopyB=el('button','btn ghost',detectCur()==='am'?'ቅዳ':'Copy');
     bCopyB.onclick=function(){
-      try{navigator.clipboard.writeText(appLink(store.slug));}catch(e){}
+      try{navigator.clipboard.writeText(BASE+'?s='+store.slug);}catch(e){}
       bCopyB.textContent='✓';
       setTimeout(function(){bCopyB.textContent=detectCur()==='am'?'ቅዳ':'Copy';},1200);
     };
     rowB.appendChild(bCopyB);
     p.appendChild(rowB);
     var bOpen=el('a','btn',L.openShopBtn);
-    bOpen.href=BASE+'?s='+store.slug;
+    bOpen.href=appLink(store.slug);
     p.appendChild(bOpen);
 
     var fc=el('div','field');fc.appendChild(el('label',null,L.channelL));
@@ -884,7 +882,7 @@
         // LAGGING
         if(j.worst&&j.worst.length){
           j.worst.forEach(function(w){
-            bodies.lag.appendChild(saleRow(w.img,w.name,money(w.sell_price),''));
+            bodies.lag.appendChild(saleRow(w.img||w.image_url,w.name,money(w.sell_price),''));
           });
         }else{bodies.lag.appendChild(el('div','note',L.noneYet));}
         // SALES LIST
@@ -1268,40 +1266,6 @@
     };
     p.appendChild(btn);
     c.appendChild(p);
-  }
-
-  function loadOwnerStats(){
-    var box=document.getElementById('statsBox');
-    if(!box)return;
-    authCall('stats_card',{days:7}).then(function(j){
-      if(!j.ok){box.innerHTML='';box.appendChild(el('div','note','ⓘ '+(j.error||'stats')));return;}
-      box.innerHTML='';
-      if(!j.hot||!j.hot.length){
-        box.appendChild(el('div','note',L.statNone));
-      }else{
-        j.hot.forEach(function(h){
-          var line=el('div','hotline');
-          line.appendChild(el('span',null,h.name+' — ×'+h.qty));
-          line.appendChild(el('b',null,money(h.amount)));
-          box.appendChild(line);
-        });
-      }
-      if(j.lagging&&j.lagging.length){
-        var lag=el('div','hotline');
-        var lagHead=el('div','sect');lagHead.style.marginTop='8px';
-        lagHead.appendChild(el('h3',null,L.lagTitle));
-        box.appendChild(lagHead);
-        j.lagging.slice(0,5).forEach(function(l){
-          var line=el('div','hotline');
-          line.appendChild(el('span',null,l.name));
-          line.appendChild(el('b',null,money(l.sell_price)));
-          box.appendChild(line);
-        });
-      }
-      var f=j.funnel||{visit:0,negotiate:0,buy:0};
-      var soldTotal=(j.hot||[]).reduce(function(a,h){return a+h.qty;},0);
-      box.appendChild(el('div','funnel',L.funnel(f.visit,f.negotiate+f.buy,0,soldTotal)));
-    });
   }
 
   function detectCur(){return document.getElementById('langAm').className.indexOf('on')>=0?'am':'en';}
