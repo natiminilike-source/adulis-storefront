@@ -226,7 +226,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v19',
+        footer:'Live stock from <b>Adulis</b> · v20',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -264,7 +264,9 @@
         pickItems:'Choose items to feature', deepNote:'Posted with the bot-link button — the shop opens as a mini app after one tap.',
         bioLink:'Your Telegram link — put it in your bio or share anywhere (opens your shop directly):',
         askBtn:'Ask · Beta', askTitle:'Shopping assistant', askTag:'AI',
-        cartTitle:'Your picks', cartSend:'Send list to merchant', cartEmpty:'Nothing added yet — tap + on any item.',
+        cartTitle:'Your picks', cartSend:'Send list to merchant',
+        changeLogo:'Change logo', suggestItems:'Suggest matching items',
+        suggestQ:'What else goes well with my picks?', tapToAdd:'Tap + to add', saving:'Saving…', cartEmpty:'Nothing added yet — tap + on any item.',
         dmCart:function(lines,total){return 'Selam! I want to buy:'+NL+lines+NL+'Total: '+total;},
         askHi:'Hi! Ask me anything about our items — prices, sizes, what’s in stock.',
         quick1:'What’s available under 2000?', quick2:'What sizes are there?', quick3:'Gift ideas',
@@ -282,7 +284,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v19',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v20',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -320,7 +322,9 @@
         pickItems:'ለማሳየት ዕቃዎችን ይምረጡ', deepNote:'በቦት-አገናኝ ተልኳል — ከአንድ ንክኪ በኋላ ሱቁ እንደ ሚኒ አፕ ይከፈታል።',
         bioLink:'የቴሌግራም አገናኝዎ — በባዮ ወይም ማንኛውም ቦታ ይጋሩት (ሱቁን በቀጥታ ይከፈታል)፦',
         askBtn:'ጠይቁ · Beta', askTitle:'የግዢ አጋዥ', askTag:'AI',
-        cartTitle:'የተመረጡት', cartSend:'መዝገቤን ለነጋዴ ላክ', cartEmpty:'ገና ምንም አልታመረጠም — በዕቃው ላይ + ንካ።',
+        cartTitle:'የተመረጡት', cartSend:'መዝገቤን ለነጋዴ ላክ',
+        changeLogo:'አርማ ቀይር', suggestItems:'ከተመረጡት ጋር የሚስማሙ አሳይ',
+        suggestQ:'ከተመረጡት ጋር ምን ይስማማል?', tapToAdd:'ለመጨመር + ንካ', saving:'በማስቀመጥ ላይ…', cartEmpty:'ገና ምንም አልታመረጠም — በዕቃው ላይ + ንካ።',
         dmCart:function(lines,total){return 'ሰላም! እነዚህን መግዛት እፈልጋለሁ:'+NL+lines+NL+'ጠቅላላ: '+total;},
         askHi:'ሰላም! ስለ ዕቃዎቻችን ማንኛውንም ጠይቁ — ዋጋ፣ ግዝፈት፣ የሚገኘው።',
         quick1:'ከ2000 በታች ምን አለ?', quick2:'የትኞቹ ግዝፈቶች አሉ?', quick3:'የስጦታ ሃሳብ',
@@ -580,6 +584,16 @@
     }
     chat.appendChild(body);
     var bar=el('div','chat-in');
+    var bSug=el('button','btn ghost',L.suggestItems);
+    bSug.style.flex='1';
+    bSug.disabled=!window.__cart.length;
+    bSug.onclick=function(){
+      chat.remove();
+      renderAsk();
+      window.__chat.push({role:'user',content:L.suggestQ});
+      var ev=new Event('adulis:asksuggest');
+      window.dispatchEvent(ev);
+    };
     var bSend=el('button',null,L.cartSend);
     bSend.style.flex='1';
     bSend.disabled=!window.__cart.length||!window.__shopUser;
@@ -589,7 +603,7 @@
       openTg('https://t.me/'+encodeURIComponent(window.__shopUser)+'?text='+
         encodeURIComponent(L.dmCart(lines,money(cartTotal()))));
     };
-    bar.appendChild(bSend);
+    bar.appendChild(bSug);bar.appendChild(bSend);
     chat.appendChild(bar);
     document.body.appendChild(chat);
   }
@@ -625,8 +639,38 @@
       body.innerHTML='';
       window.__chat.forEach(function(m){
         body.appendChild(el('div','msg '+(m.role==='user'?'user':'ai'),m.content));
+        if(m.role!=='user')drawItemCards(m.content,body);
       });
       body.scrollTop=body.scrollHeight;
+    }
+    // Claude-commerce pattern: show what's being discussed — after an AI
+    // reply, tappable cards for every catalogue item it mentioned.
+    function drawItemCards(text,parent){
+      if(!window.__rows)return;
+      var found=window.__rows.filter(function(r){
+        return r.item_name&&r.item_name.length>2&&
+          text.toLowerCase().indexOf(r.item_name.toLowerCase())>=0&&r.tier!=='out';
+      }).slice(0,3);
+      if(!found.length)return;
+      var wrap=el('div','chat-quick');wrap.style.padding='2px 0 6px';
+      found.forEach(function(r){
+        var card=el('div','s-thumb');
+        card.style.width='44px';card.style.height='56px';card.style.flexDirection='column';
+        card.style.position='relative';
+        if(r.image_url){var im=document.createElement('img');im.src=r.image_url;im.alt='';card.appendChild(im);}
+        var plus=el('button','addbtn','+');
+        plus.style.top='auto';plus.style.bottom='4px';plus.style.right='4px';
+        plus.style.width='24px';plus.style.height='24px';plus.style.fontSize='15px';
+        plus.onclick=function(){
+          cartAdd({name:r.item_name,price:Number(r.sell_price)});
+          plus.textContent='✓';
+          setTimeout(function(){plus.textContent='+';},800);
+        };
+        card.appendChild(plus);
+        wrap.appendChild(card);
+      });
+      var lbl=el('div','typing',L.tapToAdd);
+      parent.appendChild(wrap);parent.appendChild(lbl);
     }
     function send(){
       var t=iIn.value.trim();
@@ -638,7 +682,8 @@
       fetch(API+'/functions/v1/shop-assistant',{
         method:'POST',
         headers:{'apikey':KEY,'Content-Type':'application/json'},
-        body:JSON.stringify({slug:slug,messages:window.__chat.slice(-9)})
+        body:JSON.stringify({slug:slug,messages:window.__chat.slice(-9),
+          cart:window.__cart.map(function(c){return {name:c.name,qty:c.qty};})})
       }).then(function(r){return r.json().then(function(j){j._s=r.status;return j;});})
         .catch(function(){return {error:'net'};})
         .then(function(j){
@@ -654,6 +699,9 @@
     chat.appendChild(bar);
     document.body.appendChild(chat);
     draw();
+    window.removeEventListener('adulis:asksuggest',autoAsk);
+    function autoAsk(){send();}
+    window.addEventListener('adulis:asksuggest',autoAsk);
     setTimeout(function(){try{iIn.focus();}catch(e){}},60);
   }
 
@@ -910,6 +958,37 @@
       un.style.padding='8px 10px';un.style.marginBottom='10px';
       p.appendChild(un);
     }
+    // Logo management — in the panel, not bot-lore.
+    var logoRow=el('div','ph-pick');
+    var logoPrev=el('div','ph-prev');
+    var curLogo=document.querySelector('.logo img');
+    if(curLogo){var lim=document.createElement('img');lim.src=curLogo.src;logoPrev.appendChild(lim);}
+    else{logoPrev.textContent='A';logoPrev.style.display='flex';logoPrev.style.alignItems='center';logoPrev.style.justifyContent='center';logoPrev.style.fontWeight='800';logoPrev.style.color='var(--accent)';}
+    var bLogo=el('button','btn ghost',L.changeLogo);
+    bLogo.onclick=function(){
+      var iFile=document.createElement('input');
+      iFile.type='file';iFile.accept='image/*';iFile.style.display='none';
+      iFile.onchange=function(){
+        var f=iFile.files&&iFile.files[0];
+        if(!f)return;
+        compressImage(f,function(b64){
+          bLogo.textContent=L.saving;
+          authCall('logo_set',{image_b64:b64}).then(function(j){
+            bLogo.textContent=L.changeLogo;
+            if(j.ok){
+              setLogo(j.logo_url);
+              logoPrev.innerHTML='';
+              var nm=document.createElement('img');nm.src=j.logo_url;logoPrev.appendChild(nm);
+            }else{bLogo.textContent=L.changeLogo+' ⚠';setTimeout(function(){bLogo.textContent=L.changeLogo;},1500);}
+          });
+        });
+      };
+      document.body.appendChild(iFile);iFile.click();
+      setTimeout(function(){iFile.remove();},60000);
+    };
+    logoRow.appendChild(bLogo);logoRow.appendChild(logoPrev);
+    p.appendChild(logoRow);
+
     // HERO: the Telegram mini-app link — bio, channels, WhatsApp; opens
     // the shop as the fullscreen overlay for anyone with Telegram.
     p.appendChild(el('div','note',L.bioLink));
