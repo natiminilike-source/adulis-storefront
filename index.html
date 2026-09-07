@@ -135,6 +135,22 @@
   .tabbtn svg{display:block}
   .tabbtn.on{background:var(--accent-soft);color:var(--accent)}
   .tabbtn:active{transform:scale(.97)}
+  /* --- Ask assistant chat overlay --- */
+  .chat{position:fixed;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column}
+  .chat-hd{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--edge);background:var(--card)}
+  .chat-hd b{font-size:15px;flex:1}
+  .chat-hd span{font-size:10.5px;color:var(--muted);border:1px solid var(--edge);border-radius:7px;padding:2px 6px}
+  .chat-x{border:none;background:transparent;color:var(--muted);font-size:20px;cursor:pointer;padding:4px 10px;font-family:inherit}
+  .chat-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+  .msg{max-width:84%;padding:9px 12px;border-radius:14px;font-size:13.5px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+  .msg.user{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+  .msg.ai{align-self:flex-start;background:var(--card);border-bottom-left-radius:4px}
+  .typing{align-self:flex-start;color:var(--muted);font-size:12px;padding:2px 6px}
+  .chat-quick{display:flex;gap:6px;padding:8px 14px 4px;flex-wrap:wrap}
+  .chat-in{display:flex;gap:8px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--edge);background:var(--card)}
+  .chat-in input{flex:1;border:1px solid var(--edge);border-radius:20px;background:var(--bg);color:var(--ink);font-size:14px;padding:10px 14px;font-family:inherit;outline:none}
+  .chat-in input:focus{border-color:var(--accent)}
+  .chat-in button{border:none;background:var(--accent);color:#fff;border-radius:20px;padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
   /* segmented toggle (Best sellers / Not moving / Sales) */
   .seg{display:flex;background:var(--card);border-radius:12px;padding:3px;gap:3px;margin-bottom:12px}
   .seg button{flex:1;border:none;background:transparent;color:var(--muted);
@@ -189,7 +205,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v17',
+        footer:'Live stock from <b>Adulis</b> · v18',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -226,6 +242,11 @@
         tabItems:'Items', tabSales:'Sales', tabShop:'Shop',
         pickItems:'Choose items to feature', deepNote:'Posted with the bot-link button — the shop opens as a mini app after one tap.',
         bioLink:'Your Telegram link — put it in your bio or share anywhere (opens your shop directly):',
+        askBtn:'Ask · Beta', askTitle:'Shopping assistant', askTag:'AI',
+        askHi:'Hi! Ask me anything about our items — prices, sizes, what’s in stock.',
+        quick1:'What’s available under 2000?', quick2:'What sizes are there?', quick3:'Gift ideas',
+        askSend:'Send', askPh:'Ask about items…', aiFail:'The assistant is unavailable right now — please try again.',
+        aiCap:'Daily question limit reached — please come back tomorrow.',
         webLinkNote:'Web link — also works without Telegram:',
         segBest:'Best sellers', segLag:'Not moving', segSales:'Sales',
         p7:'7 days', p30:'30 days', pall:'All', showMore:'Show more', shareL:'Share',
@@ -238,7 +259,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v17',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v18',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -275,6 +296,11 @@
         tabItems:'ዕቃዎች', tabSales:'ሽያጭ', tabShop:'ሱቅ',
         pickItems:'ለማሳየት ዕቃዎችን ይምረጡ', deepNote:'በቦት-አገናኝ ተልኳል — ከአንድ ንክኪ በኋላ ሱቁ እንደ ሚኒ አፕ ይከፈታል።',
         bioLink:'የቴሌግራም አገናኝዎ — በባዮ ወይም ማንኛውም ቦታ ይጋሩት (ሱቁን በቀጥታ ይከፈታል)፦',
+        askBtn:'ጠይቁ · Beta', askTitle:'የግዢ አጋዥ', askTag:'AI',
+        askHi:'ሰላም! ስለ ዕቃዎቻችን ማንኛውንም ጠይቁ — ዋጋ፣ ግዝፈት፣ የሚገኘው።',
+        quick1:'ከ2000 በታች ምን አለ?', quick2:'የትኞቹ ግዝፈቶች አሉ?', quick3:'የስጦታ ሃሳብ',
+        askSend:'ላክ', aiFail:'አጋዢው አሁን አይገኝም — እንደገና ይሞክሩ።',
+        aiCap:'የቀን ጥያቄ ገደብ ተሞልቷል — ነገ ይመለሱ።',
         webLinkNote:'የድረ-ገጽ አገናኝ — ከቴሌግራም ውጭም ይሠራል፦',
         segBest:'እየሸጡ', segLag:'ዝጉት', segSales:'ሽያጮች',
         p7:'7 ቀናት', p30:'30 ቀናት', pall:'ሁሉም', showMore:'ተጨማሪ አሳይ', shareL:'ያጋሩ',
@@ -388,6 +414,10 @@
     document.getElementById('storeSub').textContent = user?L.sub:L.subNoUser;
     setLogo(store.logo_url);
     document.title=(store.store_name||'Shop')+' · Adulis';
+    var bAsk=el('button','btn ghost',L.askBtn);
+    bAsk.style.marginBottom='12px';
+    bAsk.onclick=function(){renderAsk();};
+    c.appendChild(bAsk);
     var g=el('div','grid');
     rows.forEach(function(r){
       var card=el('div','item'+(r.tier==='out'?' out':''));
@@ -452,6 +482,69 @@
     s.appendChild(d);
     var b=el('button',null,L.retry);b.onclick=location.reload;
     s.appendChild(document.createElement('br'));s.appendChild(b);c.appendChild(s);
+  }
+
+  // ---- "Ask" assistant overlay (Beta) -----------------------------------
+  // Conversation memory lives ONLY in this page session; the server
+  // re-grounds every turn in the real catalogue.
+  function renderAsk(){
+    var old=document.getElementById('askChat');if(old)old.remove();
+    if(!window.__chat)window.__chat=[{role:'assistant',content:L.askHi}];
+    var chat=el('div','chat');chat.id='askChat';
+    var hd=el('div','chat-hd');
+    hd.appendChild(el('b',null,L.askTitle));
+    hd.appendChild(el('span',null,L.askTag));
+    var x=el('button','chat-x','✕');
+    x.onclick=function(){chat.remove();};
+    hd.appendChild(x);
+    chat.appendChild(hd);
+    var body=el('div','chat-body');
+    chat.appendChild(body);
+    var quick=el('div','chat-quick');
+    [L.quick1,L.quick2,L.quick3].forEach(function(q){
+      var b=el('button','mbtn',q);
+      b.style.fontSize='11.5px';b.style.padding='7px 10px';
+      b.onclick=function(){iIn.value=q;send();};
+      quick.appendChild(b);
+    });
+    chat.appendChild(quick);
+    var bar=el('div','chat-in');
+    var iIn=document.createElement('input');iIn.placeholder=L.askPh;
+    var bSend=el('button',null,L.askSend);
+    function draw(){
+      body.innerHTML='';
+      window.__chat.forEach(function(m){
+        body.appendChild(el('div','msg '+(m.role==='user'?'user':'ai'),m.content));
+      });
+      body.scrollTop=body.scrollHeight;
+    }
+    function send(){
+      var t=iIn.value.trim();
+      if(!t)return;
+      iIn.value='';
+      window.__chat.push({role:'user',content:t});
+      draw();
+      var ty=el('div','typing','…');body.appendChild(ty);body.scrollTop=body.scrollHeight;
+      fetch(API+'/functions/v1/shop-assistant',{
+        method:'POST',
+        headers:{'apikey':KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({slug:slug,messages:window.__chat.slice(-9)})
+      }).then(function(r){return r.json().then(function(j){j._s=r.status;return j;});})
+        .catch(function(){return {error:'net'};})
+        .then(function(j){
+          ty.remove();
+          if(j.ok&&j.reply)window.__chat.push({role:'assistant',content:j.reply});
+          else window.__chat.push({role:'assistant',content:(j.error==='cap'?L.aiCap:L.aiFail)});
+          draw();
+        });
+    }
+    bSend.onclick=send;
+    iIn.onkeydown=function(e){if(e.key==='Enter')send();};
+    bar.appendChild(iIn);bar.appendChild(bSend);
+    chat.appendChild(bar);
+    document.body.appendChild(chat);
+    draw();
+    setTimeout(function(){try{iIn.focus();}catch(e){}},60);
   }
 
   // =====================================================================
