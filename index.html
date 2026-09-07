@@ -237,7 +237,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v23',
+        footer:'Live stock from <b>Adulis</b> · v24',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -296,7 +296,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v23',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v24',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -416,54 +416,9 @@
   // =====================================================================
   // SHOP MODE (?s=slug) — the customer storefront (unchanged behavior)
   // =====================================================================
-  window.__rows=null;
-  function renderShop(rows){
-    var c=content(); c.innerHTML='';
-    if(!rows||!rows.length){
-      // Zero item-rows: distinguish "exists but empty" from "not found".
-      fetch(API+'/rest/v1/rpc/public_storefront_header',{
-        method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
-        body:JSON.stringify({p_slug:slug})
-      }).then(function(r){return r.ok?r.json():Promise.reject();})
-      .then(function(h){
-        if(h&&h.length){
-          var store=h[0];
-          document.getElementById('storeName').textContent=store.store_name;
-          document.getElementById('storeSub').textContent=L.subNoUser;
-          setLogo(store.logo_url);
-          var s=el('div','state',L.emptyShop);
-          var b=el('a','btn',L.getApp);b.href=APK;b.target='_blank';
-          s.appendChild(b);c.appendChild(s);
-        }else{
-          c.appendChild(el('div','state',L.unavailable));
-        }
-      })
-      .catch(function(){c.appendChild(el('div','state',L.unavailable));});
-      return;
-    }
-    window.__rows=rows;
-    if(!window.__visited){window.__visited=true;beacon('visit');}
-    var store=rows[0], user=store.telegram_username;
-    window.__shopUser=user;
-    // Opened in a plain browser (WhatsApp/bio links)? Offer the jump
-    // into Telegram's fullscreen mini app — the browser stays a fallback.
-    if(!(tg&&tg.initData&&tg.initData.length)){
-      var inTg=el('a','btn','Open in Telegram');
-      inTg.href=appLink(slug);
-      inTg.style.marginBottom='10px';
-      var c0=content();
-      c0.insertBefore(inTg,c0.firstChild);
-    }
-    document.getElementById('storeName').textContent=store.store_name||'Shop';
-    document.getElementById('storeSub').textContent = user?L.sub:L.subNoUser;
-    setLogo(store.logo_url);
-    document.title=(store.store_name||'Shop')+' · Adulis';
-    var bAsk=el('button','btn ghost',L.askBtn);
-    bAsk.style.marginBottom='12px';
-    bAsk.onclick=function(){renderAsk();};
-    c.appendChild(bAsk);
-    var g=el('div','grid');
-    rows.forEach(function(r){
+  // One card builder for every surface: main grid AND the detail view's
+  // "Goes well with" — identical photos, +, sizes, Buy behavior everywhere.
+  function buildShopCard(r,user){
       var card=el('div','item'+(r.tier==='out'?' out':''));
       card.onclick=function(){renderDetail(r);};
       var ph=el('div','ph');
@@ -511,8 +466,57 @@
         };}
       info.appendChild(btn);
       if(r.tier!=='out'&&!user)info.appendChild(el('div','note',L.noUserShop));
-      card.appendChild(ph);card.appendChild(info);g.appendChild(card);
-    });
+      card.appendChild(ph);card.appendChild(info);
+      return card;
+  }
+  window.__rows=null;
+  function renderShop(rows){
+    var c=content(); c.innerHTML='';
+    if(!rows||!rows.length){
+      // Zero item-rows: distinguish "exists but empty" from "not found".
+      fetch(API+'/rest/v1/rpc/public_storefront_header',{
+        method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({p_slug:slug})
+      }).then(function(r){return r.ok?r.json():Promise.reject();})
+      .then(function(h){
+        if(h&&h.length){
+          var store=h[0];
+          document.getElementById('storeName').textContent=store.store_name;
+          document.getElementById('storeSub').textContent=L.subNoUser;
+          setLogo(store.logo_url);
+          var s=el('div','state',L.emptyShop);
+          var b=el('a','btn',L.getApp);b.href=APK;b.target='_blank';
+          s.appendChild(b);c.appendChild(s);
+        }else{
+          c.appendChild(el('div','state',L.unavailable));
+        }
+      })
+      .catch(function(){c.appendChild(el('div','state',L.unavailable));});
+      return;
+    }
+    window.__rows=rows;
+    if(!window.__visited){window.__visited=true;beacon('visit');}
+    var store=rows[0], user=store.telegram_username;
+    window.__shopUser=user;
+    // Opened in a plain browser (WhatsApp/bio links)? Offer the jump
+    // into Telegram's fullscreen mini app — the browser stays a fallback.
+    if(!(tg&&tg.initData&&tg.initData.length)){
+      var inTg=el('a','btn','Open in Telegram');
+      inTg.href=appLink(slug);
+      inTg.style.marginBottom='10px';
+      var c0=content();
+      c0.insertBefore(inTg,c0.firstChild);
+    }
+    document.getElementById('storeName').textContent=store.store_name||'Shop';
+    document.getElementById('storeSub').textContent = user?L.sub:L.subNoUser;
+    setLogo(store.logo_url);
+    document.title=(store.store_name||'Shop')+' · Adulis';
+    var bAsk=el('button','btn ghost',L.askBtn);
+    bAsk.style.marginBottom='12px';
+    bAsk.onclick=function(){renderAsk();};
+    c.appendChild(bAsk);
+    var g=el('div','grid');
+    rows.forEach(function(r){g.appendChild(buildShopCard(r,user));});
     c.appendChild(g);
     drawCartFab();
   }
@@ -700,7 +704,7 @@
 
     // "Goes well with": real co-sales, then cart signals, then variety.
     body.appendChild(el('div','sectt',L.goesWell));
-    var hrow=el('div','det-hrow');
+    var hrow=el('div','grid');
     hrow.appendChild(el('div','typing','…'));
     body.appendChild(hrow);
     fetch(API+'/rest/v1/rpc/public_related_items',{
@@ -712,13 +716,7 @@
         hrow.innerHTML='';
         if(!rows||!rows.length){hrow.appendChild(el('div','typing',''));return;}
         rows.forEach(function(r2){
-          var mini=el('div','det-mini');
-          var ph2=el('div','s-thumb');
-          if(r2.image_url){var i2=document.createElement('img');i2.src=r2.image_url;i2.alt='';ph2.appendChild(i2);}
-          mini.appendChild(ph2);
-          mini.appendChild(el('div','dm-lbl',r2.item_name+' · '+money(r2.sell_price)));
-          mini.onclick=function(){renderDetail(r2);};
-          hrow.appendChild(mini);
+          hrow.appendChild(buildShopCard(r2,window.__shopUser));
         });
       });
     ov.appendChild(body);
@@ -764,9 +762,11 @@
     // reply, tappable cards for every catalogue item it mentioned.
     function drawItemCards(text,parent){
       if(!window.__rows)return;
+      var norm=function(x){return String(x||'').toLowerCase().replace(/\s+/g,' ');};
+      var flat=norm(text);
       var found=window.__rows.filter(function(r){
         return r.item_name&&r.item_name.length>2&&
-          text.toLowerCase().indexOf(r.item_name.toLowerCase())>=0&&r.tier!=='out';
+          flat.indexOf(norm(r.item_name))>=0&&r.tier!=='out';
       }).slice(0,3);
       if(!found.length)return;
       var wrap=el('div','chat-quick');wrap.style.padding='2px 0 6px';
