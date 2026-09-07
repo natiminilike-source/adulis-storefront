@@ -135,6 +135,17 @@
   .tabbtn svg{display:block}
   .tabbtn.on{background:var(--accent-soft);color:var(--accent)}
   .tabbtn:active{transform:scale(.97)}
+  /* --- item detail overlay --- */
+  .det-img{width:100%;max-height:38vh;object-fit:cover;border-radius:12px;background:var(--edge)}
+  .det-name{font-size:19px;font-weight:800;margin-top:10px}
+  .det-row{display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap}
+  .det-sizes{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .det-btns{display:flex;gap:8px;margin-top:14px}
+  .det-hrow{display:flex;gap:10px;overflow-x:auto;padding:6px 0 2px;margin-top:4px}
+  .det-mini{flex:none;width:88px;display:flex;flex-direction:column;gap:3px;cursor:pointer}
+  .det-mini .s-thumb{width:88px;height:104px;position:relative;border-radius:10px}
+  .det-mini .dm-lbl{font-size:10px;color:var(--muted);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sectt{font-size:12px;color:var(--muted);font-weight:700;margin:16px 0 2px}
   /* --- shopper cart --- */
   .addbtn{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;
     border:none;background:var(--accent);color:#fff;font-size:20px;font-weight:700;
@@ -226,7 +237,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v22',
+        footer:'Live stock from <b>Adulis</b> · v23',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -265,6 +276,7 @@
         bioLink:'Your Telegram link — put it in your bio or share anywhere (opens your shop directly):',
         askBtn:'Ask · Beta', askTitle:'Shopping assistant', askTag:'AI',
         cartTitle:'Your picks', cartSend:'Send list to merchant',
+        goesWell:'Goes well with', pickSize:'Pick a size:',
         changeLogo:'Change logo', suggestItems:'Suggest matching items',
         suggestQ:'What else goes well with my picks?', tapToAdd:'Tap + to add', saving:'Saving…', cartEmpty:'Nothing added yet — tap + on any item.',
         dmCart:function(lines,total){return 'Selam! I want to buy:'+NL+lines+NL+'Total: '+total;},
@@ -284,7 +296,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v22',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v23',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -323,6 +335,7 @@
         bioLink:'የቴሌግራም አገናኝዎ — በባዮ ወይም ማንኛውም ቦታ ይጋሩት (ሱቁን በቀጥታ ይከፈታል)፦',
         askBtn:'ጠይቁ · Beta', askTitle:'የግዢ አጋዥ', askTag:'AI',
         cartTitle:'የተመረጡት', cartSend:'መዝገቤን ለነጋዴ ላክ',
+        goesWell:'ከዚህ ጋር ይስማማል', pickSize:'ግዝፈት ይምረጡ:',
         changeLogo:'አርማ ቀይር', suggestItems:'ከተመረጡት ጋር የሚስማሙ አሳይ',
         suggestQ:'ከተመረጡት ጋር ምን ይስማማል?', tapToAdd:'ለመጨመር + ንካ', saving:'በማስቀመጥ ላይ…', cartEmpty:'ገና ምንም አልታመረጠም — በዕቃው ላይ + ንካ።',
         dmCart:function(lines,total){return 'ሰላም! እነዚህን መግዛት እፈልጋለሁ:'+NL+lines+NL+'ጠቅላላ: '+total;},
@@ -452,6 +465,7 @@
     var g=el('div','grid');
     rows.forEach(function(r){
       var card=el('div','item'+(r.tier==='out'?' out':''));
+      card.onclick=function(){renderDetail(r);};
       var ph=el('div','ph');
       if(r.image_url){var im=document.createElement('img');im.loading='lazy';im.decoding='async';
         im.alt=r.item_name;im.src=r.image_url;im.onerror=function(){im.remove();};ph.appendChild(im);}
@@ -487,7 +501,10 @@
       if(r.tier==='out'){btn.disabled=true;btn.textContent=L.buyOut;}
       else if(!user){btn.textContent=L.buyNoUser;btn.disabled=true;btn.style.display='none';}
       else{btn.textContent=L.buyBtn;
-        btn.onclick=function(){
+        var sizesArr=r.size_labels?String(r.size_labels).split(',').map(function(x){return shortSize(x);}).filter(Boolean):[];
+        btn.onclick=function(ev){
+          ev.stopPropagation();
+          if(sizesArr.length>1){renderDetail(r);return;}
           beacon(fixed?'buy':'negotiate');
           var msg=fixed?L.dmBuy(r.item_name,money(r.sell_price)):L.dm(r.item_name,money(r.sell_price));
           openTg('https://t.me/'+encodeURIComponent(user)+'?text='+encodeURIComponent(msg));
@@ -529,9 +546,12 @@
   // ---- Shopper cart: multi-item picks → one merchant DM ----------------
   window.__cart=window.__cart||[]; // [{name, price, qty}]
   function cartAdd(item){
-    var hit=window.__cart.find(function(c){return c.name===item.name;});
+    // A chosen size becomes part of the line's name — every downstream
+    // surface (cart sheet, merchant DM) shows it for free.
+    var lineName=item.size?item.name+' ('+shortSize(item.size)+')':item.name;
+    var hit=window.__cart.find(function(c){return c.name===lineName;});
     if(hit)hit.qty++;
-    else window.__cart.push({name:item.name,price:item.price,qty:1});
+    else window.__cart.push({name:lineName,price:item.price,qty:1});
     drawCartFab();
   }
   function cartCount(){return window.__cart.reduce(function(a,c){return a+c.qty;},0);}
@@ -598,12 +618,111 @@
     bSend.onclick=function(){
       lines=window.__cart.map(function(c){return '• '+c.name+' ×'+c.qty+' — '+money(c.price*c.qty);}).join(NL);
       beacon('buy');
+      try{fetch(API+'/rest/v1/rpc/public_storefront_event',{
+        method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({p_slug:slug,p_kind:'cart_sent',p_item:null,
+          p_items:window.__cart.map(function(c){return c.name.split(' (')[0];}).join(',')})
+      }).catch(function(){});}catch(e){}
       openTg('https://t.me/'+encodeURIComponent(window.__shopUser)+'?text='+
         encodeURIComponent(L.dmCart(lines,money(cartTotal()))));
     };
     bar.appendChild(bSug);bar.appendChild(bSend);
     chat.appendChild(bar);
     document.body.appendChild(chat);
+  }
+
+  // ---- Item detail overlay: big photo, size pick, related items -------
+  function renderDetail(item){
+    var old=document.getElementById('itemDetail');if(old)old.remove();
+    var ov=el('div','chat');ov.id='itemDetail';
+    var hd=el('div','chat-hd');
+    hd.appendChild(el('b',null,item.item_name));
+    var x=el('button','chat-x','✕');
+    x.onclick=function(){ov.remove();};
+    hd.appendChild(x);
+    ov.appendChild(hd);
+    var body=el('div','chat-body');
+    body.style.paddingTop='14px';
+
+    if(item.image_url){
+      var im=document.createElement('img');im.className='det-img';im.src=item.image_url;im.alt='';
+      body.appendChild(im);
+    }
+    body.appendChild(el('div','det-name',item.item_name));
+    var pr=el('div','det-row');
+    var price=el('span',null,money(item.sell_price));
+    price.style.cssText='font-size:19px;font-weight:800;color:var(--ok)';
+    pr.appendChild(price);
+    if(item.negotiable!==false)pr.appendChild(el('span','neg',L.neg));
+    var tcls=item.tier==='out'?'t-out':item.tier==='low'?'t-low':'t-in';
+    var ttxt=item.tier==='out'?L.out:item.tier==='low'?L.low:L.in;
+    pr.appendChild(el('span','tier '+tcls,ttxt));
+    body.appendChild(pr);
+
+    var sizesArr=item.size_labels?String(item.size_labels).split(',').map(function(z){return shortSize(z);}).filter(Boolean):[];
+    var chosen=sizesArr.length===1?sizesArr[0]:null;
+    var sizesBox=null;
+    if(sizesArr.length>1){
+      body.appendChild(el('div','sectt',L.pickSize));
+      sizesBox=el('div','det-sizes');
+      sizesArr.forEach(function(sz){
+        var b=el('button','mbtn'+(chosen===sz?' on':''),sz);
+        b.onclick=function(){
+          chosen=sz;
+          Array.prototype.forEach.call(sizesBox.children,function(c){c.classList.remove('on');});
+          b.classList.add('on');
+        };
+        sizesBox.appendChild(b);
+      });
+      body.appendChild(sizesBox);
+    }
+
+    var btns=el('div','det-btns');
+    var bAdd=el('button','btn ghost','+');
+    bAdd.onclick=function(){
+      if(sizesArr.length>1&&!chosen){return;}
+      cartAdd({name:item.item_name,price:Number(item.sell_price),size:chosen});
+      bAdd.textContent='✓ Added';
+      setTimeout(function(){bAdd.textContent='+';},900);
+    };
+    var bBuy=el('button','btn',L.buyBtn);
+    bBuy.onclick=function(){
+      if(sizesArr.length>1&&!chosen){return;}
+      var fixed=item.negotiable===false;
+      beacon(fixed?'buy':'negotiate');
+      var label=chosen?item.item_name+' ('+chosen+')':item.item_name;
+      var msg=fixed?L.dmBuy(label,money(item.sell_price)):L.dm(label,money(item.sell_price));
+      if(window.__shopUser)openTg('https://t.me/'+encodeURIComponent(window.__shopUser)+'?text='+encodeURIComponent(msg));
+    };
+    bAdd.style.flex='0 0 72px';
+    btns.appendChild(bAdd);btns.appendChild(bBuy);
+    body.appendChild(btns);
+
+    // "Goes well with": real co-sales, then cart signals, then variety.
+    body.appendChild(el('div','sectt',L.goesWell));
+    var hrow=el('div','det-hrow');
+    hrow.appendChild(el('div','typing','…'));
+    body.appendChild(hrow);
+    fetch(API+'/rest/v1/rpc/public_related_items',{
+      method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({p_slug:slug,p_name:item.item_name})
+    }).then(function(r){return r.ok?r.json():[];})
+      .catch(function(){return [];})
+      .then(function(rows){
+        hrow.innerHTML='';
+        if(!rows||!rows.length){hrow.appendChild(el('div','typing',''));return;}
+        rows.forEach(function(r2){
+          var mini=el('div','det-mini');
+          var ph2=el('div','s-thumb');
+          if(r2.image_url){var i2=document.createElement('img');i2.src=r2.image_url;i2.alt='';ph2.appendChild(i2);}
+          mini.appendChild(ph2);
+          mini.appendChild(el('div','dm-lbl',r2.item_name+' · '+money(r2.sell_price)));
+          mini.onclick=function(){renderDetail(r2);};
+          hrow.appendChild(mini);
+        });
+      });
+    ov.appendChild(body);
+    document.body.appendChild(ov);
   }
 
   // ---- "Ask" assistant overlay (Beta) -----------------------------------
@@ -653,9 +772,10 @@
       var wrap=el('div','chat-quick');wrap.style.padding='2px 0 6px';
       found.forEach(function(r){
         var card=el('div');
-        card.style.cssText='width:74px;flex:none;display:flex;flex-direction:column;gap:3px';
+        card.style.cssText='width:88px;flex:none;display:flex;flex-direction:column;gap:3px;cursor:pointer';
+        card.onclick=function(){renderDetail(r);};
         var ph=el('div','s-thumb');
-        ph.style.cssText='width:74px;height:88px;position:relative;border-radius:10px';
+        ph.style.cssText='width:88px;height:104px;position:relative;border-radius:10px;cursor:pointer';
         if(r.image_url){var im=document.createElement('img');im.src=r.image_url;im.alt='';ph.appendChild(im);}
         var plus=el('button','addbtn','+');
         plus.style.top='4px';plus.style.right='4px';
