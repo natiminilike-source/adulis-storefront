@@ -237,7 +237,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v24',
+        footer:'Live stock from <b>Adulis</b> · v25',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -296,7 +296,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v24',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v25',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -383,6 +383,25 @@
   function money(n){return Number(n).toLocaleString('en-US')+' ETB';}
   function appLink(s){return 'https://t.me/AdulisShopBot/app?startapp='+encodeURIComponent(s);}
   var NL=String.fromCharCode(10); // newline inside JS strings (escape-proof)
+  // Self-update: every release ships version.txt alongside this page.
+  // On load we check it (cache-busted); if the merchant arrived through a
+  // stale entry point (old message button, menu button, cached webview),
+  // the page silently reloads itself onto the current build — no /start
+  // rituals, no force-close folklore.
+  var BUILD=25;
+  try{
+    fetch(location.origin+location.pathname.replace(/[^/]*$/,'')+'version.txt?cb='+Date.now())
+      .then(function(r){return r.ok?r.text():Promise.reject();})
+      .then(function(v){
+        var latest=parseInt(v,10);
+        if(latest>BUILD){
+          var u=new URL(location.href);
+          u.searchParams.set('v',String(latest));
+          location.replace(u.href);
+        }
+      })
+      .catch(function(){});
+  }catch(e){}
   function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
   function content(){return document.getElementById('content');}
   // Shop header badge: the merchant's own logo when they've sent one to
