@@ -237,7 +237,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v26',
+        footer:'Live stock from <b>Adulis</b> · v27',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -299,7 +299,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v26',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v27',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -394,7 +394,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=26;
+  var BUILD=27;
   try{
     fetch(location.origin+location.pathname.replace(/[^/]*$/,'')+'version.txt?cb='+Date.now())
       .then(function(r){return r.ok?r.text():Promise.reject();})
@@ -805,7 +805,11 @@
         var plus=el('button','addbtn','+');
         plus.style.top='4px';plus.style.right='4px';
         plus.style.width='26px';plus.style.height='26px';plus.style.fontSize='16px';
-        plus.onclick=function(){
+        plus.onclick=function(ev){
+          // Without stopPropagation the tap also fires card.onclick → the
+          // detail overlay opens on top and the add looks dead (the grid's
+          // + has always had this; the chat cards were missing it).
+          ev.stopPropagation();
           cartAdd({name:r.item_name,price:Number(r.sell_price)});
           plus.textContent='✓';
           setTimeout(function(){plus.textContent='+';},800);
@@ -1057,6 +1061,15 @@
     if(!window.__tab)window.__tab='items';
     document.getElementById('storeName').textContent=store.name;
     document.getElementById('storeSub').textContent=L.ownerTitle+' · '+L.appSub;
+    // The owner panel wears the shop's logo too (founder ask 2026-09-13):
+    // same header badge as the customer view. Header RPC works even for
+    // empty shops; no logo / fetch failure → "A" fallback stays.
+    fetch(API+'/rest/v1/rpc/public_storefront_header',{
+      method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({p_slug:store.slug})
+    }).then(function(r){return r.ok?r.json():Promise.reject();})
+      .then(function(h){if(h&&h.length)setLogo(h[0].logo_url||null);})
+      .catch(function(){});
     renderOwnerTab(window.__tab,fresh);
     drawTabBar();
   }
