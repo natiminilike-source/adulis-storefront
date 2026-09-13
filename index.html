@@ -237,10 +237,13 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v25',
+        footer:'Live stock from <b>Adulis</b> · v26',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
+        browserTitle:'Your shop lives in Telegram',
+        browserNote:'Telegram is your login — no passwords to forget or leak. Open the bot to create your shop or get straight back to your panel.',
+        browserBtn:'Open Telegram · @AdulisShopBot',
         shopNameL:'Shop name', emailL:'Email', passL:'Password (6+ characters)',
         createBtn:'Create my shop', creating:'Creating…',
         credTitle:'Use in the Adulis app',
@@ -296,10 +299,13 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v25',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v26',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
+        browserTitle:'ሱቅዎ በቴሌግራም ውስጥ ነው',
+        browserNote:'ቴሌግራም መግቢያዎ ነው — የሚረሳ ወይም የሚፈስ የይለፍ ቃል የለም። ሱቅ ለመፍጠር ወይም ወደ ክፍልዎ በቀጥታ ለመመለስ ቦቱን ይክፈቱ።',
+        browserBtn:'ቴሌግራም ክፈት · @AdulisShopBot',
         shopNameL:'የሱቅ ስም', emailL:'ኢሜይል', passL:'የመግቢያ ቃል (6+ ፊደላት)',
         createBtn:'ሱቄን ይፍጠሩ', creating:'በመፍጠር ላይ…',
         credTitle:'በአዱሊስ መተግበሪያ ይጠቀሙ',
@@ -388,7 +394,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=25;
+  var BUILD=26;
   try{
     fetch(location.origin+location.pathname.replace(/[^/]*$/,'')+'version.txt?cb='+Date.now())
       .then(function(r){return r.ok?r.text():Promise.reject();})
@@ -966,9 +972,21 @@
     document.getElementById('storeSub').textContent=L.appSub;
     setLogo(null);
     var p=el('div','panel');
+    // Plain browser (no Telegram identity): the form can never authenticate
+    // here — convert the moment instead. One big button into the bot, where
+    // signup works (Telegram = login). Covers ?mode=create AND ?mode=home.
+    if(!initDataOK()){
+      document.getElementById('storeName').textContent=L.browserTitle;
+      p.appendChild(el('h2',null,L.browserTitle));
+      p.appendChild(el('div','note',L.browserNote));
+      var go=el('a','btn',L.browserBtn);
+      go.href='https://t.me/AdulisShopBot';
+      go.style.display='block';go.style.textAlign='center';go.style.marginTop='12px';
+      p.appendChild(go);
+      c.appendChild(p);return;
+    }
     p.appendChild(el('h2',null,L.createTitle));
     p.appendChild(el('div','note',L.createIntro));
-    if(!initDataOK()) needBotHint(p);
     var f1=el('div','field');f1.appendChild(el('label',null,L.shopNameL));
     var iName=document.createElement('input');iName.maxLength=60;iName.placeholder='…';f1.appendChild(iName);
     var err=el('div','err',errMsg||'');
