@@ -212,6 +212,10 @@
   var KEY='sb_publishable_33p448jGnQfTZab7rB9nHw_y6NUkqjy';
   var AUTHFN=API+'/functions/v1/telegram-auth';
   var APK='https://github.com/natiminilike-source/adulis-releases/releases/latest/download/Adulis.apk';
+  // One-word switch for APK launch day: flips the "Use in the Adulis app"
+  // card and every APK download button back on (founder call 2026-09-13 —
+  // merchants shouldn't see the app until it launches).
+  var APK_LAUNCHED=false;
   var BASE=location.origin+location.pathname;
   var q=new URLSearchParams(location.search);
   var slug=(q.get('s')||'').trim();
@@ -237,7 +241,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v27',
+        footer:'Live stock from <b>Adulis</b> · v28',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -246,6 +250,9 @@
         browserBtn:'Open Telegram · @AdulisShopBot',
         shopNameL:'Shop name', emailL:'Email', passL:'Password (6+ characters)',
         createBtn:'Create my shop', creating:'Creating…',
+        userL:'Your Telegram @username — customers tap Buy to DM you directly',
+        userSaved:'Saved — Buy / Negotiate buttons are live on your shop!',
+        errUser:'Username must be 4-32 letters, numbers or _ (from Telegram Settings → Edit Profile → Username)',
         credTitle:'Use in the Adulis app',
         credNote:'Already use the Adulis app? Enter that email + password — this Telegram shop connects to your existing store.\nNew here? This becomes your app login.',
         saveBtn:'Save', credSaved:'Saved! Use this email + password in the Adulis app.',
@@ -299,7 +306,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v27',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v28',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -308,6 +315,9 @@
         browserBtn:'ቴሌግራም ክፈት · @AdulisShopBot',
         shopNameL:'የሱቅ ስም', emailL:'ኢሜይል', passL:'የመግቢያ ቃል (6+ ፊደላት)',
         createBtn:'ሱቄን ይፍጠሩ', creating:'በመፍጠር ላይ…',
+        userL:'የቴሌግራም ተጠቃሚ ስምዎ (@username) — ደኞች Buy ቢጫኑ በቀጥታ ይልኩልዎታል',
+        userSaved:'ተቀምጧል — የመግዛት / የመደራደር አዝራሮች አሁን በሱቁ ላይ ይሠራሉ!',
+        errUser:'ተጠቃሚ ስም 4-32 ፊደላት፣ ቁጥሮች ወይም _ መሆን አለበት (ከቴሌግራም Settings → Edit Profile → Username)',
         credTitle:'በአዱሊስ መተግበሪያ ይጠቀሙ',
         credNote:'አዱሊስ መተግበሪያ አሁንም ይጠቀማሉ? ያንን ኢሜይልና ቃል ይጻፉ — የቴሌግራም ሱቁ ከነባር ሱቅዎ ጋር ይገናኛል።\nአዲስ ነዎት? ይህ የመተግበሪያዎ መግቢያ ይሆናል።',
         saveBtn:'አስቀምጥ', credSaved:'ተቀምጧል! ይህን ኢሜይልና ቃል በአዱሊስ መተግበሪያ ይጠቀሙ።',
@@ -394,7 +404,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=27;
+  var BUILD=28;
   try{
     fetch(location.origin+location.pathname.replace(/[^/]*$/,'')+'version.txt?cb='+Date.now())
       .then(function(r){return r.ok?r.text():Promise.reject();})
@@ -510,8 +520,11 @@
           document.getElementById('storeSub').textContent=L.subNoUser;
           setLogo(store.logo_url);
           var s=el('div','state',L.emptyShop);
-          var b=el('a','btn',L.getApp);b.href=APK;b.target='_blank';
-          s.appendChild(b);c.appendChild(s);
+          if(APK_LAUNCHED){
+            var b=el('a','btn',L.getApp);b.href=APK;b.target='_blank';
+            s.appendChild(b);
+          }
+          c.appendChild(s);
         }else{
           c.appendChild(el('div','state',L.unavailable));
         }
@@ -1127,13 +1140,35 @@
     p.appendChild(el('h2',null,store.name));
     // Channel-less + username-less merchants get guided, not stuck:
     // without a @username the shop's Buy/Negotiate buttons can't open a
-    // DM (Telegram has no link to reach them).
+    // DM (Telegram has no link to reach them). The note explains; the
+    // field FIXES it right here (server also auto-syncs on every signin).
     if(window.__ownerUsername===null||window.__ownerUsername===''){
       var un=el('div','note',L.noUserNote);
       un.style.border='1px solid var(--warn)';un.style.borderRadius='10px';
       un.style.padding='8px 10px';un.style.marginBottom='10px';
       p.appendChild(un);
     }
+    var fu=el('div','field');fu.appendChild(el('label',null,L.userL));
+    var iUs=document.createElement('input');iUs.placeholder='@myshop';
+    if(window.__ownerUsername)iUs.value='@'+window.__ownerUsername;
+    fu.appendChild(iUs);
+    var uerr=el('div','err');
+    var uok=el('div','okmsg');
+    var bUs=el('button','btn ghost',detectCur()==='am'?'አስቀምጥ':'Save');
+    bUs.onclick=function(){
+      uerr.textContent='';uok.textContent='';
+      var v=iUs.value.trim().replace(/^@/,'');
+      if(!v){window.__ownerUsername='';iUs.value='';return;}
+      if(!/^[A-Za-z0-9_]{4,32}$/.test(v)){uerr.textContent=L.errUser;return;}
+      bUs.disabled=true;
+      authCall('username_set',{username:v}).then(function(j){
+        bUs.disabled=false;
+        if(j.ok){window.__ownerUsername=j.telegram_username;uok.textContent=L.userSaved;}
+        else uerr.textContent=L.errUser+'  ⓘ '+(j.error||'');
+      }).catch(function(){bUs.disabled=false;uerr.textContent=L.errGeneric;});
+    };
+    fu.appendChild(bUs);fu.appendChild(uerr);fu.appendChild(uok);
+    p.appendChild(fu);
     // Logo management — in the panel, not bot-lore.
     var logoRow=el('div','ph-pick');
     var logoPrev=el('div','ph-prev');
@@ -1250,9 +1285,9 @@
     };
     p.appendChild(fc);p.appendChild(pickWrap);p.appendChild(bPost);p.appendChild(err);
 
-    // One-time APK bridge — hidden once real credentials exist (server
-    // says needs_credentials:false after linking or setting them).
-    if(window.__needsCreds!==false){
+    // One-time APK bridge — returns at APK launch (APK_LAUNCHED); until
+    // then merchants never see app-related UI.
+    if(APK_LAUNCHED && window.__needsCreds!==false){
     p.appendChild(el('h2',null,L.credTitle));
     p.appendChild(el('div','note',L.credNote));
     var fe=el('div','field');fe.appendChild(el('label',null,L.emailL));
@@ -1292,9 +1327,11 @@
     } // end needs-credentials gate
 
     var gap2=el('div');gap2.style.height='6px';p.appendChild(gap2);
-    p.appendChild(el('div','note',L.getAppNote));
-    var bApk=el('a','btn ghost',L.getApp);bApk.href=APK;bApk.target='_blank';
-    p.appendChild(bApk);
+    if(APK_LAUNCHED){
+      p.appendChild(el('div','note',L.getAppNote));
+      var bApk=el('a','btn ghost',L.getApp);bApk.href=APK;bApk.target='_blank';
+      p.appendChild(bApk);
+    }
     c.appendChild(p);
   }
 
