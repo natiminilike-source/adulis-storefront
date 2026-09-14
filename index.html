@@ -99,7 +99,7 @@
   .szdel{border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:15px;padding:0 4px}
   .toggle{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;user-select:none}
   .toggle input{width:18px;height:18px;accent-color:var(--accent)}
-  .hotline{display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px dashed var(--edge)}
+  .hotline{display:flex;align-items:center;flex-wrap:wrap;gap:6px 9px;padding:6px 0;border-bottom:1px dashed var(--edge)}
   .hotline:last-child{border-bottom:none}
   .s-thumb{width:40px;height:40px;border-radius:8px;background:var(--edge);flex:none;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:15px}
   .s-thumb img{width:100%;height:100%;object-fit:cover;display:block}
@@ -241,7 +241,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v30',
+        footer:'Live stock from <b>Adulis</b> · v31',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -307,7 +307,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v30',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v31',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -406,7 +406,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=30;
+  var BUILD=31;
   try{
     fetch(location.origin+location.pathname.replace(/[^/]*$/,'')+'version.txt?cb='+Date.now())
       .then(function(r){return r.ok?r.text():Promise.reject();})
@@ -1391,7 +1391,8 @@
               chLabel(s.channel)+' · '+fmtWhen(s.at)
             );
             if(s.id){
-              var acts=el('div','ir-sub');acts.style.marginTop='4px';
+              var acts=el('div','ir-sub');
+              acts.style.cssText='flex-basis:100%;margin-top:4px;justify-content:flex-end';
               var bE=el('button','mbtn',L.editBtn);bE.style.margin='2px';
               bE.onclick=function(){renderSaleEdit(s);};
               var bD=el('button','mbtn warn',L.delBtn);bD.style.margin='2px';
@@ -1404,8 +1405,8 @@
                 bD.disabled=true;bD.textContent='…';
                 authCall('sale_delete',{sale_id:s.id}).then(function(k){
                   if(k.ok){renderOwnerTab('sales');}
-                  else{bD.disabled=false;bD.textContent=L.delBtn;}
-                }).catch(function(){bD.disabled=false;bD.textContent=L.delBtn;});
+                  else{bD.disabled=false;armed=false;bD.textContent=L.delBtn;bD.classList.remove('on');}
+                }).catch(function(){bD.disabled=false;armed=false;bD.textContent=L.delBtn;bD.classList.remove('on');});
               };
               acts.appendChild(bE);acts.appendChild(bD);
               row.appendChild(acts);
