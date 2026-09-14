@@ -241,7 +241,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v29',
+        footer:'Live stock from <b>Adulis</b> · v30',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -274,7 +274,8 @@
         itemNameL:'Item name', priceL:'Price (ETB)', negToggleL:'Price is negotiable (Negotiate button)',
         sizesL:'Sizes — tap to add, then set counts', addSizePh:'Other size (e.g. 3XL)…', addSizeBtn:'Add',
         saveItemBtn:'Save item', saving:'Saving…', photoHint:'Now send the item photo to @AdulisShopBot — it attaches automatically.',
-        editBtn:'Edit', soldBtn:'Sold', hideBtn:'Hide', showBtn:'Show', hiddenTag:'hidden',
+        editBtn:'Edit', delBtn:'Delete', sureBtn:'Sure?', saleEditTitle:'Edit sale', saleAmtL:'Amount (total for the sale)', saleUpd:'Sale updated ✓', saleDel:'Deleted ✓ — stock restored',
+        soldBtn:'Sold', hideBtn:'Hide', showBtn:'Show', hiddenTag:'hidden',
         updDone:'Saved ✓', errPrice:'Enter a valid price.', errSizes:'Add at least one size with a count.',
         soldTitle:'Mark as sold', sizeL:'Size', qtyL:'How many', amountL:'Amount received (ETB)',
         payChL:'How were you paid?', markBtn:'Record sale', soldDone:'Sale recorded ✓', errSoldQty:'Enter how many were sold.',
@@ -306,7 +307,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v29',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v30',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -339,7 +340,8 @@
         itemNameL:'የዕቃ ስም', priceL:'ዋጋ (ብር)', negToggleL:'ዋጋ ይደራደራል (ይደራደሩ አዝራር)',
         sizesL:'ግዝፈቶች — ተምረው ብዛቱን ይሙሉ', addSizePh:'ሌላ ግዝፈት (ለምሳሌ 3XL)…', addSizeBtn:'ጨምር',
         saveItemBtn:'ዕቃውን አስቀምጥ', saving:'በማስቀመጥ ላይ…', photoHint:'አሁን የዕቃውን ምስል ለ@AdulisShopBot ይላኩ — ራሱ ይጣመራል።',
-        editBtn:'አስተካክል', soldBtn:'ተሽጧል', hideBtn:'ደብቅ', showBtn:'አሳይ', hiddenTag:'የተደበቀ',
+        editBtn:'አስተካክል', delBtn:'አጥፋ', sureBtn:'እርግጠኛ ኖት?', saleEditTitle:'ሽያጭ አስተካክል', saleAmtL:'መጠን (የሽያጩ ጠቅላላ)', saleUpd:'ሽያጩ ተስተካክሏል ✓', saleDel:'ተሰርዟል ✓ — ክምችሉ ተመልሷል',
+        soldBtn:'ተሽጧል', hideBtn:'ደብቅ', showBtn:'አሳይ', hiddenTag:'የተደበቀ',
         updDone:'ተቀምጧል ✓', errPrice:'ትክክለኛ ዋጋ ያስገቡ።', errSizes:'ቢያንስ አንድ ግዝፈት ከብዛት ጋር ይጨምሩ።',
         soldTitle:'ሽያጭ መዝግብ', sizeL:'ግዝፈት', qtyL:'ስንት ተሽጧል', amountL:'የተቀበሉት መጠን (ብር)',
         payChL:'እንዴት ተከፈለ?', markBtn:'ሽያጩን መዝግብ', soldDone:'ሽያጭ ተመዝግቧል ✓', errSoldQty:'ስንት መሽጫቸው እንደሆነ ይጻፉ።',
@@ -357,7 +359,7 @@
         dmCart:function(lines,total){return 'ሰላም! እነዚህን መግዛት እፈልጋለሁ:'+NL+lines+NL+'ጠቅላላ: '+total;},
         askHi:'ሰላም! ስለ ዕቃዎቻችን ማንኛውንም ጠይቁ — ዋጋ፣ ግዝፈት፣ የሚገኘው።',
         quick1:'ከ2000 በታች ምን አለ?', quick2:'የትኞቹ ግዝፈቶች አሉ?', quick3:'የስጦታ ሃሳብ',
-        askSend:'ላክ', aiFail:'አጋዢው አሁን አይገኝም — እንደገና ይሞክሩ።',
+        askSend:'ላክ', askPh:'ስለ ዕቃዎች ጠይቁ…', aiFail:'አጋዢው አሁን አይገኝም — እንደገና ይሞክሩ።',
         aiCap:'የቀን ጥያቄ ገደብ ተሞልቷል — ነገ ይመለሱ።',
         webLinkNote:'የድረ-ገጽ አገናኝ — ከቴሌግራም ውጭም ይሠራል፦',
         segBest:'እየሸጡ', segLag:'ዝጉት', segSales:'ሽያጮች',
@@ -404,7 +406,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=29;
+  var BUILD=30;
   try{
     fetch(location.origin+location.pathname.replace(/[^/]*$/,'')+'version.txt?cb='+Date.now())
       .then(function(r){return r.ok?r.text():Promise.reject();})
@@ -539,7 +541,7 @@
     // Opened in a plain browser (WhatsApp/bio links)? Offer the jump
     // into Telegram's fullscreen mini app — the browser stays a fallback.
     if(!(tg&&tg.initData&&tg.initData.length)){
-      var inTg=el('a','btn','Open in Telegram');
+      var inTg=el('a','btn',detectCur()==='am'?'በቴሌግራም ክፈት':'Open in Telegram');
       inTg.href=appLink(slug);
       inTg.style.marginBottom='10px';
       var c0=content();
@@ -603,8 +605,6 @@
     if(!window.__cart.length||window.__mode!=='shop')return;
     var fab=el('button','cartfab');
     fab.id='cartfab';
-    fab.innerHTML='<span>'+detectCur()==='am'?'':'';
-    fab.textContent='';
     var n=cartCount();
     fab.appendChild(document.createTextNode((detectCur()==='am'?'የተመረጡ':'Picked')+' · '+n+' · '+money(cartTotal())));
     fab.onclick=renderCart;
@@ -1380,15 +1380,37 @@
             bodies.lag.appendChild(saleRow(w.img||w.image_url,w.name,money(w.sell_price),''));
           });
         }else{bodies.lag.appendChild(el('div','note',L.noneYet));}
-        // SALES LIST
+        // SALES LIST — every row carries Edit/Delete (clumsy-hands safety:
+        // a wrong price gets fixed; a wrong sale vanishes and stock returns)
         if(j.sales&&j.sales.length){
           j.sales.forEach(function(s){
-            bodies.sales.appendChild(saleRow(
+            var row=saleRow(
               s.img,
               s.name+(s.size?' ('+shortSize(s.size)+')':'')+' ×'+s.qty,
               money(s.amount),
               chLabel(s.channel)+' · '+fmtWhen(s.at)
-            ));
+            );
+            if(s.id){
+              var acts=el('div','ir-sub');acts.style.marginTop='4px';
+              var bE=el('button','mbtn',L.editBtn);bE.style.margin='2px';
+              bE.onclick=function(){renderSaleEdit(s);};
+              var bD=el('button','mbtn warn',L.delBtn);bD.style.margin='2px';
+              var armed=false,tid=null;
+              bD.onclick=function(){
+                if(!armed){armed=true;bD.textContent=L.sureBtn;bD.classList.add('on');
+                  tid=setTimeout(function(){armed=false;bD.textContent=L.delBtn;bD.classList.remove('on');},3000);
+                  return;}
+                clearTimeout(tid);
+                bD.disabled=true;bD.textContent='…';
+                authCall('sale_delete',{sale_id:s.id}).then(function(k){
+                  if(k.ok){renderOwnerTab('sales');}
+                  else{bD.disabled=false;bD.textContent=L.delBtn;}
+                }).catch(function(){bD.disabled=false;bD.textContent=L.delBtn;});
+              };
+              acts.appendChild(bE);acts.appendChild(bD);
+              row.appendChild(acts);
+            }
+            bodies.sales.appendChild(row);
           });
         }else{bodies.sales.appendChild(el('div','note',L.noSales));}
         showSec(sec);
@@ -1754,16 +1776,68 @@
       var qty=Math.floor(Number(iQty.value||0));
       if(chosenSize===null&&avail.length>1){err.textContent=L.sizeL+'?';return;}
       if(qty<1){err.textContent=L.errSoldQty;return;}
+      // Money guard: an emptied/invalid amount box must never record a
+      // 0-birr or NaN sale (audit 2026-09-14) — same rigor as qty.
+      var amt=Number(iAmt.value);
+      if(!isFinite(amt)||amt<=0){err.textContent=L.errPrice;return;}
       btn.disabled=true;
       authCall('sale_mark',{
         item_id:item.id,
         size_slug:chosenSize?chosenSize.slug:undefined,
-        qty:qty,amount:Number(iAmt.value||0),channel:channel
+        qty:qty,amount:amt,channel:channel
       }).then(function(j){
         btn.disabled=false;
         if(!j.ok){err.textContent=L.errGeneric+'  ⓘ '+errDetail(j);return;}
         okm.textContent=L.soldDone;
         setTimeout(function(){renderOwner(window.__ownerStore);},800);
+      }).catch(function(){btn.disabled=false;err.textContent=L.errGeneric;});
+    };
+    p.appendChild(btn);
+    c.appendChild(p);
+  }
+
+  // Edit-sale sheet: fix a clumsy price/channel without deleting anything.
+  // Qty is deliberately NOT editable — changing it would re-open stock math.
+  function renderSaleEdit(s){
+    window.__mode='saleedit';
+    var c=content();c.innerHTML='';
+    document.getElementById('storeName').textContent=L.saleEditTitle;
+    document.getElementById('storeSub').textContent=s.name;
+    setLogo(null);
+    var p=el('div','panel');
+    var back=el('button','mbtn back',detectCur()==='am'?'‹ ተመለስ':'‹ Back');
+    back.onclick=function(){renderOwnerTab('sales');};
+    p.appendChild(back);
+    p.appendChild(el('h2',null,L.saleEditTitle+' — '+s.name));
+    var fa=el('div','field');fa.appendChild(el('label',null,L.saleAmtL));
+    var iAmt=document.createElement('input');iAmt.inputMode='numeric';
+    iAmt.value=String(s.amount);
+    fa.appendChild(iAmt);p.appendChild(fa);
+    p.appendChild(el('h3',null,L.payChL));
+    var channel=s.channel||'cash';
+    var chLine=el('div','ir-sub');
+    [['telebirr',detectCur()==='am'?'ቴሌብር':'Telebirr'],['cbe','CBE'],['cash',detectCur()==='am'?'ጥሬ ገንዘብ':'Cash'],['other','·']].forEach(function(pair){
+      var b=el('button','mbtn'+(channel===pair[0]?' on':''),pair[1]);
+      b.onclick=function(){
+        channel=pair[0];
+        Array.prototype.forEach.call(chLine.children,function(x){x.classList.remove('on');});
+        b.classList.add('on');
+      };
+      chLine.appendChild(b);
+    });
+    p.appendChild(chLine);
+    var err=el('div','err');p.appendChild(err);
+    var okm=el('div','okmsg');p.appendChild(okm);
+    var btn=el('button','btn',L.saveBtn);
+    btn.onclick=function(){
+      err.textContent='';okm.textContent='';
+      var amt=Number(iAmt.value);
+      if(!isFinite(amt)||amt<=0){err.textContent=L.errPrice;return;}
+      btn.disabled=true;
+      authCall('sale_edit',{sale_id:s.id,amount:amt,channel:channel}).then(function(j){
+        btn.disabled=false;
+        if(j.ok){okm.textContent=L.saleUpd;setTimeout(function(){renderOwnerTab('sales');},700);}
+        else err.textContent=L.errGeneric+'  ⓘ '+errDetail(j);
       }).catch(function(){btn.disabled=false;err.textContent=L.errGeneric;});
     };
     p.appendChild(btn);
