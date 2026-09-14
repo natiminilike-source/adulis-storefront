@@ -241,7 +241,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v32',
+        footer:'Live stock from <b>Adulis</b> · v33',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -307,7 +307,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v32',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v33',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -406,7 +406,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=32;
+  var BUILD=33;
   try{
     fetch(location.origin+location.pathname.replace(/[^/]*$/,'')+'version.txt?cb='+Date.now())
       .then(function(r){return r.ok?r.text():Promise.reject();})
@@ -446,19 +446,26 @@
     }catch(e){}
   }
   function openTg(u){
+    // Last-ditch navigation: some webviews (notably Telegram's in-app
+    // browser) block window.open without a gesture or block it entirely —
+    // navigating the page itself always reaches Telegram's link handler.
+    var forceOpen=function(){
+      var w=null;
+      try{ w=window.open(u,'_blank'); }catch(e){}
+      if(!w){ try{ location.href=u; }catch(e){} }
+    };
     var viaWebApp=false;
     try{ if(tg&&tg.openTelegramLink){tg.openTelegramLink(u);viaWebApp=true;} }catch(e){}
     if(viaWebApp){
-      // Some clients (notably modified builds) silently ignore user-DM
-      // links handed over from a mini app — if we're still visible shortly
-      // after, Telegram never took over: open the link directly. When the
-      // handoff works, Telegram hides this page and the fallback skips.
+      // Some contexts (the in-app browser; modified builds) silently
+      // ignore user-DM links from this API — if we're still visible
+      // shortly after, Telegram never took over: open it ourselves.
       setTimeout(function(){
-        if(!document.hidden){try{window.open(u,'_blank');}catch(e){}}
+        if(!document.hidden)forceOpen();
       },400);
       return;
     }
-    window.open(u,'_blank');
+    forceOpen();
   }
 
   // =====================================================================
