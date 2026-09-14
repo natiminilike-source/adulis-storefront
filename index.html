@@ -241,7 +241,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v31',
+        footer:'Live stock from <b>Adulis</b> · v32',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -307,7 +307,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v31',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v32',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -406,7 +406,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=31;
+  var BUILD=32;
   try{
     fetch(location.origin+location.pathname.replace(/[^/]*$/,'')+'version.txt?cb='+Date.now())
       .then(function(r){return r.ok?r.text():Promise.reject();})
@@ -446,7 +446,18 @@
     }catch(e){}
   }
   function openTg(u){
-    try{ if(tg&&tg.openTelegramLink){tg.openTelegramLink(u);return;} }catch(e){}
+    var viaWebApp=false;
+    try{ if(tg&&tg.openTelegramLink){tg.openTelegramLink(u);viaWebApp=true;} }catch(e){}
+    if(viaWebApp){
+      // Some clients (notably modified builds) silently ignore user-DM
+      // links handed over from a mini app — if we're still visible shortly
+      // after, Telegram never took over: open the link directly. When the
+      // handoff works, Telegram hides this page and the fallback skips.
+      setTimeout(function(){
+        if(!document.hidden){try{window.open(u,'_blank');}catch(e){}}
+      },400);
+      return;
+    }
     window.open(u,'_blank');
   }
 
@@ -1264,26 +1275,33 @@
     };
     pickWrap.appendChild(bPick);pickWrap.appendChild(pickBox);
     var err=el('div','err');
+    var okn=el('div','okmsg');
+    var rsn=el('div','note');
+    rsn.style.fontSize='11px';
     var bPost=el('button','btn',L.postBtn);
     bPost.onclick=function(){
-      err.textContent='';
+      err.textContent='';okn.textContent='';rsn.textContent='';
       var ch=iCh.value.trim().replace(/^@/,'');
       if(!ch){err.textContent=L.errChannel;return;}
       bPost.disabled=true;bPost.textContent=L.posting;
       authCall('post_channel',{channel:ch,item_ids:[...picked.keys()]})
         .then(function(j){
           if(j.ok){
-            err.textContent='';
+            // The post went out — a deep-link fallback is INFORMATION, not
+            // an error (green note, never the red style that screams danger).
+            if(j.mode==='deep_link'){
+              okn.textContent=L.deepNote;
+              if(j.fallback_reason)rsn.textContent='ⓘ '+j.fallback_reason;
+            }else{okn.textContent=L.posted;}
             bPost.textContent=L.posted;
             window.__ownerChannel=ch;
-            if(j.mode==='deep_link')err.textContent=L.deepNote;
           }
           else{err.textContent=L.errChannel+'  ⓘ '+(j.why||j.error||'');bPost.textContent=L.postBtn;}
           bPost.disabled=false;
         })
         .catch(function(){err.textContent=L.errGeneric;bPost.disabled=false;bPost.textContent=L.postBtn;});
     };
-    p.appendChild(fc);p.appendChild(pickWrap);p.appendChild(bPost);p.appendChild(err);
+    p.appendChild(fc);p.appendChild(pickWrap);p.appendChild(bPost);p.appendChild(okn);p.appendChild(rsn);p.appendChild(err);
 
     // One-time APK bridge — returns at APK launch (APK_LAUNCHED); until
     // then merchants never see app-related UI.
