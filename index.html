@@ -241,7 +241,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v33',
+        footer:'Live stock from <b>Adulis</b> · v34',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -300,14 +300,39 @@
         p7:'7 days', p30:'30 days', pall:'All', showMore:'Show more', shareL:'Share',
         noUserNote:'Customers can browse your shop, but the Buy / Negotiate buttons stay off until you set a Telegram username: Telegram Settings → Edit Profile → Username. It takes 20 seconds.',
         noUserShop:'This shop hasn\u2019t turned on messaging yet — check back soon.',
-        noSales:'No sales in this period yet.'},
+        noSales:'No sales in this period yet.',
+        // --- sales engine (v34) ---
+        accTypeQ:'I want to…', accMerchant:'Sell my own items', accAffiliate:'Sell others\u2019 items for commission',
+        affCreateIntro:'Name your shop — pick items from real merchants, share your link, and earn a commission on every sale. Your Telegram is the login.',
+        affOwnerTitle:'My affiliate shop',
+        tabCatalog:'Catalog', tabOrders:'Orders',
+        catEmpty:'No merchants have opened affiliate selling yet — check back soon.',
+        catStock:'left', cutLbl:'your cut',
+        saveShelfBtn:'Save my shelf', shelfSaved:'Shelf saved ✓',
+        shelfTitle:'My shelf', getMediaBtn:'Get media', mediaSent:'✓ Sent — check your @AdulisShopBot chat.',
+        kitTitle:'Marketing kit (CapCut)', kitNote:'Tap a template → replace the clips with the item\u2019s raw video (Get media button) → export → post. Simple is fine: the raw video + price also sells.',
+        kitSoon:'Templates are being prepared — coming very soon.',
+        commitTitle:'Record customer order', commitPickL:'Item', deliveryL:'Delivery fee (ETB)',
+        commitBtn:'Send order to merchant', orderSent:'Order sent! The merchant is being notified — watch your @AdulisShopBot chat.',
+        youGetLbl:'You receive', custPaysLbl:'Customer pays',
+        stPending:'Waiting for merchant', stAccepted:'Accepted', stSoldout:'Sold out', stExpired:'Expired',
+        paidTag:'commission paid', unpaidTag:'commission unpaid',
+        acceptBtn:'Accept', refuseBtn:'Sold out', markPaidBtn:'Mark paid',
+        affOrdersL:'Affiliate orders', noAffOrders:'No affiliate orders yet.',
+        affTitle:'Affiliates — let others sell your items',
+        affToggleL:'Allow affiliates (they earn the commission you set)',
+        affPctL:'Commission % (e.g. 10)', affPickupL:'Pickup location for deliveries (shown to affiliates when you accept)',
+        affPickupPhoneL:'Pickup phone (optional)', affSaved:'Saved ✓',
+        viaLbl:'from', videoBtn:'🎬 Video',
+        dmBuyAff:function(n,p,m){return 'Selam! I want to buy '+n+' ('+p+') from '+m+'. Is it available?';},
+        dmAff:function(n,p,m){return 'Selam! '+n+' ('+p+') from '+m+' — is the price negotiable?';}},
     am:{appSub:'በቴሌግራም ውስጥ ሱቆች', sub:'ይመለከቱ · ዋጋ በቴሌግራም ይደራደሩ', subNoUser:'ዕቃዎችን ይመለከቱ',
         in:'አለ', low:'ጥቂቱ', out:'አልቀረም',
         neg:'ይደራደሩ', buyOut:'ተሽጧል', buyNoUser:'በውይይት ጠይቁ',
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v33',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v34',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -366,7 +391,32 @@
         p7:'7 ቀናት', p30:'30 ቀናት', pall:'ሁሉም', showMore:'ተጨማሪ አሳይ', shareL:'ያጋሩ',
         noUserNote:'ደኞች ሱቁን ማየት ይችላሉ፣ ነገር ግን የቴሌግራም ተጠቃሚ ስም እስክያዘጋጁ ድረስ የመግዛት/የመደራደር አዝራሮች አይሠሩም፦ ቴሌግራም Settings → Edit Profile → Username።',
         noUserShop:'ይህ ሱቅ እስካሁን መልእክት አላከፈተም — በቅርቡ ይመለሱ።',
-        noSales:'በዚህ ጊዜ ሽያጭ የለምም።'}
+        noSales:'በዚህ ጊዜ ሽያጭ የለምም።',
+        // --- sales engine (v34) ---
+        accTypeQ:'ል…', accMerchant:'የራሴን ዕቃ ላሽጥ', accAffiliate:'የሌሎችን ዕቃ ለኮሚሽን ላሽጥ',
+        affCreateIntro:'ሱቅዎን ይሰይሙ — ከነጋዴዎች ዕቃ ይምረጡ፣ አገናኙን ያጋሩ፣ በእያንዳንዱ ሽያጭ ኮሚሽን ያግኙ። ቴሌግራሙ መግቢያዎ ነው።',
+        affOwnerTitle:'የኮሚሽን ሱቄ',
+        tabCatalog:'ካታሎግ', tabOrders:'ትዕዛዞች',
+        catEmpty:'እስካሁን ኮሚሽን ሽያጭ የከፈተ ነጋዴ የለም — በቅርቡ ይመለሱ።',
+        catStock:'ቀርቷል', cutLbl:'የእርስዎ ድርሻ',
+        saveShelfBtn:'መደራጃዬን አስቀምጥ', shelfSaved:'ተቀምጧል ✓',
+        shelfTitle:'መደራጃዬ', getMediaBtn:'ሚዲያ አምጣ', mediaSent:'✓ ተልኳል — የ@AdulisShopBot ውይይትዎን ይመልከቱ።',
+        kitTitle:'የግብይት መሣሪያ (CapCut)', kitNote:'ቲምፕሌቱን ይክፈቱ → ክሊፖችን በዕቃው ጥሬ ቪዲዮ ይተኩ (ሚዲያ አምጣ) → ያውጡ → ይለጥፉ። ቀላል የሆነውም ይሠራል፦ ጥሬ ቪዲዮው + ዋጋ።',
+        kitSoon:'ቲምፕሌቶች እየተዘጋጁ ናቸው — በቅርቡ።',
+        commitTitle:'የደንበኛ ትዕዛዝ መዝግብ', commitPickL:'ዕቃ', deliveryL:'የማድረስ ክፍያ (ብር)',
+        commitBtn:'ትዕዛዙን ለነጋዴው ላክ', orderSent:'ተልኳል! ነጋዴው በመሳሰሉበት ላይ ነው — የ@AdulisShopBot ውይይትዎን ይመልከቱ።',
+        youGetLbl:'የሚያገኙት', custPaysLbl:'ደንበኛው የሚከፍል',
+        stPending:'ነጋዴው እየተረጋገጠ ነው', stAccepted:'ተቀብሏል', stSoldout:'አልተገኘም', stExpired:'ጊዜው አልፏል',
+        paidTag:'ኮሚሽን ተከፍሏል', unpaidTag:'ኮሚሽን አልተከፈለም',
+        acceptBtn:'ተቀበል', refuseBtn:'አልተገኘም', markPaidBtn:'ተከፍሏል',
+        affOrdersL:'የኮሚሽን ትዕዛዞች', noAffOrders:'እስካሁን የኮሚሽን ትዕዛዝ የለም።',
+        affTitle:'ኮሚሽነኞች — ሌሎች ዕቃዎን እንዲሸጡ ያድርጉ',
+        affToggleL:'ኮሚሽነኞችን ፍቀድ (በሚያዘጋጁት ኮሚሽን ያገኛሉ)',
+        affPctL:'ኮሚሽን % (ለምሳሌ 10)', affPickupL:'የማድረሻ ቦታ (ሲቀበሉ ለኮሚሽነኞች ይታያል)',
+        affPickupPhoneL:'የማድረሻ ስልክ (አማራጭ)', affSaved:'ተቀምጧል ✓',
+        viaLbl:'ከ', videoBtn:'🎬 ቪዲዮ',
+        dmBuyAff:function(n,p,m){return 'ሰላም! ከ'+m+' '+n+' ('+p+') መግዛት እፈልጋለሁ። አለ?';},
+        dmAff:function(n,p,m){return 'ሰላም! ከ'+m+' '+n+' ('+p+') — ዋጋው ይደራደራል?';}}
   };
   function detectLang(){
     try{ if(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user){
@@ -406,7 +456,16 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=33;
+  var BUILD=34;
+  // Marketing kit: CapCut template links by job. The founder creates the
+  // templates once in CapCut and sends the share links — a page release
+  // fills them in. Empty until then (the panel shows "coming soon").
+  var CAPCUT=[
+    {t:'New arrival',u:''},
+    {t:'Item showcase',u:''},
+    {t:'Price drop',u:''},
+    {t:'Sizes',u:''}
+  ];
   try{
     fetch(location.origin+location.pathname.replace(/[^/]*$/,'')+'version.txt?cb='+Date.now())
       .then(function(r){return r.ok?r.text():Promise.reject();})
@@ -473,6 +532,8 @@
   // =====================================================================
   // One card builder for every surface: main grid AND the detail view's
   // "Goes well with" — identical photos, +, sizes, Buy behavior everywhere.
+  // v34: affiliate-shelf rows carry merchant_name + video_url; the card
+  // shows "from <merchant>" and a 🎬 badge when a public clip exists.
   function buildShopCard(r,user){
       var card=el('div','item'+(r.tier==='out'?' out':''));
       card.onclick=function(){renderDetail(r);};
@@ -490,8 +551,22 @@
         };
         ph.appendChild(bAdd);
       }
+      if(r.video_url){
+        var bVid=el('button','addbtn');
+        bVid.textContent='🎬';bVid.style.fontSize='15px';bVid.style.left='8px';bVid.style.right='auto';
+        bVid.onclick=function(ev){
+          ev.stopPropagation();
+          openTg(r.video_url);
+        };
+        ph.appendChild(bVid);
+      }
       var info=el('div','info');
       info.appendChild(el('div','name',r.item_name));
+      if(r.merchant_name){
+        var via=el('div','ir-sub');
+        via.appendChild(el('span','tier t-in',L.viaLbl+' '+r.merchant_name));
+        info.appendChild(via);
+      }
       var pr=el('div','pricerow');
       pr.appendChild(el('span','price',money(r.sell_price)));
       if(r.tier!=='out')pr.appendChild(el('span','neg',r.negotiable===false?'':L.neg));
@@ -516,7 +591,9 @@
           ev.stopPropagation();
           if(sizesArr.length>1){renderDetail(r);return;}
           beacon(fixed?'buy':'negotiate');
-          var msg=fixed?L.dmBuy(r.item_name,money(r.sell_price)):L.dm(r.item_name,money(r.sell_price));
+          var msg=r.merchant_name
+            ?(fixed?L.dmBuyAff(r.item_name,money(r.sell_price),r.merchant_name):L.dmAff(r.item_name,money(r.sell_price),r.merchant_name))
+            :(fixed?L.dmBuy(r.item_name,money(r.sell_price)):L.dm(r.item_name,money(r.sell_price)));
           openTg('https://t.me/'+encodeURIComponent(user)+'?text='+encodeURIComponent(msg));
         };}
       info.appendChild(btn);
@@ -569,10 +646,14 @@
     document.getElementById('storeSub').textContent = user?L.sub:L.subNoUser;
     setLogo(store.logo_url);
     document.title=(store.store_name||'Shop')+' · Adulis';
-    var bAsk=el('button','btn ghost',L.askBtn);
-    bAsk.style.marginBottom='12px';
-    bAsk.onclick=function(){renderAsk();};
-    c.appendChild(bAsk);
+    // Ask assistant grounds on the MERCHANT catalogue RPC — v1 affiliate
+    // shelves skip the AI (their shoppers get the affiliate's own help).
+    if(!window.__affShop){
+      var bAsk=el('button','btn ghost',L.askBtn);
+      bAsk.style.marginBottom='12px';
+      bAsk.onclick=function(){renderAsk();};
+      c.appendChild(bAsk);
+    }
     var g=el('div','grid');
     rows.forEach(function(r){g.appendChild(buildShopCard(r,user));});
     c.appendChild(g);
@@ -580,15 +661,27 @@
   }
   function loadShop(){
     var attempt=0;
-    function run(){
-      fetch(API+'/rest/v1/rpc/public_storefront_items',{
+    function rpc(fn){
+      return fetch(API+'/rest/v1/rpc/'+fn,{
         method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
         body:JSON.stringify({p_slug:slug})
       }).then(function(r){
         if(!r.ok) throw new Error('HTTP '+r.status);
         return r.json();
+      });
+    }
+    function run(){
+      // Merchant shop first; an empty answer may be an AFFILIATE shop —
+      // same slug space, different RPC (rows carry merchant_name).
+      rpc('public_storefront_items')
+      .catch(function(e){ if(attempt++<1){run();throw e;} throw e; })
+      .then(function(rows){
+        if(rows&&rows.length){renderShop(rows);return null;}
+        return rpc('public_affiliate_items').then(function(aff){
+          if(aff&&aff.length){window.__affShop=true;renderShop(aff);return null;}
+          renderShop([]); // empty/not-found path handles the rest
+        });
       })
-      .then(renderShop)
       .catch(function(e){
         if(attempt++<1){run();return;}      // one silent retry
         renderShopError(e.message||'network');
@@ -718,6 +811,12 @@
     var ttxt=item.tier==='out'?L.out:item.tier==='low'?L.low:L.in;
     pr.appendChild(el('span','tier '+tcls,ttxt));
     body.appendChild(pr);
+    if(item.video_url){
+      var bVid=el('button','btn ghost',L.videoBtn);
+      bVid.style.marginTop='10px';
+      bVid.onclick=function(){openTg(item.video_url);};
+      body.appendChild(bVid);
+    }
 
     var sizesArr=item.size_labels?String(item.size_labels).split(',').map(function(z){return shortSize(z);}).filter(Boolean):[];
     var chosen=sizesArr.length===1?sizesArr[0]:null;
@@ -759,6 +858,8 @@
     body.appendChild(btns);
 
     // "Goes well with": real co-sales, then cart signals, then variety.
+    // Merchant-catalogue RPC — affiliate shelves skip it in v1.
+    if(!window.__affShop){
     body.appendChild(el('div','sectt',L.goesWell));
     var hrow=el('div','grid');
     hrow.appendChild(el('div','typing','…'));
@@ -775,6 +876,7 @@
           hrow.appendChild(buildShopCard(r2,window.__shopUser));
         });
       });
+    }
     ov.appendChild(body);
     document.body.appendChild(ov);
   }
@@ -1021,7 +1123,26 @@
       c.appendChild(p);return;
     }
     p.appendChild(el('h2',null,L.createTitle));
-    p.appendChild(el('div','note',L.createIntro));
+    var intro=el('div','note',L.createIntro);
+    p.appendChild(intro);
+    // Sales engine: one signup flow, two doors — merchants sell their own
+    // items; affiliates curate merchants' items for a commission.
+    var accType='merchant';
+    p.appendChild(el('div','sectt',L.accTypeQ));
+    var accSeg=el('div','seg');
+    function accSet(t){
+      accType=t;
+      intro.textContent=t==='affiliate'?L.affCreateIntro:L.createIntro;
+      Array.prototype.forEach.call(accSeg.children,function(x){x.classList.remove('on');});
+      accSeg.children[t==='affiliate'?1:0].classList.add('on');
+    }
+    [[ 'merchant',L.accMerchant],['affiliate',L.accAffiliate]].forEach(function(pair,i){
+      var b=el('button',null,pair[1]);
+      if(i===0)b.classList.add('on');
+      b.onclick=function(){accSet(pair[0]);};
+      accSeg.appendChild(b);
+    });
+    p.appendChild(accSeg);
     var f1=el('div','field');f1.appendChild(el('label',null,L.shopNameL));
     var iName=document.createElement('input');iName.maxLength=60;iName.placeholder='…';f1.appendChild(iName);
     var err=el('div','err',errMsg||'');
@@ -1034,20 +1155,26 @@
       var name=iName.value.trim();
       if(name.length<2){err.textContent=L.errName;return;}
       btn.disabled=true;btn.textContent=L.creating;
-      authCall('signup',{initData:tg.initData,shopName:name})
+      authCall('signup',{initData:tg.initData,shopName:name,account_type:accType})
         .then(function(j){
           lastCode=errDetail(j);
           if(j.ok&&(j.access_token||j.token_hash)){
             return takeSession(j).then(function(ok){
               if(!ok)throw new Error(j.error||'session');
-              renderOwner({name:j.name||name,slug:j.slug},!j.had_store);
+              window.__storeType=j.store_type||accType;
+              var st={name:j.name||name,slug:j.slug};
+              if(window.__storeType==='affiliate')renderAffOwner(st,!j.had_store);
+              else renderOwner(st,!j.had_store);
             });
           }
           if(j.code_required){
             renderCodeStep(function(code){
-              return authCall('signup',{initData:tg.initData,shopName:name,code:code});
+              return authCall('signup',{initData:tg.initData,shopName:name,account_type:accType,code:code});
             },function(k){
-              renderOwner({name:k.name||name,slug:k.slug},!k.had_store);
+              window.__storeType=k.store_type||accType;
+              var st2={name:k.name||name,slug:k.slug};
+              if(window.__storeType==='affiliate')renderAffOwner(st2,!k.had_store);
+              else renderOwner(st2,!k.had_store);
             });
             return;
           }
@@ -1058,14 +1185,22 @@
             return authCall('signin',{initData:tg.initData}).then(function(k){
               if(k.ok&&(k.access_token||k.token_hash)){
                 return takeSession(k).then(function(ok){
-                  if(ok)renderOwner({name:k.name,slug:k.slug});
+                  if(ok){
+                    window.__storeType=k.store_type||'merchant';
+                    var st3={name:k.name,slug:k.slug};
+                    if(window.__storeType==='affiliate')renderAffOwner(st3);
+                    else renderOwner(st3);
+                  }
                 });
               }
               if(k.code_required){
                 renderCodeStep(function(code){
                   return authCall('signin',{initData:tg.initData,code:code});
                 },function(m){
-                  renderOwner({name:m.name,slug:m.slug});
+                  window.__storeType=m.store_type||'merchant';
+                  var st4={name:m.name,slug:m.slug};
+                  if(window.__storeType==='affiliate')renderAffOwner(st4);
+                  else renderOwner(st4);
                 });
                 return;
               }
@@ -1117,10 +1252,22 @@
   function drawTabBar(){
     killTabBar();
     var bar=el('div','tabbar');bar.id='tabbar';
-    [['items',L.tabItems],['sales',L.tabSales],['shop',L.tabShop]].forEach(function(t){
+    // Same three-slot shape for both panels (analysis-paralysis rule);
+    // labels and routing follow the account type.
+    var aff=window.__storeType==='affiliate';
+    var tabs=aff
+      ?[['catalog',L.tabCatalog],['orders',L.tabOrders],['shop',L.tabShop]]
+      :[['items',L.tabItems],['sales',L.tabSales],['shop',L.tabShop]];
+    var iconFor=function(k){return k==='catalog'?TAB_ICONS.items:k==='orders'?TAB_ICONS.sales:TAB_ICONS.shop;};
+    tabs.forEach(function(t){
       var b=el('button','tabbtn'+(window.__tab===t[0]?' on':''));
-      b.innerHTML=TAB_ICONS[t[0]]+'<span>'+t[1]+'</span>';
-      b.onclick=function(){window.__tab=t[0];renderOwnerTab(t[0]);drawTabBar();};
+      b.innerHTML=iconFor(t[0])+'<span>'+t[1]+'</span>';
+      b.onclick=function(){
+        window.__tab=t[0];
+        if(aff)renderAffTab(t[0]);
+        else renderOwnerTab(t[0]);
+        drawTabBar();
+      };
       bar.appendChild(b);
     });
     var w=document.querySelector('.wrap');
@@ -1150,7 +1297,16 @@
     if(tab==='sales'){
       p.appendChild(el('h2',null,L.tabSales));
       renderSalesTab(p);
+      // Affiliate orders live under SALES too: pending first with their
+      // one-tap verdicts, then the recent history.
+      var affSect=el('div','sect');
+      affSect.appendChild(el('h3',null,L.affOrdersL));
+      var affBox=el('div');
+      affBox.appendChild(el('div','note','…'));
+      affSect.appendChild(affBox);
+      p.appendChild(affSect);
       c.appendChild(p);
+      loadMerchantAffOrders(affBox);
       return;
     }
 
@@ -1309,6 +1465,64 @@
         .catch(function(){err.textContent=L.errGeneric;bPost.disabled=false;bPost.textContent=L.postBtn;});
     };
     p.appendChild(fc);p.appendChild(pickWrap);p.appendChild(bPost);p.appendChild(okn);p.appendChild(rsn);p.appendChild(err);
+
+    // ---- AFFILIATES: the sales-engine switchboard (decision #30) ----
+    // One toggle + one number + a pickup point. When on, this store's
+    // items appear in the affiliates' master catalog; orders ring the
+    // alarm with the exact split and Accept / Sold out buttons.
+    p.appendChild(el('h2',null,L.affTitle));
+    var affState=window.__affCfg||{allow:false,pct:'',loc:'',phone:''};
+    var at=el('label','toggle');
+    var iAllow=document.createElement('input');iAllow.type='checkbox';iAllow.checked=!!affState.allow;
+    at.appendChild(iAllow);at.appendChild(el('span',null,L.affToggleL));
+    p.appendChild(at);
+    var fp2=el('div','field');fp2.appendChild(el('label',null,L.affPctL));
+    var iPct=document.createElement('input');iPct.inputMode='numeric';iPct.placeholder='10';
+    if(affState.pct!=null&&affState.pct!=='')iPct.value=affState.pct;
+    fp2.appendChild(iPct);p.appendChild(fp2);
+    var fp3=el('div','field');fp3.appendChild(el('label',null,L.affPickupL));
+    var iLoc=document.createElement('input');iLoc.maxLength=200;
+    if(affState.loc)iLoc.value=affState.loc;
+    fp3.appendChild(iLoc);p.appendChild(fp3);
+    var fp4=el('div','field');fp4.appendChild(el('label',null,L.affPickupPhoneL));
+    var iPkPhone=document.createElement('input');iPkPhone.inputMode='tel';iPkPhone.maxLength=32;
+    if(affState.phone)iPkPhone.value=affState.phone;
+    fp4.appendChild(iPkPhone);p.appendChild(fp4);
+    var afferr=el('div','err');var affok=el('div','okmsg');
+    var bAff=el('button','btn ghost',detectCur()==='am'?'አስቀምጥ':'Save');
+    bAff.onclick=function(){
+      afferr.textContent='';affok.textContent='';
+      var pct=iPct.value.trim();
+      var pctNum=pct===''?null:Number(pct);
+      if(pctNum!=null&&(!isFinite(pctNum)||pctNum<0||pctNum>100)){afferr.textContent=L.affPctL+'?';return;}
+      if(iAllow.checked&&pctNum==null){afferr.textContent=L.affPctL+'?';return;}
+      bAff.disabled=true;
+      authCall('affiliates_set',{
+        allow:iAllow.checked,
+        commission_pct:pctNum,
+        pickup_location:iLoc.value.trim(),
+        pickup_phone:iPkPhone.value.trim()
+      }).then(function(j){
+        bAff.disabled=false;
+        if(j.ok){
+          window.__affCfg={allow:iAllow.checked,pct:pct,loc:iLoc.value.trim(),phone:iPkPhone.value.trim()};
+          affok.textContent=L.affSaved;
+        }else afferr.textContent=L.errGeneric+'  ⓘ '+(j.error||'');
+      }).catch(function(){bAff.disabled=false;afferr.textContent=L.errGeneric;});
+    };
+    p.appendChild(bAff);p.appendChild(affok);p.appendChild(afferr);
+    // Prefill the switchboard once per session from the live store.
+    if(window.__affCfg===undefined){
+      authCall('affiliates_get',{}).then(function(j){
+        if(!j.ok)return;
+        window.__affCfg={allow:!!j.allow,pct:j.commission_pct==null?'':String(j.commission_pct),
+          loc:j.pickup_location||'',phone:j.pickup_phone||''};
+        iAllow.checked=!!j.allow;
+        if(window.__affCfg.pct)iPct.value=window.__affCfg.pct;
+        if(window.__affCfg.loc)iLoc.value=window.__affCfg.loc;
+        if(window.__affCfg.phone)iPkPhone.value=window.__affCfg.phone;
+      });
+    }
 
     // One-time APK bridge — returns at APK launch (APK_LAUNCHED); until
     // then merchants never see app-related UI.
@@ -1872,6 +2086,381 @@
 
   function detectCur(){return document.getElementById('langAm').className.indexOf('on')>=0?'am':'en';}
 
+  // =====================================================================
+  // AFFILIATE PANEL (v34, decision #30) — catalog → shelf → orders
+  // =====================================================================
+  // Merchant side of the order list: pending first (one-tap verdicts),
+  // then history with the split and the paid tap.
+  function loadMerchantAffOrders(box){
+    authCall('orders_list',{}).then(function(j){
+      box.innerHTML='';
+      if(!j.ok){box.appendChild(el('div','note','ⓘ '+(j.error||'orders')));return;}
+      var rows=j.orders||[];
+      if(!rows.length){box.appendChild(el('div','note',L.noAffOrders));return;}
+      var pending=rows.filter(function(o){return o.status==='pending';});
+      var rest=rows.filter(function(o){return o.status!=='pending';});
+      pending.concat(rest).forEach(function(o){
+        var stTxt={pending:L.stPending,accepted:L.stAccepted,sold_out:L.stSoldout,expired:L.stExpired}[o.status]||o.status;
+        var sub=stTxt+(o.size?' · '+shortSize(o.size):'')+(o.counterparty?' · '+(detectCur()==='am'?'ወደ':'to')+' '+o.counterparty.name:'');
+        var row=saleRow(o.img,o.name+' ×'+o.qty,money(Number(o.price)+Number(o.delivery_fee||0)),sub);
+        if(o.status==='pending'){
+          var acts=el('div','ir-sub');
+          acts.style.cssText='flex-basis:100%;margin-top:4px;justify-content:flex-end';
+          var bA=el('button','mbtn on',L.acceptBtn);bA.style.margin='2px';
+          bA.onclick=function(){bA.disabled=true;decideAffOrder(o.id,'accept',box,bA);};
+          var bR=el('button','mbtn warn',L.refuseBtn);bR.style.margin='2px';
+          bR.onclick=function(){bR.disabled=true;decideAffOrder(o.id,'sold_out',box,bR);};
+          acts.appendChild(bA);acts.appendChild(bR);
+          row.appendChild(acts);
+        }else if(o.status==='accepted'){
+          var paidTag=el('span','tier '+(o.ledger==='paid'?'t-in':'t-low'),o.ledger==='paid'?L.paidTag:L.unpaidTag);
+          var right2=row.querySelector('.hl-right');
+          if(right2)right2.appendChild(document.createElement('br'));
+          if(right2)right2.appendChild(paidTag);
+          if(o.ledger!=='paid'){
+            var bP=el('button','mbtn',L.markPaidBtn);
+            bP.style.cssText='flex-basis:100%;margin-top:4px';
+            bP.onclick=function(){
+              bP.disabled=true;
+              authCall('ledger_paid',{order_id:o.id}).then(function(k){
+                if(k.ok)loadMerchantAffOrders(box);
+                else bP.disabled=false;
+              });
+            };
+            row.appendChild(bP);
+          }
+        }
+        box.appendChild(row);
+      });
+    });
+  }
+  function decideAffOrder(id,decide,box,btn){
+    authCall('order_decide',{order_id:id,decide:decide}).then(function(j){
+      if(j.ok)loadMerchantAffOrders(box);
+      else{btn.disabled=false;}
+    }).catch(function(){btn.disabled=false;});
+  }
+
+  // Affiliate's cached shelf — the order sheet's item source.
+  function loadShelf(cb){
+    authCall('affiliate_items_list',{}).then(function(j){
+      window.__shelf=(j.ok&&j.items)?j.items:[];
+      cb(window.__shelf);
+    }).catch(function(){window.__shelf=[];cb([]);});
+  }
+
+  function renderAffOwner(store,fresh){
+    window.__mode='owner';
+    window.__ownerStore=store;
+    if(!window.__tab||window.__tab==='items'||window.__tab==='sales')window.__tab='catalog';
+    document.getElementById('storeName').textContent=store.name;
+    document.getElementById('storeSub').textContent=L.affOwnerTitle;
+    fetch(API+'/rest/v1/rpc/public_storefront_header',{
+      method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({p_slug:store.slug})
+    }).then(function(r){return r.ok?r.json():Promise.reject();})
+      .then(function(h){if(h&&h.length)setLogo(h[0].logo_url||null);})
+      .catch(function(){});
+    renderAffTab(window.__tab,fresh);
+    drawTabBar();
+  }
+
+  function renderAffTab(tab,fresh){
+    var c=content();c.innerHTML='';
+    var p=el('div','panel');
+    if(fresh)p.appendChild(el('div','okmsg',L.created));
+    var store=window.__ownerStore;
+
+    if(tab==='catalog'){
+      p.appendChild(el('h2',null,L.tabCatalog));
+      var catBox=el('div');
+      catBox.appendChild(el('div','note','…'));
+      p.appendChild(catBox);
+      var bSave=el('button','btn',L.saveShelfBtn);
+      bSave.style.marginTop='10px';
+      var saveOk=el('div','okmsg');
+      p.appendChild(bSave);p.appendChild(saveOk);
+      c.appendChild(p);
+      var selected=new Map();
+      function drawCat(cat){
+        catBox.innerHTML='';
+        if(!cat.length){catBox.appendChild(el('div','note',L.catEmpty));bSave.style.display='none';return;}
+        cat.forEach(function(m){
+          var mh=el('div','sect');
+          mh.appendChild(el('h3',null,m.name+' · '+(m.commission_pct==null?'—':m.commission_pct+'%')));
+          var line=el('div','ir-sub');
+          (m.items||[]).forEach(function(i){
+            var b=el('button','mbtn'+(selected.has(i.id)?' on':''),
+              i.name+' · '+money(i.sell_price)+(i.cut!=null?' · '+L.cutLbl+' '+money(i.cut):''));
+            b.style.margin='2px';
+            b.onclick=function(){
+              if(selected.has(i.id)){selected.delete(i.id);b.classList.remove('on');}
+              else{selected.set(i.id,true);b.classList.add('on');}
+              bSave.textContent=L.saveShelfBtn+' ('+selected.size+')';
+            };
+            line.appendChild(b);
+          });
+          mh.appendChild(line);
+          catBox.appendChild(mh);
+        });
+      }
+      loadShelf(function(shelf){
+        shelf.forEach(function(i){selected.set(i.id,true);});
+        authCall('catalog_list',{}).then(function(j){
+          if(!j.ok){catBox.innerHTML='';catBox.appendChild(el('div','note','ⓘ '+(j.error||'catalog')));return;}
+          drawCat(j.merchants||[]);
+        });
+      });
+      bSave.onclick=function(){
+        bSave.disabled=true;
+        authCall('affiliate_curate',{item_ids:[...selected.keys()]}).then(function(j){
+          bSave.disabled=false;
+          if(j.ok){saveOk.textContent=L.shelfSaved;loadShelf(function(){});}
+          else saveOk.textContent='';
+        }).catch(function(){bSave.disabled=false;});
+      };
+      return;
+    }
+
+    if(tab==='orders'){
+      p.appendChild(el('h2',null,L.tabOrders));
+      var bNew=el('button','btn ghost',L.commitTitle);
+      bNew.style.marginBottom='10px';
+      bNew.onclick=function(){renderOrderSheet();};
+      p.appendChild(bNew);
+      var orBox=el('div');
+      orBox.appendChild(el('div','note','…'));
+      p.appendChild(orBox);
+      c.appendChild(p);
+      loadAffOrders(orBox);
+      return;
+    }
+
+    // ---- SHOP tab: link, username, shelf media, marketing kit ----
+    renderAffShopTab(p,store);
+    c.appendChild(p);
+  }
+
+  function loadAffOrders(box){
+    authCall('orders_list',{}).then(function(j){
+      box.innerHTML='';
+      if(!j.ok){box.appendChild(el('div','note','ⓘ '+(j.error||'orders')));return;}
+      var rows=j.orders||[];
+      if(!rows.length){box.appendChild(el('div','note',L.noAffOrders));return;}
+      rows.forEach(function(o){
+        var stTxt={pending:L.stPending,accepted:L.stAccepted,sold_out:L.stSoldout,expired:L.stExpired}[o.status]||o.status;
+        var sub=stTxt+(o.counterparty?' · '+o.counterparty.name:'');
+        var right=(o.affiliate_gets!=null&&o.status==='accepted')
+          ?money(o.affiliate_gets)+' · '+(o.ledger==='paid'?L.paidTag:L.unpaidTag):'—';
+        box.appendChild(saleRow(o.img,o.name+(o.size?' ('+shortSize(o.size)+')':'')+' ×'+o.qty,right,sub));
+      });
+    });
+  }
+
+  function renderAffShopTab(p,store){
+    p.appendChild(el('h2',null,store.name));
+    // Username (customers' Buy opens the affiliate's DM — same rule as
+    // merchants: no username, no DM).
+    if(window.__ownerUsername===null||window.__ownerUsername===''){
+      var un=el('div','note',L.noUserNote);
+      un.style.border='1px solid var(--warn)';un.style.borderRadius='10px';
+      un.style.padding='8px 10px';un.style.marginBottom='10px';
+      p.appendChild(un);
+    }
+    var fu=el('div','field');fu.appendChild(el('label',null,L.userL));
+    var iUs=document.createElement('input');iUs.placeholder='@myshop';
+    if(window.__ownerUsername)iUs.value='@'+window.__ownerUsername;
+    fu.appendChild(iUs);
+    var uerr=el('div','err');var uok=el('div','okmsg');
+    var bUs=el('button','btn ghost',detectCur()==='am'?'አስቀምጥ':'Save');
+    bUs.onclick=function(){
+      uerr.textContent='';uok.textContent='';
+      var v=iUs.value.trim().replace(/^@/,'');
+      if(!v){window.__ownerUsername='';iUs.value='';return;}
+      if(!/^[A-Za-z0-9_]{4,32}$/.test(v)){uerr.textContent=L.errUser;return;}
+      bUs.disabled=true;
+      authCall('username_set',{username:v}).then(function(j){
+        bUs.disabled=false;
+        if(j.ok){window.__ownerUsername=j.telegram_username;uok.textContent=L.userSaved;}
+        else uerr.textContent=L.errUser+'  ⓘ '+(j.error||'');
+      }).catch(function(){bUs.disabled=false;uerr.textContent=L.errGeneric;});
+    };
+    fu.appendChild(bUs);fu.appendChild(uerr);fu.appendChild(uok);
+    p.appendChild(fu);
+
+    // Shop link + share (the affiliate's own bio-worthy door).
+    p.appendChild(el('div','note',L.bioLink));
+    p.appendChild(el('div','linkbox',appLink(store.slug)));
+    var row=el('div','row');
+    var bCopy=el('button','btn ghost',detectCur()==='am'?'ቅዳ':'Copy');
+    bCopy.onclick=function(){
+      try{navigator.clipboard.writeText(appLink(store.slug));}catch(e){}
+      bCopy.textContent='✓';
+      setTimeout(function(){bCopy.textContent=detectCur()==='am'?'ቅዳ':'Copy';},1200);
+    };
+    var bShare=el('button','btn ghost',L.shareL);
+    bShare.onclick=function(){
+      openTg('https://t.me/share/url?url='+encodeURIComponent(appLink(store.slug))+
+        '&text='+encodeURIComponent((store.name||'My shop')+' 🛍'));
+    };
+    row.appendChild(bCopy);row.appendChild(bShare);
+    p.appendChild(row);
+    var bOpen=el('a','btn',L.openShopBtn);
+    bOpen.href=appLink(store.slug);
+    p.appendChild(bOpen);
+
+    // MY SHELF — live from the merchants' stock; Get media per item.
+    p.appendChild(el('div','sect'));
+    var shelfH=el('h3',null,L.shelfTitle);
+    p.appendChild(shelfH);
+    var shelfBox=el('div');
+    shelfBox.appendChild(el('div','note','…'));
+    p.appendChild(shelfBox);
+    loadShelf(function(shelf){
+      shelfBox.innerHTML='';
+      if(!shelf.length){shelfBox.appendChild(el('div','note',L.noneYet+' ('+L.tabCatalog+')'));return;}
+      shelf.forEach(function(i){
+        var line=saleRow(i.img,i.name+' · '+L.viaLbl+' '+(i.merchant?i.merchant.name:'?'),
+          (i.cut!=null?money(i.cut):'—'),L.cutLbl);
+        var bM=el('button','mbtn',L.getMediaBtn);
+        bM.style.cssText='flex-basis:100%;margin-top:4px';
+        bM.onclick=function(){
+          bM.disabled=true;
+          authCall('item_media_send',{item_id:i.id}).then(function(j){
+            bM.disabled=false;
+            if(j.ok||j.error==='empty_media'){
+              bM.textContent=j.error==='empty_media'?'📷?':L.mediaSent;
+              setTimeout(function(){bM.textContent=L.getMediaBtn;},2500);
+            }else{bM.textContent='ⓘ '+(j.error||'');setTimeout(function(){bM.textContent=L.getMediaBtn;},2500);}
+          });
+        };
+        line.appendChild(bM);
+        shelfBox.appendChild(line);
+      });
+    });
+
+    // MARKETING KIT — CapCut links (founder-curated; lazy path stated).
+    p.appendChild(el('h3',null,L.kitTitle));
+    p.appendChild(el('div','note',L.kitNote));
+    var anyLink=CAPCUT.some(function(k){return k.u;});
+    if(anyLink){
+      CAPCUT.forEach(function(k){
+        if(!k.u)return;
+        var b=el('a','btn ghost',k.t);
+        b.href=k.u;b.target='_blank';b.style.marginTop='6px';
+        p.appendChild(b);
+      });
+    }else{
+      p.appendChild(el('div','note',L.kitSoon));
+    }
+  }
+
+  // New-order sheet: the affiliate records a sale they closed in their
+  // DM. Price prefills qty × sticker but a typed price is REAL (amtDirty
+  // discipline from the merchant sold-sheet).
+  function renderOrderSheet(){
+    window.__mode='orderform';
+    var c=content();c.innerHTML='';
+    document.getElementById('storeName').textContent=L.commitTitle;
+    document.getElementById('storeSub').textContent=L.affOwnerTitle;
+    setLogo(null);
+    var p=el('div','panel');
+    var back=el('button','mbtn back',detectCur()==='am'?'‹ ተመለስ':'‹ Back');
+    back.onclick=function(){renderAffOwner(window.__ownerStore);};
+    p.appendChild(back);
+    p.appendChild(el('h2',null,L.commitTitle));
+
+    p.appendChild(el('h3',null,L.commitPickL));
+    var pickLine=el('div','ir-sub');
+    p.appendChild(pickLine);
+    var picked=null;
+    function drawPicks(shelf){
+      pickLine.innerHTML='';
+      if(!shelf.length){pickLine.appendChild(el('div','note',L.noneYet+' ('+L.tabCatalog+')'));return;}
+      shelf.forEach(function(i){
+        var b=el('button','mbtn',i.name+' · '+money(i.sell_price));
+        b.style.margin='2px';
+        b.onclick=function(){
+          picked=i;
+          Array.prototype.forEach.call(pickLine.children,function(x){x.classList.remove('on');});
+          b.classList.add('on');
+          drawSizes(i);
+          recalc();
+        };
+        pickLine.appendChild(b);
+      });
+    }
+    var sizeLine=el('div','ir-sub');sizeLine.style.marginTop='6px';
+    var chosenSlug=null;
+    p.appendChild(sizeLine);
+    function drawSizes(i){
+      sizeLine.innerHTML='';chosenSlug=null;
+      if(!i.sizes||!i.sizes.length)return;
+      if(i.sizes.length===1)chosenSlug=i.sizes[0].slug;
+      i.sizes.forEach(function(s){
+        var b=el('button','mbtn'+(chosenSlug===s.slug?' on':''),shortSize(s.label)+' ('+s.qty+')');
+        b.onclick=function(){
+          chosenSlug=s.slug;
+          Array.prototype.forEach.call(sizeLine.children,function(x){x.classList.remove('on');});
+          b.classList.add('on');
+        };
+        sizeLine.appendChild(b);
+      });
+    }
+
+    var fq=el('div','field');fq.appendChild(el('label',null,L.qtyL));
+    var iQty=document.createElement('input');iQty.inputMode='numeric';iQty.value='1';
+    fq.appendChild(iQty);p.appendChild(fq);
+    var fp=el('div','field');fp.appendChild(el('label',null,L.amountL));
+    var iPrice=document.createElement('input');iPrice.inputMode='numeric';
+    var amtDirty=false;
+    iPrice.oninput=function(){amtDirty=iPrice.value.trim()!=='';};
+    fp.appendChild(iPrice);p.appendChild(fp);
+    var fd=el('div','field');fd.appendChild(el('label',null,L.deliveryL));
+    var iDel=document.createElement('input');iDel.inputMode='numeric';iDel.value='0';
+    fd.appendChild(iDel);p.appendChild(fd);
+    function recalc(){
+      if(!picked)return;
+      var q=Math.max(1,Math.floor(Number(iQty.value||1)));
+      if(!amtDirty)iPrice.value=(q*Number(picked.sell_price||0)).toString();
+    }
+    iQty.oninput=recalc;
+    loadShelf(function(shelf){drawPicks(shelf);});
+
+    var err=el('div','err');p.appendChild(err);
+    var okm=el('div','okmsg');p.appendChild(okm);
+    var btn=el('button','btn',L.commitBtn);
+    btn.onclick=function(){
+      err.textContent='';okm.textContent='';
+      if(!picked){err.textContent=L.commitPickL+'?';return;}
+      var qty=Math.floor(Number(iQty.value||0));
+      if(qty<1){err.textContent=L.errSoldQty;return;}
+      var price=Number(iPrice.value);
+      if(!isFinite(price)||price<=0){err.textContent=L.errPrice;return;}
+      var del=Number(iDel.value||0);
+      if(!isFinite(del)||del<0){err.textContent=L.errPrice+' ('+L.deliveryL+')';return;}
+      if(picked.sizes&&picked.sizes.length>1&&!chosenSlug){err.textContent=L.sizeL+'?';return;}
+      btn.disabled=true;btn.textContent=L.saving;
+      authCall('order_commit',{
+        item_id:picked.id,
+        size_slug:chosenSlug||undefined,
+        qty:qty,price:price,delivery_fee:del
+      }).then(function(j){
+        btn.disabled=false;btn.textContent=L.commitBtn;
+        if(!j.ok){err.textContent=L.errGeneric+'  ⓘ '+errDetail(j);return;}
+        var s=j.split||{};
+        okm.textContent=L.orderSent;
+        var splitNote=el('div','note',
+          L.custPaysLbl+': '+money((Number(price)||0)+(Number(del)||0))+NL+
+          L.youGetLbl+': '+(s.affiliate_gets!=null?money(s.affiliate_gets):'—'));
+        splitNote.style.marginTop='8px';
+        p.appendChild(splitNote);
+      }).catch(function(){btn.disabled=false;btn.textContent=L.commitBtn;err.textContent=L.errGeneric;});
+    };
+    p.appendChild(btn);
+    c.appendChild(p);
+  }
+
   function renderHome(){
     window.__mode='home';
     var c=content();c.innerHTML='';
@@ -1890,14 +2479,20 @@
           renderCodeStep(function(code){
             return authCall('signin',{initData:tg.initData,code:code});
           },function(k){
-            renderOwner({name:k.name,slug:k.slug});
+            window.__storeType=k.store_type||'merchant';
+            var st={name:k.name,slug:k.slug};
+            if(window.__storeType==='affiliate')renderAffOwner(st);
+            else renderOwner(st);
           });
           return;
         }
         if(!(j.ok&&(j.access_token||j.token_hash))) throw new Error(j.error||'x');
         return takeSession(j).then(function(ok){
           if(!ok)throw new Error(j.error||'session');
-          renderOwner({name:j.name,slug:j.slug});
+          window.__storeType=j.store_type||'merchant';
+          var st2={name:j.name,slug:j.slug};
+          if(window.__storeType==='affiliate')renderAffOwner(st2);
+          else renderOwner(st2);
         });
       })
       .catch(function(e){
