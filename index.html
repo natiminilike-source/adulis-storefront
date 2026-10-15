@@ -241,7 +241,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v34',
+        footer:'Live stock from <b>Adulis</b> · v35',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -324,15 +324,22 @@
         affPctL:'Commission % (e.g. 10)', affPickupL:'Pickup location for deliveries (shown to affiliates when you accept)',
         affPickupPhoneL:'Pickup phone (optional)', affSaved:'Saved ✓',
         viaLbl:'from', videoBtn:'🎬 Video',
-        dmBuyAff:function(n,p,m){return 'Selam! I want to buy '+n+' ('+p+') from '+m+'. Is it available?';},
-        dmAff:function(n,p,m){return 'Selam! '+n+' ('+p+') from '+m+' — is the price negotiable?';}},
+        // v35
+        subAutoL:'Your shop always works at:', subL:'Your own short name (hiwote.adulis.co)',
+        subSaved:'Saved ✓ — that address is yours now.', subTaken:'That name is taken — try another.',
+        subBad:'3-30 characters: letters, numbers or - (start with a letter or number).',
+        fitsTitle:'Taste cards', fitEmpty:'No taste cards yet — bundle items into one look.',
+        newFitBtn:'+ New taste card', fitNameL:'Card name (e.g. Weekend Casual)',
+        fitPriceL:'Bundle price (ETB) — leave empty to use the total',
+        fitAutoPrice:'auto', fitPickL:'Pick 2-20 of your items', fitCount:function(n){return n+' items';},
+        buySetBtn:'Buy the set', fitsLbl:'Taste cards'},
     am:{appSub:'በቴሌግራም ውስጥ ሱቆች', sub:'ይመለከቱ · ዋጋ በቴሌግራም ይደራደሩ', subNoUser:'ዕቃዎችን ይመለከቱ',
         in:'አለ', low:'ጥቂቱ', out:'አልቀረም',
         neg:'ይደራደሩ', buyOut:'ተሽጧል', buyNoUser:'በውይይት ጠይቁ',
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v34',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v35',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -415,8 +422,15 @@
         affPctL:'ኮሚሽን % (ለምሳሌ 10)', affPickupL:'የማድረሻ ቦታ (ሲቀበሉ ለኮሚሽነኞች ይታያል)',
         affPickupPhoneL:'የማድረሻ ስልክ (አማራጭ)', affSaved:'ተቀምጧል ✓',
         viaLbl:'ከ', videoBtn:'🎬 ቪዲዮ',
-        dmBuyAff:function(n,p,m){return 'ሰላም! ከ'+m+' '+n+' ('+p+') መግዛት እፈልጋለሁ። አለ?';},
-        dmAff:function(n,p,m){return 'ሰላም! ከ'+m+' '+n+' ('+p+') — ዋጋው ይደራደራል?';}}
+        // v35
+        subAutoL:'ሱቅዎ ሁሌም እዚህ ይገኛል፦', subL:'የራስዎ አጭር ስም (hiwote.adulis.co)',
+        subSaved:'ተቀምጧል ✓ — አድራሻው የእርስዎ ነው።', subTaken:'ስሙ ተወስዷል — ሌላ ይሞክሩ።',
+        subBad:'3-30 ፊደላት፦ ፊደላት፣ ቁጥሮች ወይም - (በፊደል ወይም ቁጥር ይጀምሩ)።',
+        fitsTitle:'ጣዕም ካርዶች', fitEmpty:'እስካሁን ካርድ የለም — ዕቃዎችን ወደ አንድ ስብስብ ያስተሳስሩ።',
+        newFitBtn:'+ አዲስ ጣዕም ካርድ', fitNameL:'የካርድ ስም (ለምሳሌ Weekend Casual)',
+        fitPriceL:'የጥቅሉ ዋጋ (ብር) — ባዶ ከተተወ ድምሩን ይጠቀማል',
+        fitAutoPrice:'ራሱ', fitPickL:'2-20 ዕቃዎችዎን ይምረጡ', fitCount:function(n){return n+' ዕቃዎች';},
+        buySetBtn:'ስብስቡን ግዛ', fitsLbl:'ጣዕም ካርዶች'},
   };
   function detectLang(){
     try{ if(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user){
@@ -456,7 +470,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=34;
+  var BUILD=35;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
   // fills them in. Empty until then (the panel shows "coming soon").
@@ -562,11 +576,6 @@
       }
       var info=el('div','info');
       info.appendChild(el('div','name',r.item_name));
-      if(r.merchant_name){
-        var via=el('div','ir-sub');
-        via.appendChild(el('span','tier t-in',L.viaLbl+' '+r.merchant_name));
-        info.appendChild(via);
-      }
       var pr=el('div','pricerow');
       pr.appendChild(el('span','price',money(r.sell_price)));
       if(r.tier!=='out')pr.appendChild(el('span','neg',r.negotiable===false?'':L.neg));
@@ -591,9 +600,7 @@
           ev.stopPropagation();
           if(sizesArr.length>1){renderDetail(r);return;}
           beacon(fixed?'buy':'negotiate');
-          var msg=r.merchant_name
-            ?(fixed?L.dmBuyAff(r.item_name,money(r.sell_price),r.merchant_name):L.dmAff(r.item_name,money(r.sell_price),r.merchant_name))
-            :(fixed?L.dmBuy(r.item_name,money(r.sell_price)):L.dm(r.item_name,money(r.sell_price)));
+          var msg=fixed?L.dmBuy(r.item_name,money(r.sell_price)):L.dm(r.item_name,money(r.sell_price));
           openTg('https://t.me/'+encodeURIComponent(user)+'?text='+encodeURIComponent(msg));
         };}
       info.appendChild(btn);
@@ -649,11 +656,12 @@
     // Ask assistant grounds on the MERCHANT catalogue RPC — v1 affiliate
     // shelves skip the AI (their shoppers get the affiliate's own help).
     if(!window.__affShop){
-      var bAsk=el('button','btn ghost',L.askBtn);
-      bAsk.style.marginBottom='12px';
-      bAsk.onclick=function(){renderAsk();};
-      c.appendChild(bAsk);
+    var bAsk=el('button','btn ghost',L.askBtn);
+    bAsk.style.marginBottom='12px';
+    bAsk.onclick=function(){renderAsk();};
+    c.appendChild(bAsk);
     }
+    drawFitsStrip(c);
     var g=el('div','grid');
     rows.forEach(function(r){g.appendChild(buildShopCard(r,user));});
     c.appendChild(g);
@@ -696,6 +704,119 @@
     s.appendChild(d);
     var b=el('button',null,L.retry);b.onclick=location.reload;
     s.appendChild(document.createElement('br'));s.appendChild(b);c.appendChild(s);
+  }
+
+  // ---- Taste cards: merchant-curated looks, one combined price ---------
+  // Strip above the grid (merchant shops only in v1); tap → the set with
+  // one "Buy the set" that loads the whole bundle into the cart + DM.
+  function drawFitsStrip(c){
+    if(window.__affShop)return;
+    try{
+      fetch(API+'/rest/v1/rpc/public_store_fits',{
+        method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({p_slug:slug})
+      }).then(function(r){return r.ok?r.json():[];})
+        .catch(function(){return [];})
+        .then(function(fits){
+          if(!fits||!fits.length)return;
+          var wrap=el('div');
+          wrap.style.marginBottom='12px';
+          wrap.appendChild(el('div','sectt',L.fitsLbl));
+          var row=el('div','det-hrow'); // horizontal scroll, same feel as related
+          fits.forEach(function(f){
+            var items=f.items||[];
+            var card=el('div','det-mini');
+            card.style.width='132px';
+            var ph=el('div','s-thumb');
+            ph.style.cssText='width:132px;height:96px;position:relative;border-radius:10px;display:flex;background:var(--edge)';
+            items.slice(0,3).forEach(function(it,i){
+              if(!it.image_url)return;
+              var im=document.createElement('img');
+              im.src=it.image_url;im.alt='';
+              im.style.cssText='flex:1;min-width:0;height:100%;object-fit:cover';
+              ph.appendChild(im);
+            });
+            if(!ph.childNodes.length)ph.textContent='🛍️';
+            card.appendChild(ph);
+            card.appendChild(el('div','dm-lbl',f.fit_name));
+            var priceRow=el('div');
+            priceRow.style.cssText='font-size:12px;font-weight:800;color:var(--ok);text-align:center';
+            priceRow.textContent=money(f.price!=null?f.price:0);
+            card.appendChild(priceRow);
+            card.onclick=function(){renderFitDetail(f);};
+            row.appendChild(card);
+          });
+          wrap.appendChild(row);
+          c.insertBefore(wrap,c.firstChild.nextSibling); // after the header's first child area
+        });
+    }catch(e){}
+  }
+
+  function renderFitDetail(fit){
+    var old=document.getElementById('fitDetail');if(old)old.remove();
+    var ov=el('div','chat');ov.id='fitDetail';
+    var hd=el('div','chat-hd');
+    hd.appendChild(el('b',null,fit.fit_name));
+    var x=el('button','chat-x','✕');
+    x.onclick=function(){ov.remove();};
+    hd.appendChild(x);
+    ov.appendChild(hd);
+    var body=el('div','chat-body');
+    body.style.paddingTop='14px';
+    var items=fit.items||[];
+    var price=Number(fit.price!=null?fit.price:0);
+    body.appendChild(el('div','det-name',fit.fit_name));
+    var pr=el('div','det-row');
+    var pe=el('span',null,money(price));
+    pe.style.cssText='font-size:19px;font-weight:800;color:var(--ok)';
+    pr.appendChild(pe);
+    pr.appendChild(el('span','tier t-in',L.fitCount(items.length)));
+    body.appendChild(pr);
+    items.forEach(function(it){
+      var row=el('div','hotline');
+      var th=el('div','s-thumb');
+      if(it.image_url){var im=document.createElement('img');im.src=it.image_url;im.alt='';th.appendChild(im);}
+      else{th.textContent='·';}
+      row.appendChild(th);
+      var main=el('div','hl-main');
+      main.appendChild(el('div',null,it.name));
+      if(it.sizes){
+        var sr=el('div','ir-sub');
+        String(it.sizes).split(',').forEach(function(s){
+          sr.appendChild(el('span','tier t-in',shortSize(s)));
+        });
+        main.appendChild(sr);
+      }
+      row.appendChild(main);
+      var right=el('div','hl-right');
+      right.appendChild(el('b',null,money(it.sell_price)));
+      var plus=el('button','addbtn','+');
+      plus.style.cssText='position:static;width:30px;height:30px;font-size:16px;flex:none';
+      plus.onclick=function(){
+        cartAdd({name:it.name,price:Number(it.sell_price)});
+        plus.textContent='✓';
+        setTimeout(function(){plus.textContent='+';},800);
+      };
+      right.appendChild(plus);
+      row.appendChild(right);
+      body.appendChild(row);
+    });
+    var bSet=el('button','btn',L.buySetBtn);
+    bSet.style.marginTop='12px';
+    bSet.onclick=function(){
+      items.forEach(function(it){cartAdd({name:it.name,price:Number(it.sell_price)});});
+      beacon('buy');
+      if(window.__shopUser){
+        var lines=items.map(function(it){return '• '+it.name+' — '+money(it.sell_price);}).join(NL);
+        openTg('https://t.me/'+encodeURIComponent(window.__shopUser)+'?text='+
+          encodeURIComponent(L.dmCart(lines,money(price))));
+      }
+      ov.remove();
+      renderCart();
+    };
+    body.appendChild(bSet);
+    ov.appendChild(body);
+    document.body.appendChild(ov);
   }
 
   // ---- Shopper cart: multi-item picks → one merchant DM ----------------
@@ -1038,6 +1159,7 @@
       if(j.needs_credentials!==undefined)window.__needsCreds=j.needs_credentials;
       if(j.telegram_username!==undefined)window.__ownerUsername=j.telegram_username;
       if(j.telegram_channel!==undefined)window.__ownerChannel=j.telegram_channel;
+      if(j.subdomain!==undefined)window.__ownerSubdomain=j.subdomain;
       return Promise.resolve(true);
     }
     if(j&&j.ok&&j.token_hash){
@@ -1289,8 +1411,20 @@
       var itemsBox=el('div');itemsBox.id='itemsBox';
       itemsBox.appendChild(el('div','note','…'));
       p.appendChild(itemsBox);
+      // Taste cards: bundle items into one named look, one price.
+      var fitsSect=el('div','sect');
+      fitsSect.appendChild(el('h3',null,L.fitsTitle));
+      var fitsBox=el('div');
+      fitsBox.appendChild(el('div','note','…'));
+      fitsSect.appendChild(fitsBox);
+      var bFit=el('button','btn ghost',L.newFitBtn);
+      bFit.style.marginTop='8px';
+      bFit.onclick=function(){renderFitForm(null);};
+      fitsSect.appendChild(bFit);
+      p.appendChild(fitsSect);
       c.appendChild(p);
       loadOwnerItems();
+      loadFitsPanel(fitsBox);
       return;
     }
 
@@ -1344,6 +1478,7 @@
     fu.appendChild(bUs);fu.appendChild(uerr);fu.appendChild(uok);
     p.appendChild(fu);
     // Logo management — in the panel, not bot-lore.
+    shortLinkBlock(p);
     var logoRow=el('div','ph-pick');
     var logoPrev=el('div','ph-prev');
     var curLogo=document.querySelector('.logo img');
@@ -1571,6 +1706,112 @@
       var bApk=el('a','btn ghost',L.getApp);bApk.href=APK;bApk.target='_blank';
       p.appendChild(bApk);
     }
+    c.appendChild(p);
+  }
+
+  // ---- Taste cards: panel list + form ------------------------------------
+  function loadFitsPanel(box){
+    authCall('fits_list',{}).then(function(j){
+      box.innerHTML='';
+      if(!j.ok){box.appendChild(el('div','note','ⓘ '+(j.error||'fits')));return;}
+      var fits=j.fits||[];
+      if(!fits.length){box.appendChild(el('div','note',L.fitEmpty));return;}
+      fits.forEach(function(f){
+        var active=(f.items||[]).filter(function(i){return i.is_active;});
+        var row=saleRow(
+          active.length?active[0].image_url:null,
+          f.name+' · '+L.fitCount((f.items||[]).length)+(f.is_active?'':' · '+L.hiddenTag),
+          f.price!=null?money(f.price):L.fitAutoPrice,''
+        );
+        var acts=el('div','ir-sub');
+        acts.style.cssText='flex-basis:100%;margin-top:4px;justify-content:flex-end';
+        var bE=el('button','mbtn',L.editBtn);bE.style.margin='2px';
+        bE.onclick=function(){renderFitForm(f);};
+        var bH=el('button','mbtn'+(f.is_active?' warn':''),f.is_active?L.hideBtn:L.showBtn);
+        bH.style.margin='2px';
+        bH.onclick=function(){
+          authCall('fit_update',{fit_id:f.id,is_active:!f.is_active}).then(function(){loadFitsPanel(box);});
+        };
+        var bD=el('button','mbtn warn',L.delBtn);bD.style.margin='2px';
+        var armed=false,tid=null;
+        bD.onclick=function(){
+          if(!armed){armed=true;bD.textContent=L.sureBtn;
+            tid=setTimeout(function(){armed=false;bD.textContent=L.delBtn;},3000);
+            return;}
+          clearTimeout(tid);
+          authCall('fit_delete',{fit_id:f.id}).then(function(){loadFitsPanel(box);});
+        };
+        acts.appendChild(bE);acts.appendChild(bH);acts.appendChild(bD);
+        row.appendChild(acts);
+        box.appendChild(row);
+      });
+    });
+  }
+
+  function renderFitForm(fit){
+    var editing=!!fit;
+    window.__mode='fitform';
+    var c=content();c.innerHTML='';
+    document.getElementById('storeName').textContent=editing?L.editBtn:L.newFitBtn;
+    document.getElementById('storeSub').textContent=L.fitsTitle;
+    setLogo(null);
+    var p=el('div','panel');
+    var back=el('button','mbtn back',detectCur()==='am'?'‹ ተመለስ':'‹ Back');
+    back.onclick=function(){renderOwnerTab('items');};
+    p.appendChild(back);
+    p.appendChild(el('h2',null,editing?L.editBtn:L.newFitBtn));
+    var f1=el('div','field');f1.appendChild(el('label',null,L.fitNameL));
+    var iName=document.createElement('input');iName.maxLength=60;
+    if(editing)iName.value=fit.name;
+    f1.appendChild(iName);p.appendChild(f1);
+    var f2=el('div','field');f2.appendChild(el('label',null,L.fitPriceL));
+    var iPrice=document.createElement('input');iPrice.inputMode='numeric';
+    if(editing&&fit.price!=null)iPrice.value=fit.price;
+    f2.appendChild(iPrice);p.appendChild(f2);
+    p.appendChild(el('h3',null,L.fitPickL));
+    var picked=new Map();
+    var pickBox=el('div','ir-sub');
+    pickBox.appendChild(el('div','note','…'));
+    p.appendChild(pickBox);
+    authCall('items_list',{}).then(function(j){
+      pickBox.innerHTML='';
+      if(!j.ok||!j.items||!j.items.length){pickBox.appendChild(el('div','note',L.noneYet));return;}
+      var chosen={};
+      if(editing)(fit.items||[]).forEach(function(i){chosen[i.id]=true;});
+      j.items.filter(function(x){return x.is_active;}).forEach(function(x){
+        var b=el('button','mbtn'+(chosen[x.id]?' on':''),x.name+' · '+money(x.sell_price));
+        b.style.margin='2px';
+        b.onclick=function(){
+          if(picked.has(x.id)){picked.delete(x.id);b.classList.remove('on');}
+          else{picked.set(x.id,true);b.classList.add('on');}
+        };
+        if(chosen[x.id])picked.set(x.id,true);
+        pickBox.appendChild(b);
+      });
+    });
+    var err=el('div','err');p.appendChild(err);
+    var okm=el('div','okmsg');p.appendChild(okm);
+    var btn=el('button','btn',L.saveItemBtn);
+    btn.onclick=function(){
+      err.textContent='';okm.textContent='';
+      var name=iName.value.trim();
+      if(name.length<1){err.textContent=L.errName;return;}
+      var priceRaw=iPrice.value.trim();
+      var price=priceRaw===''?null:Number(priceRaw);
+      if(price!=null&&(!isFinite(price)||price<0)){err.textContent=L.errPrice;return;}
+      if(picked.size<2){err.textContent=L.fitPickL;return;}
+      btn.disabled=true;btn.textContent=L.saving;
+      var call=editing
+        ?authCall('fit_update',{fit_id:fit.id,name:name,price:price,item_ids:[...picked.keys()]})
+        :authCall('fit_add',{name:name,price:price,item_ids:[...picked.keys()]});
+      call.then(function(j2){
+        btn.disabled=false;btn.textContent=L.saveItemBtn;
+        if(!j2.ok){err.textContent=L.errGeneric+'  ⓘ '+errDetail(j2);return;}
+        okm.textContent=L.updDone;
+        setTimeout(function(){renderOwnerTab('items');},700);
+      }).catch(function(){btn.disabled=false;btn.textContent=L.saveItemBtn;err.textContent=L.errGeneric;});
+    };
+    p.appendChild(btn);
     c.appendChild(p);
   }
 
@@ -2287,6 +2528,7 @@
     };
     fu.appendChild(bUs);fu.appendChild(uerr);fu.appendChild(uok);
     p.appendChild(fu);
+    shortLinkBlock(p);
 
     // Shop link + share (the affiliate's own bio-worthy door).
     p.appendChild(el('div','note',L.bioLink));
@@ -2461,6 +2703,51 @@
     c.appendChild(p);
   }
 
+  // Short-link block (both panels): the automatic address always works;
+  // the pretty name is a claim, first-come-first-served.
+  function shortLinkBlock(p){
+    var store=window.__ownerStore;
+    if(!store)return;
+    p.appendChild(el('div','note',L.subAutoL));
+    var autoBox=el('div','linkbox','https://'+store.slug+'.adulis.co');
+    p.appendChild(autoBox);
+    var rowA=el('div','row');
+    var bCopyA=el('button','btn ghost',detectCur()==='am'?'ቅዳ':'Copy');
+    bCopyA.onclick=function(){
+      try{navigator.clipboard.writeText('https://'+store.slug+'.adulis.co');}catch(e){}
+      bCopyA.textContent='✓';
+      setTimeout(function(){bCopyA.textContent=detectCur()==='am'?'ቅዳ':'Copy';},1200);
+    };
+    rowA.appendChild(bCopyA);
+    p.appendChild(rowA);
+    var fs=el('div','field');fs.appendChild(el('label',null,L.subL));
+    var iSub=document.createElement('input');iSub.maxLength=30;iSub.placeholder='myshop';
+    if(window.__ownerSubdomain)iSub.value=window.__ownerSubdomain;
+    fs.appendChild(iSub);
+    var serr=el('div','err');var sok=el('div','okmsg');
+    var bSub=el('button','btn ghost',detectCur()==='am'?'አስቀምጥ':'Save');
+    bSub.onclick=function(){
+      serr.textContent='';sok.textContent='';
+      var v=iSub.value.trim().toLowerCase();
+      if(!v){ // releasing the claim is a legit action
+        authCall('subdomain_set',{subdomain:''}).then(function(j){
+          if(j.ok){window.__ownerSubdomain='';sok.textContent=L.subSaved;}
+        });
+        return;
+      }
+      bSub.disabled=true;
+      authCall('subdomain_set',{subdomain:v}).then(function(j){
+        bSub.disabled=false;
+        if(j.ok){window.__ownerSubdomain=j.subdomain;sok.textContent=L.subSaved;}
+        else if(j.error==='taken'){serr.textContent=L.subTaken;}
+        else if(j.error==='bad_subdomain'){serr.textContent=L.subBad;}
+        else serr.textContent=L.errGeneric+'  ⓘ '+(j.error||'');
+      }).catch(function(){bSub.disabled=false;serr.textContent=L.errGeneric;});
+    };
+    fs.appendChild(bSub);fs.appendChild(serr);fs.appendChild(sok);
+    p.appendChild(fs);
+  }
+
   function renderHome(){
     window.__mode='home';
     var c=content();c.innerHTML='';
@@ -2510,7 +2797,25 @@
   function route(){
     killTabBar();
     var cf=document.getElementById('cartfab');if(cf)cf.remove();
-    if(slug){window.__mode='shop';document.getElementById('storeName').textContent='…';loadShop();}
+    if(slug){
+      window.__mode='shop';document.getElementById('storeName').textContent='…';
+      // Short links: a subdomain label (pretty claim or slug) arrives as
+      // ?s=<label> — resolve once at boot to the canonical slug (pretty
+      // claims included). Failure falls through to the plain lookup.
+      if(window.__slugResolved){loadShop();}
+      else{
+        fetch(API+'/rest/v1/rpc/public_resolve_slug',{
+          method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
+          body:JSON.stringify({p_label:slug})
+        }).then(function(r){return r.ok?r.json():null;})
+          .catch(function(){return null;})
+          .then(function(s){
+            window.__slugResolved=true;
+            if(s&&typeof s==='string'&&s)slug=s;
+            loadShop();
+          });
+      }
+    }
     else if(mode==='create'){renderCreate();}
     else if(mode==='home'){renderHome();}
     else{renderHome();}
