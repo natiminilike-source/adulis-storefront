@@ -546,8 +546,9 @@
   // =====================================================================
   // One card builder for every surface: main grid AND the detail view's
   // "Goes well with" — identical photos, +, sizes, Buy behavior everywhere.
-  // v34: affiliate-shelf rows carry merchant_name + video_url; the card
-  // shows "from <merchant>" and a 🎬 badge when a public clip exists.
+  // v34+: affiliate-shelf rows look exactly like merchant rows (the
+  // source merchant is NEVER revealed to customers — channel protection,
+  // v35); video_url badges appear when a public clip exists.
   function buildShopCard(r,user){
       var card=el('div','item'+(r.tier==='out'?' out':''));
       card.onclick=function(){renderDetail(r);};
@@ -680,7 +681,7 @@
     }
     function run(){
       // Merchant shop first; an empty answer may be an AFFILIATE shop —
-      // same slug space, different RPC (rows carry merchant_name).
+      // same slug space, different RPC.
       rpc('public_storefront_items')
       .catch(function(e){ if(attempt++<1){run();throw e;} throw e; })
       .then(function(rows){
