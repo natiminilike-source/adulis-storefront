@@ -241,7 +241,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v35',
+        footer:'Live stock from <b>Adulis</b> · v36',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -332,14 +332,15 @@
         newFitBtn:'+ New taste card', fitNameL:'Card name (e.g. Weekend Casual)',
         fitPriceL:'Bundle price (ETB) — leave empty to use the total',
         fitAutoPrice:'auto', fitPickL:'Pick 2-20 of your items', fitCount:function(n){return n+' items';},
-        buySetBtn:'Buy the set', fitsLbl:'Taste cards'},
+        buySetBtn:'Buy the set', fitsLbl:'Taste cards',
+        affItemToggleL:'Affiliates can sell this item'},
     am:{appSub:'በቴሌግራም ውስጥ ሱቆች', sub:'ይመለከቱ · ዋጋ በቴሌግራም ይደራደሩ', subNoUser:'ዕቃዎችን ይመለከቱ',
         in:'አለ', low:'ጥቂቱ', out:'አልቀረም',
         neg:'ይደራደሩ', buyOut:'ተሽጧል', buyNoUser:'በውይይት ጠይቁ',
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v35',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v36',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -430,7 +431,8 @@
         newFitBtn:'+ አዲስ ጣዕም ካርድ', fitNameL:'የካርድ ስም (ለምሳሌ Weekend Casual)',
         fitPriceL:'የጥቅሉ ዋጋ (ብር) — ባዶ ከተተወ ድምሩን ይጠቀማል',
         fitAutoPrice:'ራሱ', fitPickL:'2-20 ዕቃዎችዎን ይምረጡ', fitCount:function(n){return n+' ዕቃዎች';},
-        buySetBtn:'ስብስቡን ግዛ', fitsLbl:'ጣዕም ካርዶች'},
+        buySetBtn:'ስብስቡን ግዛ', fitsLbl:'ጣዕም ካርዶች',
+        affItemToggleL:'ኮሚሽነኞች ይህን ዕቃ ሊሸጡት ይችላሉ'},
   };
   function detectLang(){
     try{ if(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user){
@@ -470,7 +472,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=35;
+  var BUILD=36;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
   // fills them in. Empty until then (the panel shows "coming soon").
@@ -2080,6 +2082,13 @@
     var iNeg=document.createElement('input');iNeg.type='checkbox';iNeg.checked=editing?item.negotiable!==false:true;
     tg.appendChild(iNeg);tg.appendChild(el('span',null,L.negToggleL));p.appendChild(tg);
 
+    // Per-item affiliate exclusion (v36): default ON — the store switch
+    // exposes everything; this keeps individual pieces exclusive.
+    var tg2=el('label','toggle');
+    var iAff=document.createElement('input');iAff.type='checkbox';
+    iAff.checked=editing?item.affiliate_allowed!==false:true;
+    tg2.appendChild(iAff);tg2.appendChild(el('span',null,L.affItemToggleL));p.appendChild(tg2);
+
     // Photo picked in the sheet (gallery → compressed in-page → uploaded
     // right after save). The bot-photo flow remains the fallback.
     var pickedB64=null;
@@ -2153,8 +2162,8 @@
       if(!sizes.length){err.textContent=L.errSizes;return;}
       btn.disabled=true;btn.textContent=L.saving;
       var call=editing
-        ?authCall('item_update',{item_id:item.id,name:name,sell_price:price,negotiable:iNeg.checked,sizes:sizes})
-        :authCall('item_add',{name:name,sell_price:price,negotiable:iNeg.checked,sizes:sizes});
+        ?authCall('item_update',{item_id:item.id,name:name,sell_price:price,negotiable:iNeg.checked,affiliate_allowed:iAff.checked,sizes:sizes})
+        :authCall('item_add',{name:name,sell_price:price,negotiable:iNeg.checked,affiliate_allowed:iAff.checked,sizes:sizes});
       call.then(function(j){
         btn.disabled=false;btn.textContent=L.saveItemBtn;
         if(!j.ok){err.textContent=L.errGeneric+'  ⓘ '+errDetail(j);return;}
