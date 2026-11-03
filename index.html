@@ -26,6 +26,32 @@
     --out:#93a1ad; --out-soft:#26313c;
     --edge:#2a3a4a; --accent-soft:rgba(74,163,236,0.16);
   }
+  /* Shop templates (v38): one page, three curated looks — Classic is the
+     root palette above; Editorial = magazine serif calm; Vivid = bold
+     energy. The store's theme arrives via the header RPC and is applied
+     as a data-theme attribute — web and Telegram dress identically. */
+  [data-theme="editorial"]{
+    --bg:#faf8f4; --card:#f1ede5; --ink:#26221c; --muted:#8d8577;
+    --accent:#8a6d3b; --accent-soft:#f0e8d8; --ok:#4c7a4c; --ok-soft:#e9f0e6;
+    --warn:#9a6b1f; --warn-soft:#f6ecd9; --out:#948a76; --out-soft:#efeae0;
+    --edge:#e2dccf;
+  }
+  [data-theme="editorial"] h1,[data-theme="editorial"] .det-name{font-family:Georgia,'Times New Roman',serif;font-weight:600;letter-spacing:.2px}
+  [data-theme="editorial"] .price{font-family:Georgia,serif}
+  [data-theme="editorial"] .item,[data-theme="editorial"] .buy,[data-theme="editorial"] .mbtn{border-radius:6px}
+  [data-theme="editorial"] .logo{border-radius:50%}
+  .dark[data-theme="editorial"]{--bg:#1d1a15; --card:#26221b; --ink:#f3efe7; --muted:#a89f8d; --accent:#c9a869; --accent-soft:rgba(201,168,105,.14); --ok:#8bb98b; --ok-soft:#1d2b1d; --warn:#d9ae62; --warn-soft:#33290f; --out:#a39a86; --out-soft:#282419; --edge:#37301f;}
+  [data-theme="vivid"]{
+    --bg:#ffffff; --card:#f7f7fb; --ink:#17162a; --muted:#6f6d8a;
+    --accent:#e91e8c; --accent-soft:#fde7f3; --ok:#00a884; --ok-soft:#e2f8f2;
+    --warn:#d97706; --warn-soft:#fdf1df; --out:#8f8da3; --out-soft:#efeff5;
+    --edge:#e8e6f0;
+  }
+  [data-theme="vivid"] h1{letter-spacing:-.3px}
+  [data-theme="vivid"] .buy{border-radius:14px;box-shadow:0 3px 10px rgba(233,30,140,.25)}
+  [data-theme="vivid"] .item{border-radius:18px}
+  [data-theme="vivid"] .price{color:var(--accent)}
+  .dark[data-theme="vivid"]{--bg:#141222; --card:#1e1c30; --ink:#f4f3fb; --muted:#9a97b8; --accent:#ff5cb0; --accent-soft:rgba(255,92,176,.16); --ok:#3ecfae; --ok-soft:#12312a; --warn:#e8a23d; --warn-soft:#33290f; --out:#8f8da3; --out-soft:#232036; --edge:#2c2942;}
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-tap-highlight-color:transparent}
   .wrap{max-width:640px;margin:0 auto;padding:16px 14px 40px}
@@ -241,7 +267,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v37',
+        footer:'Live stock from <b>Adulis</b> · v38',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -339,14 +365,33 @@
         tgLinkNote:'Telegram-direct — best for your Telegram bio (opens fullscreen instantly):',
         addAnotherBtn:'Save & add another', savedN:function(n){return '✓ '+n+' saved';},
         clipsNudge:function(n){return 'Send clips for "'+n+'" →';},
-        searchPh:'Search items…', selectAllL:'Select all in stock', noResults:'Nothing matches.'},
+        searchPh:'Search items…', selectAllL:'Select all in stock', noResults:'Nothing matches.',
+        // v38 — the pivot
+        checkoutTitle:'Your order', coNameL:'Your name', coPhoneL:'Phone number',
+        coLocL:'Where do we deliver? (area / landmark)', coNoteL:'Note (optional)',
+        coTotalL:'Items', coSendBtn:'Send my order',
+        coDoneT:'Got it!', coDoneNote:function(n){return n+' will reach out to you shortly about payment and delivery.';},
+        coMsgShop:'Message the shop on Telegram', coErr:'Please fill your name, phone and location.',
+        inboxT:'Orders', inboxEmpty:'No orders yet — share your shop link!',
+        leadNew:'New', leadQuoted:'Quoted', leadChecking:'Checking', leadConfirmed:'Confirmed',
+        leadSold:'Sold out', leadPaid:'Paid', leadCancelled:'Cancelled',
+        quoteL:'Delivery fee you charge (ETB)', quoteBtn:'Set delivery',
+        checkBtn:'Check with merchant', recheckBtn:'Re-check', orderStL:'Stock check', paidBtn:'All paid',
+        payBlockT:'Customer pays you:', fwdBlockT:'Forward to merchant:',
+        yngBlockT:'Delivery (Yangoo):', custBlockT:'Customer:', copyL:'Copy',
+        yourPriceL:'Your price', priceHint:'Your price — your profit is the difference.',
+        editPriceT:'Set your price (ETB)', themeT:'Shop look',
+        themeClassic:'Classic', themeEditorial:'Editorial', themeVivid:'Vivid',
+        themePickNote:'Pick the look of your shop — change it anytime.',
+        payPhoneL:'Your Telebirr number (customers pay this)',
+        pickTheme:'Pick your look'},
     am:{appSub:'በቴሌግራም ውስጥ ሱቆች', sub:'ይመለከቱ · ዋጋ በቴሌግራም ይደራደሩ', subNoUser:'ዕቃዎችን ይመለከቱ',
         in:'አለ', low:'ጥቂቱ', out:'አልቀረም',
         neg:'ይደራደሩ', buyOut:'ተሽጧል', buyNoUser:'በውይይት ጠይቁ',
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v37',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v38',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -444,7 +489,26 @@
         tgLinkNote:'ቴሌግራም-ቀጥታ — ለቴሌግራም ባዮዎ የተሻለው (ወዲያውኑ በሙሉ ማያ ይከፈታል)፦',
         addAnotherBtn:'አስቀምጠህ ሌላ ጨምር', savedN:function(n){return '✓ '+n+' ተቀምጠዋል';},
         clipsNudge:function(n){return 'ለ"'+n+'" ክሊፖችን ላክ →';},
-        searchPh:'ዕቃ ፈልግ…', selectAllL:'የቀሩትን ሁሉ ምረጥ', noResults:'አልተገኘም።'},
+        searchPh:'ዕቃ ፈልግ…', selectAllL:'የቀሩትን ሁሉ ምረጥ', noResults:'አልተገኘም።',
+        // v38 — the pivot
+        checkoutTitle:'ትዕዛዝዎ', coNameL:'ስምዎ', coPhoneL:'ስልክ ቁጥር',
+        coLocL:'የት እናድርስ? (አካባቢ / ማዕቀፍ)', coNoteL:'ማስታወሻ (አማራጭ)',
+        coTotalL:'ዕቃዎች', coSendBtn:'ትዕዛዔን ላክ',
+        coDoneT:'ደርሷል!', coDoneNote:function(n){return n+' ስለ ክፍያና ማድረስ በቅርቡ ያገኙዎታል።';},
+        coMsgShop:'በቴሌግራም አግኙን', coErr:'እባክዎ ስምዎን፣ ስልክዎንና አድራሻዎን ይሙሉ።',
+        inboxT:'ትዕዛዞች', inboxEmpty:'እስካሁን ትዕዛዝ የለም — አገናኝዎን ያጋሩ!',
+        leadNew:'አዲስ', leadQuoted:'ዋጋ ተቀምጧል', leadChecking:'እየተረጋገጠ ነው', leadConfirmed:'ተረጋግጧል',
+        leadSold:'አልተገኘም', leadPaid:'ተከፍሏል', leadCancelled:'ተሰርዟል',
+        quoteL:'የማድረስ ክፍያዎ (ብር)', quoteBtn:'ክፍያ አስቀምጥ',
+        checkBtn:'ከነጋዴው ጠይቅ', recheckBtn:'እንደገና ጠይቅ', orderStL:'ዕቃ ፍተሻ', paidBtn:'ሁሉም ተከፍሏል',
+        payBlockT:'ደንበኛው የሚከፍልዎት፦', fwdBlockT:'ለነጋዴው ይላኩ፦',
+        yngBlockT:'ማድረስ (Yangoo)፦', custBlockT:'ደንበኛ፦', copyL:'ቅዳ',
+        yourPriceL:'ዋጋዎ', priceHint:'ዋጋዎ — ትርፍዎ ልዩነቱ ነው።',
+        editPriceT:'ዋጋዎን አስቀምጡ (ብር)', themeT:'የሱቅ ስታይል',
+        themeClassic:'ክላሲክ', themeEditorial:'ኤዲቶሪያል', themeVivid:'ቪቪድ',
+        themePickNote:'የሱቅዎን ስታይል ይምረጡ — በየጊዜው መቀየር ይችላሉ።',
+        payPhoneL:'የቴሌብር ቁጥርዎ (ደንበኞች ይህን ይከፍላሉ)',
+        pickTheme:'ስታይል ይምረጡ'},
   };
   function detectLang(){
     try{ if(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user){
@@ -484,7 +548,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=37;
+  var BUILD=38;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
   // fills them in. Empty until then (the panel shows "coming soon").
@@ -511,6 +575,15 @@
   function content(){return document.getElementById('content');}
   // Shop header badge: the merchant's own logo when they've sent one to
   // the bot, the generic "A" otherwise.
+  // Shop template (v38): the store's theme arrives with the header RPC;
+  // web and Telegram dress identically (one page, data-theme palette).
+  function applyTheme(t){
+    try{
+      var root=document.documentElement;
+      if(t==='editorial'||t==='vivid')root.setAttribute('data-theme',t);
+      else root.removeAttribute('data-theme');
+    }catch(e){}
+  }
   function setLogo(url){
     var box=document.querySelector('.logo');
     if(!box)return;
@@ -574,7 +647,7 @@
         var bAdd=el('button','addbtn','+');
         bAdd.onclick=function(ev){
           ev.stopPropagation();
-          cartAdd({name:r.item_name,price:Number(r.sell_price)});
+          cartAdd({name:r.item_name,price:Number(r.sell_price),uid:r.item_uid||null});
           bAdd.textContent='✓';bAdd.classList.add('done');
           setTimeout(function(){bAdd.textContent='+';bAdd.classList.remove('done');},900);
         };
@@ -615,6 +688,10 @@
           ev.stopPropagation();
           if(sizesArr.length>1){renderDetail(r);return;}
           beacon(fixed?'buy':'negotiate');
+          if(window.__affShop&&!(tg&&tg.initData&&tg.initData.length)){
+            renderCheckout([{name:r.item_name,price:Number(r.sell_price),qty:1,uid:r.item_uid||null}]);
+            return;
+          }
           var msg=fixed?L.dmBuy(r.item_name,money(r.sell_price)):L.dm(r.item_name,money(r.sell_price));
           openTg('https://t.me/'+encodeURIComponent(user)+'?text='+encodeURIComponent(msg));
         };}
@@ -638,6 +715,7 @@
           document.getElementById('storeName').textContent=store.store_name;
           document.getElementById('storeSub').textContent=L.subNoUser;
           setLogo(store.logo_url);
+          applyTheme(store.theme);
           var s=el('div','state',L.emptyShop);
           if(APK_LAUNCHED){
             var b=el('a','btn',L.getApp);b.href=APK;b.target='_blank';
@@ -652,6 +730,7 @@
       return;
     }
     window.__rows=rows;
+    applyTheme(null);
     if(!window.__visited){window.__visited=true;beacon('visit');}
     var store=rows[0], user=store.telegram_username;
     window.__shopUser=user;
@@ -842,7 +921,7 @@
     var lineName=item.size?item.name+' ('+shortSize(item.size)+')':item.name;
     var hit=window.__cart.find(function(c){return c.name===lineName;});
     if(hit)hit.qty++;
-    else window.__cart.push({name:lineName,price:item.price,qty:1});
+    else window.__cart.push({name:lineName,price:item.price,qty:1,uid:item.uid||null});
     drawCartFab();
   }
   function cartCount(){return window.__cart.reduce(function(a,c){return a+c.qty;},0);}
@@ -905,6 +984,11 @@
     bSend.style.flex='1';
     bSend.disabled=!window.__cart.length||!window.__shopUser;
     bSend.onclick=function(){
+      if(window.__affShop&&!(tg&&tg.initData&&tg.initData.length)){
+        chat.remove();
+        renderCheckout(window.__cart.map(function(c){return {name:c.name,price:c.price,qty:c.qty,uid:c.uid||null};}));
+        return;
+      }
       lines=window.__cart.map(function(c){return '• '+c.name+' ×'+c.qty+' — '+money(c.price*c.qty);}).join(NL);
       beacon('buy');
       try{fetch(API+'/rest/v1/rpc/public_storefront_event',{
@@ -918,6 +1002,97 @@
     bar.appendChild(bSug);bar.appendChild(bSend);
     chat.appendChild(bar);
     document.body.appendChild(chat);
+  }
+
+  // ---- v38 checkout overlay (shopper, web, reseller shops) -------------
+  // Zero friction: name + phone + location -> lead_submit (public, capped
+  // + honeypotted server-side) -> warm confirmation + one-tap shop DM.
+  function renderCheckout(lines){
+    var old=document.getElementById('checkoutOv');if(old)old.remove();
+    var shop=window.__rows&&window.__rows[0]?window.__rows[0].store_name:'the shop';
+    var shopUser=window.__shopUser||null;
+    var ov=el('div','chat');ov.id='checkoutOv';
+    var hd=el('div','chat-hd');
+    hd.appendChild(el('b',null,L.checkoutTitle));
+    var x=el('button','chat-x','\u2715');
+    x.onclick=function(){ov.remove();};
+    hd.appendChild(x);
+    ov.appendChild(hd);
+    var body=el('div','chat-body');body.style.paddingTop='14px';
+    var total=0;
+    lines.forEach(function(c){
+      total+=c.price*c.qty;
+      body.appendChild(saleRow(null,c.name+' \u00d7'+c.qty,money(c.price*c.qty),''));
+    });
+    var tot=el('div','carttotal');
+    tot.appendChild(el('span',null,L.coTotalL));
+    tot.appendChild(el('span',null,money(total)));
+    body.appendChild(tot);
+    function fld(label,ph,type,im){
+      var f=el('div','field');f.appendChild(el('label',null,label));
+      var i=document.createElement('input');i.type=type||'text';i.placeholder=ph||'';
+      if(im)i.inputMode=im;
+      f.appendChild(i);body.appendChild(f);
+      return i;
+    }
+    var iName=fld(L.coNameL,'\u2026');
+    var iPhone=fld(L.coPhoneL,'09\u2026','tel','tel');
+    var iLoc=fld(L.coLocL,'\u2026');
+    var iNote=fld(L.coNoteL,'\u2026');
+    var hp=document.createElement('input');hp.type='text';hp.name='company';
+    hp.style.cssText='position:absolute;left:-9999px;top:-9999px';
+    body.appendChild(hp);
+    var err=el('div','err');body.appendChild(err);
+    var bar=el('div','chat-in');
+    var bSend=el('button',null,L.coSendBtn);
+    bSend.onclick=function(){
+      err.textContent='';
+      var n=iName.value.trim(),p=iPhone.value.trim(),loc=iLoc.value.trim();
+      if(!n||!p||!loc){err.textContent=L.coErr;return;}
+      var payload={
+        action:'lead_submit',slug:slug,
+        name:n,phone:p,location:loc,
+        note:iNote.value.trim(),
+        company:hp.value,
+        items:lines.filter(function(c){return c.uid;})
+          .map(function(c){return {item_id:c.uid,qty:c.qty};})
+      };
+      if(!payload.items.length){err.textContent=L.coErr;return;}
+      bSend.disabled=true;bSend.textContent='\u2026';
+      authCall('lead_submit',payload).then(function(j){
+        if(j.ok&&j.lead_id){
+          window.__cart=[];drawCartFab();
+          body.innerHTML='';
+          var big=el('div','state');
+          big.style.padding='40px 10px';
+          var tick=el('div',null,'\u2705');tick.style.fontSize='40px';tick.style.textAlign='center';
+          big.appendChild(tick);
+          var t=el('div',null,L.coDoneT);
+          t.style.cssText='font-size:22px;font-weight:800;margin-top:10px;text-align:center';
+          big.appendChild(t);
+          var nt=el('div','note',L.coDoneNote(shop));
+          nt.style.marginTop='8px';
+          big.appendChild(nt);
+          if(shopUser){
+            var bMsg=el('button','btn',L.coMsgShop);
+            bMsg.style.marginTop='14px';
+            bMsg.onclick=function(){
+              openTg('https://t.me/'+encodeURIComponent(shopUser)+'?text='+
+                encodeURIComponent(L.dmBuy(lines.map(function(c){return c.name;}).join(', '),money(total))));
+            };
+            big.appendChild(bMsg);
+          }
+          body.appendChild(big);
+        }else{
+          bSend.disabled=false;bSend.textContent=L.coSendBtn;
+          err.textContent=L.errGeneric+' \u2318 '+(j.error||'');
+        }
+      }).catch(function(){bSend.disabled=false;bSend.textContent=L.coSendBtn;err.textContent=L.errGeneric;});
+    };
+    bar.appendChild(bSend);
+    ov.appendChild(body);ov.appendChild(bar);
+    document.body.appendChild(ov);
+    setTimeout(function(){try{iName.focus();}catch(e){}},60);
   }
 
   // ---- Item detail overlay: big photo, size pick, related items -------
@@ -976,7 +1151,7 @@
     var bAdd=el('button','btn ghost','+');
     bAdd.onclick=function(){
       if(sizesArr.length>1&&!chosen){return;}
-      cartAdd({name:item.item_name,price:Number(item.sell_price),size:chosen});
+      cartAdd({name:item.item_name,price:Number(item.sell_price),size:chosen,uid:item.item_uid||null});
       bAdd.textContent='✓ Added';
       setTimeout(function(){bAdd.textContent='+';},900);
     };
@@ -1079,7 +1254,7 @@
           // detail overlay opens on top and the add looks dead (the grid's
           // + has always had this; the chat cards were missing it).
           ev.stopPropagation();
-          cartAdd({name:r.item_name,price:Number(r.sell_price)});
+          cartAdd({name:r.item_name,price:Number(r.sell_price),uid:r.item_uid||null});
           plus.textContent='✓';
           setTimeout(function(){plus.textContent='+';},800);
         };
@@ -1371,7 +1546,7 @@
       method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
       body:JSON.stringify({p_slug:store.slug})
     }).then(function(r){return r.ok?r.json():Promise.reject();})
-      .then(function(h){if(h&&h.length)setLogo(h[0].logo_url||null);})
+      .then(function(h){if(h&&h.length){setLogo(h[0].logo_url||null);applyTheme(h[0].theme);}})
       .catch(function(){});
     renderOwnerTab(window.__tab,fresh);
     drawTabBar();
@@ -1451,8 +1626,12 @@
       return;
     }
 
-    // ---- SHOP tab: link, share, channel, credentials, APK ----
+    // ---- SHOP tab: look, link, share, channel, credentials, APK ----
     p.appendChild(el('h2',null,store.name));
+    var lookBtn=el('button','btn ghost',L.themeT+' \u2192');
+    lookBtn.style.marginBottom='10px';
+    lookBtn.onclick=function(){renderThemePick(store);};
+    p.appendChild(lookBtn);
     // Channel-less + username-less merchants get guided, not stuck:
     // without a @username the shop's Buy/Negotiate buttons can't open a
     // DM (Telegram has no link to reach them). The note explains; the
@@ -2490,11 +2669,20 @@
   function loadShelf(cb){
     authCall('affiliate_items_list',{}).then(function(j){
       window.__shelf=(j.ok&&j.items)?j.items:[];
+      var m=new Map();
+      window.__shelf.forEach(function(x){m.set(x.id,x.my_price!=null?x.my_price:x.sell_price);});
+      window.__myPrices=m;
       cb(window.__shelf);
-    }).catch(function(){window.__shelf=[];cb([]);});
+    }).catch(function(){window.__shelf=[];window.__myPrices=new Map();cb([]);});
   }
 
   function renderAffOwner(store,fresh){
+    // First-ever entry after signup: pick the shop look first (v38).
+    if(fresh===true&&!window.__themePicked){
+      window.__themePicked=true;
+      renderThemePick(store,fresh);
+      return;
+    }
     window.__mode='owner';
     window.__ownerStore=store;
     if(!window.__tab||window.__tab==='items'||window.__tab==='sales')window.__tab='catalog';
@@ -2504,7 +2692,7 @@
       method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
       body:JSON.stringify({p_slug:store.slug})
     }).then(function(r){return r.ok?r.json():Promise.reject();})
-      .then(function(h){if(h&&h.length)setLogo(h[0].logo_url||null);})
+      .then(function(h){if(h&&h.length){setLogo(h[0].logo_url||null);applyTheme(h[0].theme);}})
       .catch(function(){});
     renderAffTab(window.__tab,fresh);
     drawTabBar();
@@ -2569,9 +2757,15 @@
             else{var emo=el('div',null,'🛍️');emo.style.cssText='position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center';ph.appendChild(emo);}
             if((i.stock||0)<=0){var out=el('div',null,L.out);out.style.cssText='position:absolute;top:4px;left:4px;font-size:9px;font-weight:700;background:var(--out-soft);color:var(--out);border-radius:7px;padding:2px 6px';ph.appendChild(out);}
             var nm=el('div',null,i.name);nm.style.cssText='font-size:10px;font-weight:600;padding:4px 5px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
-            var pr=el('div',null,money(i.sell_price));pr.style.cssText='font-size:10px;font-weight:800;color:var(--ok);padding:0 5px';
-            var ct=el('div',null,i.cut!=null?'+'+money(i.cut):'');ct.style.cssText='font-size:9px;font-weight:700;color:var(--accent);padding:0 5px 6px';
-            card.appendChild(ph);card.appendChild(nm);card.appendChild(pr);card.appendChild(ct);
+            var myP=window.__myPrices&&window.__myPrices.get(i.id);
+            var pr=el('div',null,money(myP!=null?myP:i.sell_price));
+            pr.style.cssText='font-size:10px;font-weight:800;color:var(--ok);padding:0 5px 4px';
+            pr.title=L.yourPriceL;
+            pr.onclick=function(ev){
+              ev.stopPropagation();
+              renderPriceEdit(i,myP);
+            };
+            card.appendChild(ph);card.appendChild(nm);card.appendChild(pr);
             card.onclick=function(){
               if(selected.has(i.id)){selected.delete(i.id);card.style.borderColor='transparent';}
               else{selected.set(i.id,true);card.style.borderColor='var(--accent)';}
@@ -2611,20 +2805,38 @@
     }
 
     if(tab==='orders'){
-      p.appendChild(el('h2',null,L.tabOrders));
-      var bNew=el('button','btn ghost',L.commitTitle);
-      bNew.style.marginBottom='10px';
-      bNew.onclick=function(){renderOrderSheet();};
-      p.appendChild(bNew);
-      var orBox=el('div');
-      orBox.appendChild(el('div','note','…'));
-      p.appendChild(orBox);
+      p.appendChild(el('h2',null,L.inboxT));
+      var box=el('div');
+      box.appendChild(el('div','note','\u2026'));
+      p.appendChild(box);
       c.appendChild(p);
-      loadAffOrders(orBox);
+      loadInbox(box);
       return;
     }
 
-    // ---- SHOP tab: link, username, shelf media, marketing kit ----
+    // ---- SHOP tab: look, link, username, shelf media, marketing kit ----
+    var lookBtn=el('button','btn ghost',L.themeT+' \u2192');
+    lookBtn.style.marginBottom='10px';
+    lookBtn.onclick=function(){renderThemePick(store);};
+    p.appendChild(lookBtn);
+    var fp=el('div','field');fp.appendChild(el('label',null,L.payPhoneL));
+    var iPay=document.createElement('input');iPay.inputMode='tel';iPay.placeholder='09…';
+    if(window.__payPhone)iPay.value=window.__payPhone;
+    fp.appendChild(iPay);
+    var perr=el('div','err');var pok=el('div','okmsg');
+    var bPay=el('button','btn ghost',detectCur()==='am'?'አስቀምጥ':'Save');
+    bPay.onclick=function(){
+      perr.textContent='';pok.textContent='';
+      var v=iPay.value.trim();
+      bPay.disabled=true;
+      authCall('shop_settings_set',{payment_phone:v}).then(function(j){
+        bPay.disabled=false;
+        if(j.ok){window.__payPhone=v;pok.textContent=L.updDone;}
+        else perr.textContent=L.errGeneric+' ⓘ '+(j.error||'');
+      }).catch(function(){bPay.disabled=false;perr.textContent=L.errGeneric;});
+    };
+    fp.appendChild(bPay);fp.appendChild(perr);fp.appendChild(pok);
+    p.appendChild(fp);
     renderAffShopTab(p,store);
     c.appendChild(p);
   }
@@ -2643,6 +2855,257 @@
         box.appendChild(saleRow(o.img,o.name+(o.size?' ('+shortSize(o.size)+')':'')+' ×'+o.qty,right,sub));
       });
     });
+  }
+
+  // v38: tap a catalog card's price to set YOUR price (markup).
+  function renderPriceEdit(item,cur){
+    var old=document.getElementById('priceEditOv');if(old)old.remove();
+    var ov=el('div','chat');ov.id='priceEditOv';
+    var hd=el('div','chat-hd');
+    hd.appendChild(el('b',null,L.editPriceT));
+    var x=el('button','chat-x','\u2715');
+    x.onclick=function(){ov.remove();};
+    hd.appendChild(x);
+    ov.appendChild(hd);
+    var body=el('div','chat-body');body.style.paddingTop='14px';
+    var top=el('div','ic-top');
+    var th=el('div','ic-thumb');
+    if(item.img){var im=document.createElement('img');im.src=item.img;im.alt='';th.appendChild(im);}
+    else{th.textContent='\U0001F6CD\uFE0F';}
+    top.appendChild(th);
+    var mm=el('div','ic-main');
+    mm.appendChild(el('div','ic-name',item.name));
+    mm.appendChild(el('div','ic-sub',money(item.sell_price)+' \u2192 \u2026'));
+    top.appendChild(mm);
+    body.appendChild(top);
+    var hint=el('div','note',L.priceHint);hint.style.margin='10px 0';
+    body.appendChild(hint);
+    var f=el('div','field');f.appendChild(el('label',null,L.editPriceT));
+    var inp=document.createElement('input');inp.inputMode='numeric';
+    if(cur!=null)inp.value=cur;
+    f.appendChild(inp);body.appendChild(f);
+    var err=el('div','err');body.appendChild(err);
+    var okm=el('div','okmsg');body.appendChild(okm);
+    var bar=el('div','chat-in');
+    var b=el('button',null,L.saveBtn);
+    b.onclick=function(){
+      var v=Number(inp.value);
+      if(!isFinite(v)||v<=0){err.textContent=L.errPrice;return;}
+      b.disabled=true;
+      authCall('affiliate_price_set',{item_id:item.id,price:v}).then(function(j){
+        b.disabled=false;
+        if(j.ok){
+          if(window.__myPrices)window.__myPrices.set(item.id,v);
+          okm.textContent=L.updDone;
+          setTimeout(function(){ov.remove();renderAffTab('catalog');drawTabBar();},600);
+        }else{err.textContent=L.errGeneric+' \u2318 '+(j.error||'');}
+      }).catch(function(){b.disabled=false;err.textContent=L.errGeneric;});
+    };
+    bar.appendChild(b);
+    ov.appendChild(body);ov.appendChild(bar);
+    document.body.appendChild(ov);
+    setTimeout(function(){try{inp.focus();}catch(e){}},60);
+  }
+
+  // v38: the shop look — 3 curated templates, one tap, both surfaces.
+  var THEMES=[
+    {id:'classic',name:L.themeClassic,css:'background:#ffffff;color:#1c1e21;border:2px solid #e3e5e8'},
+    {id:'editorial',name:L.themeEditorial,css:'background:#faf8f4;color:#26221c;border:2px solid #e2dccf;font-family:Georgia,serif'},
+    {id:'vivid',name:L.themeVivid,css:'background:#ffffff;color:#17162a;border:2px solid #e91e8c'}
+  ];
+  function renderThemePick(store,fresh){
+    window.__mode='themepick';
+    var c=content();c.innerHTML='';
+    document.getElementById('storeName').textContent=L.pickTheme;
+    document.getElementById('storeSub').textContent=L.themePickNote;
+    setLogo(null);
+    var p=el('div','panel');
+    if(fresh)p.appendChild(el('div','okmsg',L.created));
+    p.appendChild(el('h2',null,L.pickTheme));
+    p.appendChild(el('div','note',L.themePickNote));
+    THEMES.forEach(function(t){
+      var card=el('div','item-card');
+      card.style.cursor='pointer';
+      var prev=el('div');
+      prev.style.cssText='height:84px;border-radius:10px;display:flex;flex-direction:column;justify-content:flex-end;padding:10px;'+t.css;
+      var t1=el('div',null,store?store.name:'My shop');
+      t1.style.cssText='font-size:15px;font-weight:800';
+      var t2=el('div',null,money(2500));
+      t2.style.cssText='font-size:13px;font-weight:800;color:#1e9e5a';
+      var t3=el('div',null,'Buy');
+      t3.style.cssText='align-self:flex-start;margin-top:6px;background:#2481cc;color:#fff;border-radius:16px;padding:6px 16px;font-size:12px;font-weight:800';
+      prev.appendChild(t1);prev.appendChild(t2);prev.appendChild(t3);
+      card.appendChild(prev);
+      card.appendChild(el('div','ic-name',t.name)).style.marginTop='8px';
+      card.onclick=function(){
+        authCall('shop_settings_set',{theme:t.id}).then(function(j){
+          applyTheme(t.id);
+          if(window.__storeType==='affiliate')renderAffOwner(store,fresh);
+          else renderOwner(store,fresh);
+        });
+      };
+      p.appendChild(card);
+    });
+    var skip=el('button','btn ghost',detectCur()==='am'?'\u2318 \uca0\u1235\u1308\u1235':'\u2318 Skip');
+    skip.style.marginTop='6px';
+    skip.onclick=function(){
+      if(window.__storeType==='affiliate')renderAffOwner(store,fresh);
+      else renderOwner(store,fresh);
+    };
+    p.appendChild(skip);
+    c.appendChild(p);
+  }
+
+  // ---- v38 Orders inbox: the reseller's one workplace -------------------
+  var LEAD_CHIP={new:'t-in',quoted:'t-low',checking:'t-in',confirmed:'t-in',
+    sold_out:'t-out',paid:'t-in',cancelled:'t-out'};
+  function leadChip(st){
+    var txt={new:L.leadNew,quoted:L.leadQuoted,checking:L.leadChecking,
+      confirmed:L.leadConfirmed,sold_out:L.leadSold,paid:L.leadPaid,
+      cancelled:L.leadCancelled}[st]||st;
+    return el('span','tier '+(LEAD_CHIP[st]||'t-in'),txt);
+  }
+  function copyBtn(getText){
+    var b=el('button','mbtn',L.copyL);
+    b.style.cssText='padding:7px 10px;font-size:11.5px;flex:none';
+    b.onclick=function(){
+      try{navigator.clipboard.writeText(getText());}catch(e){}
+      b.textContent='\u2713';
+      setTimeout(function(){b.textContent=L.copyL;},1200);
+    };
+    return b;
+  }
+  function loadInbox(box){
+    authCall('leads_list',{}).then(function(j){
+      box.innerHTML='';
+      if(!j.ok){box.appendChild(el('div','note','\u2318 '+(j.error||'leads')));return;}
+      var leads=j.leads||[];
+      if(!leads.length){box.appendChild(el('div','note',L.inboxEmpty));return;}
+      leads.forEach(function(ld){box.appendChild(leadCard(ld,j.payment_phone));});
+    });
+  }
+  function leadCard(ld,payPhone){
+    var card=el('div','item-card');
+    var top=el('div','ic-top');
+    var main=el('div','ic-main');
+    var nameRow=el('div','ic-name');
+    nameRow.textContent=ld.name;
+    var sub=el('div','ic-sub');
+    sub.appendChild(leadChip(ld.status));
+    sub.appendChild(el('span',null,money(ld.total+(Number(ld.delivery_quote||0)))));
+    sub.appendChild(el('span',null,fmtWhen(ld.created_at)));
+    main.appendChild(nameRow);main.appendChild(sub);
+    top.appendChild(main);
+    card.appendChild(top);
+    (ld.items||[]).forEach(function(it){
+      card.appendChild(saleRow(it.img,it.name+' \u00d7'+it.qty,money(it.price*it.qty),
+        it.merchant||''));
+    });
+    // Customer block: copy-ready for Yangoo + contact.
+    var cb=el('div','hotline');
+    cb.appendChild(el('div','s-thumb','\U0001F464'));
+    var cbMain=el('div','hl-main');
+    cbMain.appendChild(el('div',null,L.custBlockT));
+    cbMain.appendChild(el('div','ir-sub',ld.phone+' \u00b7 '+ld.location));
+    cb.appendChild(cbMain);
+    var cbBtns=el('div','ir-sub');
+    cbBtns.appendChild(copyBtn(function(){return ld.phone;}));
+    cbBtns.appendChild(copyBtn(function(){return ld.location;}));
+    cb.appendChild(cbBtns);
+    card.appendChild(cb);
+    if(ld.note){
+      var nt=el('div','note','\u201c'+ld.note+'\u201d');nt.style.marginTop='4px';
+      card.appendChild(nt);
+    }
+    // Delivery quote.
+    var qRow=el('div','ir-sub');qRow.style.marginTop='8px';
+    var qi=document.createElement('input');qi.inputMode='numeric';
+    qi.placeholder=L.quoteL;
+    if(ld.delivery_quote!=null)qi.value=ld.delivery_quote;
+    qi.style.cssText='width:150px;border:1px solid var(--edge);border-radius:8px;background:var(--bg);color:var(--ink);font-size:13px;padding:8px 10px;font-family:inherit;outline:none';
+    var qb=el('button','mbtn',L.quoteBtn);qb.style.padding='8px 10px';qb.style.fontSize='11.5px';
+    qb.onclick=function(){
+      var v=Number(qi.value);
+      if(!isFinite(v)||v<0){qi.value='';return;}
+      qb.disabled=true;
+      authCall('lead_quote_set',{lead_id:ld.id,delivery_quote:v}).then(function(k){
+        qb.disabled=false;
+        if(k.ok){qb.textContent='\u2713';setTimeout(function(){qb.textContent=L.quoteBtn;},1200);ld.delivery_quote=v;}
+      });
+    };
+    qRow.appendChild(qi);qRow.appendChild(qb);
+    card.appendChild(qRow);
+    // [Check with merchant] + per-order statuses.
+    if(ld.status==='new'||ld.status==='quoted'){
+      var chk=el('button','btn',L.checkBtn);
+      chk.style.marginTop='10px';
+      chk.onclick=function(){
+        chk.disabled=true;chk.textContent='\u2026';
+        authCall('lead_check',{lead_id:ld.id}).then(function(k){
+          if(k.ok){loadInbox(box.parentNode&&!1?box:document.querySelector('.panel div'));}
+          else{chk.disabled=false;chk.textContent=L.checkBtn+' \u2318 '+(k.error||'');}
+        });
+      };
+      card.appendChild(chk);
+    }
+    if((ld.orders||[]).length){
+      var st=el('div','sect');
+      st.appendChild(el('h3',null,L.orderStL));
+      ld.orders.forEach(function(o){
+        var orow=el('div','hotline');
+        orow.appendChild(el('div','s-thumb','\U0001F4E6'));
+        var om=el('div','hl-main');
+        om.appendChild(el('div',null,(o.merchant||'?')));
+        om.appendChild(el('div','ir-sub',o.status));
+        orow.appendChild(om);
+        if(o.status==='accepted'&&o.merchant_share!=null){
+          var r2=el('div','hl-right');
+          r2.appendChild(el('b',null,L.fwdBlockT.replace(':','')+' '+money(o.merchant_share)));
+          orow.appendChild(r2);
+        }
+        st.appendChild(orow);
+      });
+      card.appendChild(st);
+    }
+    // Payment + Yangoo blocks once confirmed.
+    if(ld.status==='confirmed'||ld.status==='paid'){
+      var dq=Number(ld.delivery_quote||0);
+      var pb=el('div','linkbox',
+        L.payBlockT+' '+money(ld.total+dq)+(payPhone?' \u2192 '+payPhone:''));
+      card.appendChild(pb);
+      var fb=el('div','note',L.fwdBlockT);
+      card.appendChild(fb);
+      (ld.orders||[]).forEach(function(o){
+        if(o.merchant_share!=null){
+          var fl=el('div','ir-sub');
+          fl.appendChild(el('span','tier t-in',(o.merchant||'?')+': '+money(o.merchant_share)+
+            (o.pickup?' \u00b7 '+o.pickup:'')+(o.pickup_phone?' \u00b7 '+o.pickup_phone:'')));
+          fl.appendChild(copyBtn(function(){return String(o.merchant_share);}));
+          card.appendChild(fl);
+        }
+      });
+      var yb=el('div','note',L.yngBlockT+' '+ld.location);
+      card.appendChild(yb);
+      var yBtn=el('a','btn ghost','Yangoo');
+      yBtn.href='https://yangoo.et';yBtn.target='_blank';
+      yBtn.style.marginTop='6px';
+      card.appendChild(yBtn);
+      if(ld.status==='confirmed'){
+        var pb2=el('button','btn',L.paidBtn);
+        pb2.style.marginTop='10px';
+        pb2.onclick=function(){
+          pb2.disabled=true;
+          var pend=(ld.orders||[]).filter(function(o){return o.ledger!=='paid';});
+          var chain=Promise.resolve();
+          pend.forEach(function(o){
+            chain=chain.then(function(){return authCall('ledger_paid',{order_id:o.id});});
+          });
+          chain.then(function(){loadInbox(box);});
+        };
+        card.appendChild(pb2);
+      }
+    }
+    return card;
   }
 
   function renderAffShopTab(p,store){
@@ -2891,49 +3354,29 @@
       }).catch(function(){bSub.disabled=false;serr.textContent=L.errGeneric;});
     };
     fs.appendChild(bSub);fs.appendChild(serr);fs.appendChild(sok);
-    p.appendChild(fs);
-
-    // Collapsed specials — each with its one honest use case.
-    var bMore=el('button','btn ghost',L.otherLinksL);
-    bMore.style.marginTop='4px';
-    var moreBox=el('div');
-    moreBox.style.display='none';
-    bMore.onclick=function(){
-      if(moreBox.style.display==='none'){
-        moreBox.style.display='';
-        bMore.textContent=L.otherLinksL.replace('▾','▴');
-        if(!moreBox.childNodes.length){
-          moreBox.appendChild(el('div','note',L.tgLinkNote));
-          var tgBox=el('div','linkbox',appLink(store.slug));
-          moreBox.appendChild(tgBox);
-          var r1=el('div','row');
-          var c1=el('button','btn ghost',detectCur()==='am'?'ቅዳ':'Copy');
-          c1.onclick=function(){
-            try{navigator.clipboard.writeText(appLink(store.slug));}catch(e){}
-            c1.textContent='✓';
-            setTimeout(function(){c1.textContent=detectCur()==='am'?'ቅዳ':'Copy';},1200);
-          };
-          r1.appendChild(c1);
-          moreBox.appendChild(r1);
-          moreBox.appendChild(el('div','note',L.webLinkNote));
-          var wBox=el('div','linkbox',BASE+'?s='+store.slug);
-          moreBox.appendChild(wBox);
-          var r2=el('div','row');
-          var c2=el('button','btn ghost',detectCur()==='am'?'ቅዳ':'Copy');
-          c2.onclick=function(){
-            try{navigator.clipboard.writeText(BASE+'?s='+store.slug);}catch(e){}
-            c2.textContent='✓';
-            setTimeout(function(){c2.textContent=detectCur()==='am'?'ቅዳ':'Copy';},1200);
-          };
-          r2.appendChild(c2);
-          moreBox.appendChild(r2);
-        }
-      }else{
-        moreBox.style.display='none';
-        bMore.textContent=L.otherLinksL;
-      }
+    var sugBox=el('div','ir-sub');
+    p.appendChild(fs);p.appendChild(sugBox);
+    var sugTid=null;
+    iSub.oninput=function(){
+      if(sugTid)clearTimeout(sugTid);
+      var q=iSub.value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+      if(q.length<3){sugBox.innerHTML='';return;}
+      sugTid=setTimeout(function(){
+        authCall('subdomain_suggest',{q:q}).then(function(j){
+          sugBox.innerHTML='';
+          (j.suggestions||[]).filter(function(s){return s.available;}).slice(0,4).forEach(function(s){
+            var chip=el('button','mbtn',s.name+'.adulis.co');
+            chip.style.cssText='margin:2px;padding:7px 10px;font-size:11.5px';
+            chip.onclick=function(){
+              iSub.value=s.name;
+              sugBox.innerHTML='';
+              bSub.click();
+            };
+            sugBox.appendChild(chip);
+          });
+        });
+      },500);
     };
-    p.appendChild(bMore);p.appendChild(moreBox);
   }
 
   function renderHome(){
