@@ -1531,6 +1531,7 @@
     if(!initDataOK()){
       // v41: Gmail signup in plain browsers — the founder's speed play.
       renderEmailAuth(c,p);
+      c.appendChild(p);
       return;
     }
     p.appendChild(el('h2',null,L.createTitle));
