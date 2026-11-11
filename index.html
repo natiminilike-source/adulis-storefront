@@ -54,9 +54,20 @@
   .dark[data-theme="vivid"]{--bg:#141222; --card:#1e1c30; --ink:#f4f3fb; --muted:#9a97b8; --accent:#ff5cb0; --accent-soft:rgba(255,92,176,.16); --ok:#3ecfae; --ok-soft:#12312a; --warn:#e8a23d; --warn-soft:#33290f; --out:#8f8da3; --out-soft:#232036; --edge:#2c2942;}
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-tap-highlight-color:transparent}
-  .wrap{max-width:640px;margin:0 auto;padding:16px 14px 40px}
-  header{display:flex;align-items:center;gap:12px;padding:6px 2px 14px}
-  .logo{width:44px;height:44px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;flex:none;overflow:hidden}
+  .wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+  /* V43 responsive: laptop gets a wider, airier storefront */
+  @media (min-width:768px){
+    .wrap{max-width:960px;padding:28px 24px 56px}
+    .grid{grid-template-columns:repeat(3,1fr);gap:16px}
+    h1{font-size:26px}
+    .price{font-size:19px}
+  }
+  @media (min-width:1200px){
+    .wrap{max-width:1120px;padding:32px 24px 64px}
+    .grid{grid-template-columns:repeat(4,1fr);gap:20px}
+  }
+  header{display:flex;align-items:center;gap:14px;padding:10px 2px 18px}
+  .logo{width:52px;height:52px;border-radius:14px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;flex:none;overflow:hidden;box-shadow:0 2px 8px rgba(36,129,204,.25)}
   .logo img{width:100%;height:100%;object-fit:cover;display:block}
   .hgroup{flex:1;min-width:0}
   h1{font-size:22px;line-height:1.2;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -65,37 +76,43 @@
   .lang button{border:none;background:transparent;color:var(--muted);font-size:12px;font-weight:700;padding:6px 9px;cursor:pointer;font-family:inherit}
   .lang button.on{background:var(--accent);color:#fff}
   .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-  .item{background:var(--card);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+  .item{background:var(--card);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(36,129,204,.06),0 8px 24px rgba(36,129,204,.08);transition:transform .15s ease-out}
+  .item:hover{transform:translateY(-2px)}
   .item.out{opacity:.55}
   /* Square photo that works on OLD WebViews too: padding-top box + absolute img. */
   .ph{position:relative;width:100%;padding-top:100%;overflow:hidden;background:var(--edge)}
   .ph .emo{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:26px}
   .ph img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block}
   .info{padding:10px 11px 12px;display:flex;flex-direction:column;gap:7px;flex:1}
-  .name{font-size:13.5px;font-weight:600;line-height:1.3;min-height:2.6em}
+  .name{font-size:13px;font-weight:500;line-height:1.35;min-height:2.6em;color:var(--ink)}
+  .price{font-size:18px;font-weight:800}
   .pricerow{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
-  .price{font-size:17px;font-weight:800;color:var(--ok)}
   .neg{font-size:10.5px;color:var(--accent);background:var(--accent-soft);padding:2px 7px;border-radius:8px;font-weight:600}
   .tier{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:8px;align-self:flex-start}
   .t-in{color:var(--ok);background:var(--ok-soft)} .t-low{color:var(--warn);background:var(--warn-soft)} .t-out{color:var(--out);background:var(--out-soft)}
-  .buy{margin-top:auto;background:var(--accent);color:#fff;border:none;border-radius:22px;padding:12px 10px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+  .buy{margin-top:auto;background:var(--accent);color:#fff;border:none;border-radius:22px;min-height:44px;padding:11px 10px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;transition:transform .12s ease-out}
   .buy:active{transform:scale(.97)}
   .buy:disabled{background:var(--out-soft);color:var(--out);cursor:default}
   .state{padding:60px 20px;text-align:center;color:var(--muted);font-size:14px;line-height:1.6}
+  /* V43 entrance: asymmetric ease-out (playbook) — fast start, smooth settle */
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .panel,.grid,.item-card{animation:rise .28s ease-out}
   .state button{margin-top:14px;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
   .spin{width:34px;height:34px;border:3px solid var(--edge);border-top-color:var(--accent);border-radius:50%;margin:0 auto 16px;animation:r 0.8s linear infinite}
   @keyframes r{to{transform:rotate(360deg)}}
   footer{text-align:center;color:var(--muted);font-size:11px;padding:28px 0 6px}
   footer b{color:var(--accent)}
   /* --- owner panel + create form --- */
-  .panel{background:var(--card);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+  .panel{background:var(--card);border-radius:20px;padding:24px 20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 1px 2px rgba(36,129,204,.06),0 12px 32px rgba(36,129,204,.09)}
+  @media (min-width:768px){.panel{padding:32px 28px;max-width:560px;margin:0 auto;width:100%}}
   .panel h2{font-size:16px}
   .panel .note{font-size:12.5px;color:var(--muted);line-height:1.5;white-space:pre-line}
   .field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:0 0 5px 2px}
-  .field input{width:100%;border:1px solid var(--edge);border-radius:10px;background:var(--bg);color:var(--ink);font-size:15px;padding:11px 12px;font-family:inherit;outline:none}
-  .field input:focus{border-color:var(--accent)}
-  .btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;display:block}
-  .btn:active{transform:scale(.98)}
+  .field input{width:100%;border:1.5px solid var(--edge);border-radius:12px;background:var(--bg);color:var(--ink);font-size:16px;padding:14px 14px;min-height:48px;font-family:inherit;outline:none;transition:border-color .15s ease-out}
+  .field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .btn{background:var(--accent);color:#fff;border:none;border-radius:12px;padding:15px 18px;min-height:48px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;display:block;transition:transform .12s ease-out,opacity .15s ease-out}
+  .btn:active{transform:scale(.97)}
+  .btn:disabled{opacity:.55;cursor:default}
   .btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
   .btn:disabled{opacity:.6;cursor:default}
   .linkbox{background:var(--bg);border:1px dashed var(--accent);border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--accent);word-break:break-all;line-height:1.4}
@@ -134,7 +151,7 @@
   .hl-right b{font-weight:700;display:block;font-size:12.5px}
   .hl-right span{color:var(--muted);font-size:10.5px}
   .funnel{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
-  .panel h2{font-size:18px}
+  .panel h2{font-size:22px;font-weight:800;letter-spacing:-.3px}
   .back{margin-bottom:10px}
   /* --- item cards (APK-products-like spacing, big touch targets) --- */
   .item-card{background:var(--bg);border:1px solid var(--edge);border-radius:12px;padding:12px;margin-bottom:12px}
@@ -267,7 +284,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v42',
+        footer:'Live stock from <b>Adulis</b> · v43',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -400,7 +417,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v42',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v43',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -566,7 +583,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=42;
+  var BUILD=43;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
   // fills them in. Empty until then (the panel shows "coming soon").
