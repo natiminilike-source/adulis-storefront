@@ -267,7 +267,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v40',
+        footer:'Live stock from <b>Adulis</b> · v41',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -386,14 +386,21 @@
         payPhoneL:'Your Telebirr number (customers pay this)',
         pickTheme:'Pick your look',
         askAboutL:'Ask about this item', webTipL:'Easier on the web: adulis.co',
-        dmAsk:function(n){return 'Selam! Is the '+n+' available?';}},
+        dmAsk:function(n){return 'Selam! Is the '+n+' available?';},
+        // v41 — Gmail signup
+        emailL:'Email (Gmail)', passCreateL:'Create a password (6+ characters)',
+        haveAcctL:'Already have an account? Sign in', noAcctL:'New here? Create your boutique',
+        emailSignupBtn:'Create my boutique', emailLoginBtn:'Sign in',
+        resetNote:'Forgot your password? We can help — just ask.',
+        linkTgBtn:'Link Telegram for order alerts', linkTgDone:'Telegram linked — you will get order pings.',
+        linkTgHint:'Optional. You will get a message on Telegram every time a customer orders.'},
     am:{appSub:'በቴሌግራም ውስጥ ሱቆች', sub:'ይመለከቱ · ዋጋ በቴሌግራም ይደራደሩ', subNoUser:'ዕቃዎችን ይመለከቱ',
         in:'አለ', low:'ጥቂቱ', out:'አልቀረም',
         neg:'ይደራደሩ', buyOut:'ተሽጧል', buyNoUser:'በውይይት ጠይቁ',
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v40',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v41',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -512,7 +519,14 @@
         payPhoneL:'የቴሌብር ቁጥርዎ (ደንበኞች ይህን ይከፍላሉ)',
         pickTheme:'ስታይል ይምረጡ',
         askAboutL:'ስለዚህ ዕቃ ጠይቁ', webTipL:'በድረ-ገጹ ቀላል ነው፦ adulis.co',
-        dmAsk:function(n){return 'ሰላም! የ'+n+' አለ?';}},
+        dmAsk:function(n){return 'ሰላም! የ'+n+' አለ?';},
+        // v41 — Gmail signup
+        emailL:'ኢሜይል (Gmail)', passCreateL:'የመግቢያ ቃል ይፍጠሩ (6+ ፊደላት)',
+        haveAcctL:'መለስዎ አለ? ይግቡ', noAcctL:'አዲስ ነዎት? ቡቲክዎን ይፍጠሩ',
+        emailSignupBtn:'ቡቲኬን ይፍጠሩ', emailLoginBtn:'ይግቡ',
+        resetNote:'የመግቢያ ቃልዎን ረሱ? መርዳት እንችላል።',
+        linkTgBtn:'ለትዕዛዝ ማስጠንቀቂያ ቴሌግራም ይገናኙ', linkTgDone:'ቴሌግራም ተገናኝቷል።',
+        linkTgHint:'አማራጭ። ደንበኛ በትዕዛዝ ሲያዘዝ ቴሌግራም ላይ ይነገርዎታል።'},
   };
   function detectLang(){
     try{ if(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user){
@@ -552,7 +566,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=40;
+  var BUILD=41;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
   // fills them in. Empty until then (the panel shows "coming soon").
@@ -1405,6 +1419,69 @@
   // receiving it IS the proof of identity. retry(code) re-runs the original
   // action with the code; onSuccess(j) renders the result exactly as the
   // direct (signature-verified) path would have.
+  // v41: Gmail signup/login in plain browsers (no Telegram needed).
+  var emailMode='signup'; // 'signup' or 'login'
+  function renderEmailAuth(c,p){
+    p.appendChild(el('h2',null,emailMode==='signup'?L.createTitle:L.ownerTitle));
+    p.appendChild(el('div','note',emailMode==='signup'
+      ?'Just your Gmail and a password — your boutique is ready in a minute.'
+      :'Enter your email and password to open your panel.'));
+    var fE=el('div','field');fE.appendChild(el('label',null,L.emailL));
+    var iEm=document.createElement('input');iEm.type='email';iEm.autocomplete='email';
+    fE.appendChild(iEm);p.appendChild(fE);
+    var fP=el('div','field');fP.appendChild(el('label',null,L.passCreateL));
+    var iPw=document.createElement('input');iPw.type='password';iPw.autocomplete='current-password';
+    fP.appendChild(iPw);p.appendChild(fP);
+    var fN=null;
+    if(emailMode==='signup'){
+      fN=el('div','field');fN.appendChild(el('label',null,L.shopNameL));
+      var iNm=document.createElement('input');iNm.maxLength=60;iNm.placeholder='\u2026';
+      fN.appendChild(iNm);p.appendChild(fN);
+    }
+    var err=el('div','err');p.appendChild(err);
+    var okm=el('div','okmsg');p.appendChild(okm);
+    var btn=el('button','btn',emailMode==='signup'?L.emailSignupBtn:L.emailLoginBtn);
+    btn.onclick=function(){
+      err.textContent='';okm.textContent='';
+      var em=iEm.value.trim(),pw=iPw.value;
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){err.textContent=L.errEmail;return;}
+      if(pw.length<6){err.textContent=L.errPass;return;}
+      var nm=fN?iNm.value.trim():'';
+      if(emailMode==='signup'&&(nm.length<2)){err.textContent=L.errName;return;}
+      btn.disabled=true;btn.textContent=L.saving;
+      var action=emailMode==='signup'?'email_signup':'email_login';
+      var payload={email:em,password:pw};
+      if(emailMode==='signup')payload.shopName=nm;
+      authCall(action,payload).then(function(j){
+        btn.disabled=false;btn.textContent=emailMode==='signup'?L.emailSignupBtn:L.emailLoginBtn;
+        if(j.ok&&j.access_token){
+          session=j.access_token;
+          window.__storeType=j.store_type||'affiliate';
+          var st={name:j.name||nm,slug:j.slug};
+          if(window.__storeType==='affiliate')renderAffOwner(st,true);
+          else renderOwner(st,true);
+          return;
+        }
+        if(j.error==='email_taken'){err.textContent=L.errTaken;return;}
+        if(j.error==='bad_login'){err.textContent=L.errLogin;return;}
+        if(j.error==='no_store'){err.textContent=L.errGeneric;return;}
+        err.textContent=L.errGeneric+' \u2318 '+(j.error||'');
+      }).catch(function(){btn.disabled=false;btn.textContent=emailMode==='signup'?L.emailSignupBtn:L.emailLoginBtn;err.textContent=L.errGeneric;});
+    };
+    p.appendChild(btn);
+    p.appendChild(el('div','note',L.resetNote)).style.marginTop='8px';
+    var tog=el('button','btn ghost',emailMode==='signup'?L.haveAcctL:L.noAcctL);
+    tog.style.marginTop='6px';
+    tog.onclick=function(){
+      emailMode=emailMode==='signup'?'login':'signup';
+      var c2=content();c2.innerHTML='';
+      var p2=el('div','panel');
+      renderEmailAuth(c2,p2);
+      c2.appendChild(p2);
+    };
+    p.appendChild(tog);
+  }
+
   function renderCodeStep(retry,onSuccess){
     var c=content();c.innerHTML='';
     document.getElementById('storeName').textContent='Adulis';
@@ -1452,14 +1529,9 @@
     // here — convert the moment instead. One big button into the bot, where
     // signup works (Telegram = login). Covers ?mode=create AND ?mode=home.
     if(!initDataOK()){
-      document.getElementById('storeName').textContent=L.browserTitle;
-      p.appendChild(el('h2',null,L.browserTitle));
-      p.appendChild(el('div','note',L.browserNote));
-      var go=el('a','btn',L.browserBtn);
-      go.href='https://t.me/AdulisShopBot';
-      go.style.display='block';go.style.textAlign='center';go.style.marginTop='12px';
-      p.appendChild(go);
-      c.appendChild(p);return;
+      // v41: Gmail signup in plain browsers — the founder's speed play.
+      renderEmailAuth(c,p);
+      return;
     }
     p.appendChild(el('h2',null,L.createTitle));
     var intro=el('div','note',L.createIntro);
