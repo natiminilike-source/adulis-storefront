@@ -55,6 +55,25 @@
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-tap-highlight-color:transparent}
   .wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+  /* V45 brand identity: the sailboat-on-black fashion mark. Serif display
+     for brand moments, system sans for UI text. Black CTA = premium. */
+  .brand-chip{width:52px;height:52px;border-radius:14px;background:#000;overflow:hidden;flex:none;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .brand-chip img{width:100%;height:100%;object-fit:cover;display:block}
+  .brand-word{font-family:Georgia,'Times New Roman',serif;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:17px}
+  .hero-h{font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:30px;line-height:1.15;letter-spacing:-.3px;margin:6px 0 8px}
+  .hero-sub{font-size:14.5px;color:var(--muted);line-height:1.5;margin-bottom:20px}
+  .trust{font-size:12px;color:var(--muted);text-align:center;margin-top:10px;letter-spacing:.02em}
+  .how{display:flex;gap:10px;margin:26px 0 8px}
+  .how .h-card{flex:1;background:var(--card);border-radius:14px;padding:14px 12px;text-align:center}
+  .how .h-ic{font-size:22px;margin-bottom:6px}
+  .how .h-tx{font-size:11.5px;font-weight:600;line-height:1.4;color:var(--ink)}
+  .btn.brand{background:#0d0d0d;color:#fff}
+  .btn.brand:active{background:#262626}
+  @media (min-width:768px){
+    .hero-h{font-size:38px}
+    .hero-sub{font-size:16px}
+    .how .h-card{padding:20px 16px}
+  }
   /* V43 responsive: laptop gets a wider, airier storefront */
   @media (min-width:768px){
     .wrap{max-width:960px;padding:28px 24px 56px}
@@ -236,9 +255,9 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="logo">A</div>
+    <div class="brand-chip"><img src="adulis-logo.jpg" alt="Adulis"></div>
     <div class="hgroup">
-      <h1 id="storeName">Adulis</h1>
+      <h1 id="storeName" class="brand-word">Adulis</h1>
       <div class="sub" id="storeSub"></div>
     </div>
     <div class="lang">
@@ -401,7 +420,12 @@
         themeClassic:'Classic', themeEditorial:'Editorial', themeVivid:'Vivid',
         themePickNote:'Pick the look of your shop — change it anytime.',
         payPhoneL:'Your Telebirr number (customers pay this)',
-        pickTheme:'Pick your look',
+        pickTheme:'Pick your look — the look your customers see',
+        heroH:'Your boutique, open in minutes',
+        heroSub:'Pick items from real shops · Share your link · Keep the profit',
+        trustRow:'Free forever · No credit card · You set your own prices',
+        step1:'Pick items from the catalog', step2:'Share your shop link',
+        step3:'Earn profit on every sale', howT:'How it works',
         askAboutL:'Ask about this item', webTipL:'Easier on the web: adulis.co',
         dmAsk:function(n){return 'Selam! Is the '+n+' available?';},
         // v41 — Gmail signup
@@ -534,7 +558,12 @@
         themeClassic:'ክላሲክ', themeEditorial:'ኤዲቶሪያል', themeVivid:'ቪቪድ',
         themePickNote:'የሱቅዎን ስታይል ይምረጡ — በየጊዜው መቀየር ይችላሉ።',
         payPhoneL:'የቴሌብር ቁጥርዎ (ደንበኞች ይህን ይከፍላሉ)',
-        pickTheme:'ስታይል ይምረጡ',
+        pickTheme:'ስታይል ይምረጡ — ደንበኞችዎ የሚያዩት',
+        heroH:'ቡቲክዎ በደቂቃዎች ይከፈታል',
+        heroSub:'ዕቃዎችን ይምረጡ · አገናኝዎን ያጋሩ · ትርፍ ያግኙ',
+        trustRow:'ዘልቅ የለም · ክሬዲት ካርድ አያስፈልግም · ዋጋዎን እርስዎ ያስቀምጣሉ',
+        step1:'ከካታሎጉ ዕቃ ይምረጡ', step2:'የሱቅ አገናኝዎን ያጋሩ',
+        step3:'በእያንዳንዱ ሽያጭ ትርፍ ያግኙ', howT:'እንዴት እንደሚሠራ',
         askAboutL:'ስለዚህ ዕቃ ጠይቁ', webTipL:'በድረ-ገጹ ቀላል ነው፦ adulis.co',
         dmAsk:function(n){return 'ሰላም! የ'+n+' አለ?';},
         // v41 — Gmail signup
@@ -632,11 +661,13 @@
     }catch(e){}
   }
   function setLogo(url){
-    var box=document.querySelector('.logo');
+    // v45: the brand chip is the sailboat mark; a shop logo (merchant
+    // panels) swaps INTO the chip; reseller/brand pages keep the mark.
+    var box=document.querySelector('.brand-chip');
     if(!box)return;
-    box.innerHTML='';
-    if(url){var im=document.createElement('img');im.src=url;im.alt='';im.onerror=function(){setLogo(null);};box.appendChild(im);}
-    else{box.textContent='A';}
+    if(url&&window.__mode!=='create'){
+      box.innerHTML='<img src="'+url+'" alt="" onerror="this.remove()">';
+    }
   }
   // Owner-panel size chips — the seeded set (server slugifies + matches).
   var SIZES=['XS','S','M','L','XL','XXL','One Size','38','39','40','41','42','43','44'];
@@ -1439,7 +1470,15 @@
   // v41: Gmail signup/login in plain browsers (no Telegram needed).
   var emailMode='signup'; // 'signup' or 'login'
   function renderEmailAuth(c,p){
-    p.appendChild(el('h2',null,emailMode==='signup'?L.createTitle:L.ownerTitle));
+    if(emailMode==='signup'){
+      var hero=el('div');
+      hero.style.cssText='text-align:center;margin-bottom:18px';
+      hero.appendChild(el('div','hero-h',L.heroH));
+      hero.appendChild(el('div','hero-sub',L.heroSub));
+      p.appendChild(hero);
+    }else{
+      p.appendChild(el('h2',null,L.ownerTitle));
+    }
     p.appendChild(el('div','note',emailMode==='signup'
       ?'Just your Gmail and a password — your boutique is ready in a minute.'
       :'Enter your email and password to open your panel.'));
@@ -1486,9 +1525,24 @@
       }).catch(function(){btn.disabled=false;btn.textContent=emailMode==='signup'?L.emailSignupBtn:L.emailLoginBtn;err.textContent=L.errGeneric;});
     };
     p.appendChild(btn);
+    if(emailMode==='signup')p.appendChild(el('div','trust',L.trustRow));
     p.appendChild(el('div','note',L.resetNote)).style.marginTop='8px';
     var tog=el('button','btn ghost',emailMode==='signup'?L.haveAcctL:L.noAcctL);
     tog.style.marginTop='6px';
+    if(emailMode==='signup'){
+      var howWrap=el('div');
+      howWrap.style.marginTop='18px';
+      howWrap.appendChild(el('div','sectt',L.howT));
+      var how=el('div','how');
+      [['🔍',L.step1],['🔗',L.step2],['💰',L.step3]].forEach(function(s){
+        var hc=el('div','h-card');
+        hc.appendChild(el('div','h-ic',s[0]));
+        hc.appendChild(el('div','h-tx',s[1]));
+        how.appendChild(hc);
+      });
+      howWrap.appendChild(how);
+      p.appendChild(howWrap);
+    }
     tog.onclick=function(){
       emailMode=emailMode==='signup'?'login':'signup';
       var c2=content();c2.innerHTML='';
