@@ -65,6 +65,18 @@
   .trust{font-size:12px;color:var(--muted);text-align:center;margin-top:10px;letter-spacing:.02em}
   .how{display:flex;gap:10px;margin:26px 0 8px}
   .how .h-card{flex:1;background:var(--card);border-radius:14px;padding:14px 12px;text-align:center}
+  /* V46: auth screens go chrome-free (founder adjustment) */
+  .auth-clean header{display:none}
+  .textlink{background:none;border:none;color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;text-decoration:underline;text-underline-offset:3px;padding:8px}
+  .textlink:active{color:var(--accent)}
+  .intro-hero{text-align:center;padding:48px 20px 20px}
+  .intro-hero .i-chip{width:84px;height:84px;border-radius:22px;background:#000;overflow:hidden;margin:0 auto 18px;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+  .intro-hero .i-chip img{width:100%;height:100%;object-fit:cover}
+  .intro-hero .i-h{font-family:Georgia,serif;font-weight:700;font-size:26px;margin-bottom:8px}
+  .intro-step{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:14px;padding:16px 14px;margin-bottom:10px}
+  .intro-step .i-ic{font-size:28px;flex:none;width:48px;height:48px;border-radius:12px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center}
+  .intro-step .i-tx{font-size:14px;font-weight:600;line-height:1.4}
+  .intro-step .i-n{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:2px}
   .how .h-ic{font-size:22px;margin-bottom:6px}
   .how .h-tx{font-size:11.5px;font-weight:600;line-height:1.4;color:var(--ink)}
   .btn.brand{background:#0d0d0d;color:#fff}
@@ -303,7 +315,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v45',
+        footer:'Live stock from <b>Adulis</b> · v46',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -441,7 +453,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v45',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v46',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -612,7 +624,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=45;
+  var BUILD=46;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
   // fills them in. Empty until then (the panel shows "coming soon").
@@ -1470,6 +1482,7 @@
   // v41: Gmail signup/login in plain browsers (no Telegram needed).
   var emailMode='signup'; // 'signup' or 'login'
   function renderEmailAuth(c,p){
+    document.body.classList.add('auth-clean');
     if(emailMode==='signup'){
       var hero=el('div');
       hero.style.cssText='text-align:center;margin-bottom:18px';
@@ -1484,15 +1497,15 @@
       :'Enter your email and password to open your panel.'));
     var fE=el('div','field');fE.appendChild(el('label',null,L.emailL));
     var iEm=document.createElement('input');iEm.type='email';iEm.autocomplete='email';
+    iEm.placeholder='you@gmail.com';
     fE.appendChild(iEm);p.appendChild(fE);
     var fP=el('div','field');fP.appendChild(el('label',null,L.passCreateL));
-    var iPw=document.createElement('input');iPw.type='password';iPw.autocomplete='current-password';
+    var iPw=document.createElement('input');iPw.type='password';iPw.autocomplete='current-password';iPw.placeholder='Create a password';
     fP.appendChild(iPw);p.appendChild(fP);
     var fN=null;
     if(emailMode==='signup'){
       fN=el('div','field');fN.appendChild(el('label',null,L.shopNameL));
-      var iNm=document.createElement('input');iNm.maxLength=60;iNm.placeholder='\u2026';
-      fN.appendChild(iNm);p.appendChild(fN);
+  var iNm=document.createElement('input');iNm.maxLength=60;iNm.placeholder='My Beautiful Shop';
     }
     var err=el('div','err');p.appendChild(err);
     var okm=el('div','okmsg');p.appendChild(okm);
@@ -1514,8 +1527,14 @@
           session=j.access_token;
           window.__storeType=j.store_type||'affiliate';
           var st={name:j.name||nm,slug:j.slug};
-          if(window.__storeType==='affiliate')renderAffOwner(st,true);
-          else renderOwner(st,true);
+          document.body.classList.remove('auth-clean');
+          if(emailMode==='signup'&&window.__storeType==='affiliate'){
+            renderIntro(st);
+          }else if(window.__storeType==='affiliate'){
+            renderAffOwner(st);
+          }else{
+            renderOwner(st);
+          }
           return;
         }
         if(j.error==='email_taken'){err.textContent=L.errTaken;return;}
@@ -1527,22 +1546,9 @@
     p.appendChild(btn);
     if(emailMode==='signup')p.appendChild(el('div','trust',L.trustRow));
     p.appendChild(el('div','note',L.resetNote)).style.marginTop='8px';
-    var tog=el('button','btn ghost',emailMode==='signup'?L.haveAcctL:L.noAcctL);
+    var tog=el('button','textlink',emailMode==='signup'?L.haveAcctL:L.noAcctL);
     tog.style.marginTop='6px';
-    if(emailMode==='signup'){
-      var howWrap=el('div');
-      howWrap.style.marginTop='18px';
-      howWrap.appendChild(el('div','sectt',L.howT));
-      var how=el('div','how');
-      [['🔍',L.step1],['🔗',L.step2],['💰',L.step3]].forEach(function(s){
-        var hc=el('div','h-card');
-        hc.appendChild(el('div','h-ic',s[0]));
-        hc.appendChild(el('div','h-tx',s[1]));
-        how.appendChild(hc);
-      });
-      howWrap.appendChild(how);
-      p.appendChild(howWrap);
-    }
+
     tog.onclick=function(){
       emailMode=emailMode==='signup'?'login':'signup';
       var c2=content();c2.innerHTML='';
@@ -3081,6 +3087,43 @@
   }
 
   // v38: the shop look — 3 curated templates, one tap, both surfaces.
+  // V46: post-signup intro — the "How it works" celebration beat.
+  // Signup succeeds → this screen → template picker → panel.
+  function renderIntro(store){
+    window.__mode='intro';
+    document.body.classList.remove('auth-clean');
+    var c=content();c.innerHTML='';
+    document.getElementById('storeName').textContent='Adulis';
+    document.getElementById('storeSub').textContent='';
+    var wrap=el('div','panel');
+    wrap.style.maxWidth='480px';
+    var hero=el('div','intro-hero');
+    var chip=el('div','i-chip');
+    var im=document.createElement('img');im.src='adulis-logo.jpg';im.alt='Adulis';
+    chip.appendChild(im);
+    hero.appendChild(chip);
+    hero.appendChild(el('div','i-h',L.howT));
+    wrap.appendChild(hero);
+    [['1',L.step1],['2',L.step2],['3',L.step3]].forEach(function(s,i){
+      var st=el('div','intro-step');
+      var ic=el('div','i-ic');
+      ic.textContent=['\U0001F6CD\uFE0F','\U0001F517','\U0001F4B0'][i]||'\u2022';
+      st.appendChild(ic);
+      var tx=el('div');
+      tx.appendChild(el('div','i-n','Step '+s[0]));
+      tx.appendChild(el('div','i-tx',s[1]));
+      st.appendChild(tx);
+      wrap.appendChild(st);
+    });
+    var go=el('button','btn brand',detectCur()==='am'?'ድስፍ':'Let\u2019s go');
+    go.style.marginTop='16px';
+    go.onclick=function(){
+      renderThemePick(store,true);
+    };
+    wrap.appendChild(go);
+    c.appendChild(wrap);
+  }
+
   var THEMES=[
     {id:'classic',name:L.themeClassic,css:'background:#ffffff;color:#1c1e21;border:2px solid #e3e5e8'},
     {id:'editorial',name:L.themeEditorial,css:'background:#faf8f4;color:#26221c;border:2px solid #e2dccf;font-family:Georgia,serif'},
