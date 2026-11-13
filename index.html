@@ -315,7 +315,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v46',
+        footer:'Live stock from <b>Adulis</b> · v47',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -441,7 +441,7 @@
         askAboutL:'Ask about this item', webTipL:'Easier on the web: adulis.co',
         dmAsk:function(n){return 'Selam! Is the '+n+' available?';},
         // v41 — Gmail signup
-        emailL:'Email (Gmail)', passCreateL:'Create a password (6+ characters)',
+        emailL:'Email (Gmail)', passCreateL:'Create a password for Adulis — not your Gmail password (6+ characters)',
         haveAcctL:'Already have an account? Sign in', noAcctL:'New here? Create your boutique',
         emailSignupBtn:'Create my boutique', emailLoginBtn:'Sign in',
         resetNote:'Forgot your password? We can help — just ask.',
@@ -453,7 +453,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v46',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v47',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -624,7 +624,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=46;
+  var BUILD=47;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
   // fills them in. Empty until then (the panel shows "coming soon").
@@ -1483,6 +1483,9 @@
   var emailMode='signup'; // 'signup' or 'login'
   function renderEmailAuth(c,p){
     document.body.classList.add('auth-clean');
+    // Reseller surface = English only (founder decision 2026-11-13)
+    setLang('en');
+    document.body.classList.add('auth-clean');
     if(emailMode==='signup'){
       var hero=el('div');
       hero.style.cssText='text-align:center;margin-bottom:18px';
@@ -1503,9 +1506,12 @@
     var iPw=document.createElement('input');iPw.type='password';iPw.autocomplete='current-password';iPw.placeholder='Create a password';
     fP.appendChild(iPw);p.appendChild(fP);
     var fN=null;
+    var iNm=null;
     if(emailMode==='signup'){
       fN=el('div','field');fN.appendChild(el('label',null,L.shopNameL));
-  var iNm=document.createElement('input');iNm.maxLength=60;iNm.placeholder='My Beautiful Shop';
+      iNm=document.createElement('input');iNm.maxLength=60;iNm.placeholder='My Beautiful Shop';
+      fN.appendChild(iNm);
+      p.appendChild(fN);
     }
     var err=el('div','err');p.appendChild(err);
     var okm=el('div','okmsg');p.appendChild(okm);
@@ -3099,10 +3105,20 @@
     wrap.style.maxWidth='480px';
     var hero=el('div','intro-hero');
     var chip=el('div','i-chip');
+    chip.style.width='64px';chip.style.height='64px';chip.style.borderRadius='16px';
     var im=document.createElement('img');im.src='adulis-logo.jpg';im.alt='Adulis';
     chip.appendChild(im);
     hero.appendChild(chip);
-    hero.appendChild(el('div','i-h',L.howT));
+    var welcome=el('div','i-h','Welcome to\u2014');
+    welcome.style.fontSize='16px';welcome.style.color='var(--muted)';
+    welcome.style.fontFamily='inherit';welcome.style.marginBottom='4px';
+    hero.appendChild(welcome);
+    var shopName=el('div','i-h',store?store.name:'Your Shop');
+    shopName.style.fontSize='28px';
+    hero.appendChild(shopName);
+    var sub=el('div','hero-sub',L.howT+'\u2014here\u2019s all you need to know:');
+    sub.style.marginTop='6px';
+    hero.appendChild(sub);
     wrap.appendChild(hero);
     [['1',L.step1],['2',L.step2],['3',L.step3]].forEach(function(s,i){
       var st=el('div','intro-step');
@@ -3144,7 +3160,7 @@
       card.style.cursor='pointer';
       var prev=el('div');
       prev.style.cssText='height:84px;border-radius:10px;display:flex;flex-direction:column;justify-content:flex-end;padding:10px;'+t.css;
-      var t1=el('div',null,store?store.name:'My shop');
+      var t1=el('div',null,store?store.name:'My Beautiful Shop');
       t1.style.cssText='font-size:15px;font-weight:800';
       var t2=el('div',null,money(2500));
       t2.style.cssText='font-size:13px;font-weight:800;color:#1e9e5a';
