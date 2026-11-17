@@ -383,7 +383,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v50',
+        footer:'Live stock from <b>Adulis</b> · v51',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -556,6 +556,10 @@
         setVideoT:'Video studio',
         setVideoS:'Media pack & CapCut marketing kit',
         setVideoNote:'Photos and clips of your shelf items — ready to post.',
+        // v51: Stitch-faithful nav + resilient session restore
+        shelfStatL:'On your shelf',
+        homeCtaL:'Pick your first items',
+        netRetry:'Couldn\u2019t reach Adulis — check your connection and retry.',
         linkTgBtn:'Link Telegram for order alerts', linkTgDone:'Telegram linked — you will get order pings.',
         linkTgHint:'Optional. You will get a message on Telegram every time a customer orders.'},
     am:{appSub:'የኢትዮጵያ ቡቲክ አውታረ መረብ', sub:'ይመለከቱ · ዘዳግም መልእክት ይላኩ', subNoUser:'ዕቃዎችን ይመለከቱ',
@@ -564,7 +568,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v50',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v51',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -737,6 +741,10 @@
         setVideoT:'የቪዲዮ ስቱዲዮ',
         setVideoS:'የሚዲያ ጥቅል እና የCapCut ገበያ ጥቅል',
         setVideoNote:'የመደርደሪያ ዕቃዎችዎ ፎቶዎች እና ክሊፖች — ለማስረጸት ዝግጁ።',
+        // v51: Stitch-faithful nav + resilient session restore
+        shelfStatL:'በመደርደሪያዎ ላይ',
+        homeCtaL:'የመጀመሪያ ዕቃዎችዎን ይምረጡ',
+        netRetry:'ወደ አዱሊስ መድረስ አልተቻለም — ግንኙነትዎን ያረጋግጡና እንደገና ይሞክሩ።',
         linkTgBtn:'ለትዕዛዝ ማስጠንቀቂያ ቴሌግራም ይገናኙ', linkTgDone:'ቴሌግራም ተገናኝቷል።',
         linkTgHint:'አማራጭ። ደንበኛ በትዕዛዝ ሲያዘዝ ቴሌግራም ላይ ይነገርዎታል።'},
   };
@@ -782,7 +790,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=50;
+  var BUILD=51;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
   // fills them in. Empty until then (the panel shows "coming soon").
@@ -838,6 +846,37 @@
     if(url&&window.__mode!=='create'){
       box.innerHTML='<img src="'+url+'" alt="" onerror="this.remove()">';
     }
+  }
+  // ===== v51 Stitch nav: the global header IS the navigation.=====
+  // Avatar button (right side of the header) opens the settings stack;
+  // shown on reseller panel screens only. The EN/AM toggle lives ONLY on
+  // shopper pages — the reseller surface is English-only (locked split).
+  function headerAvatar(show){
+    var h=document.querySelector('header');
+    if(!h)return;
+    var av=document.getElementById('hdrAvatar');
+    if(!av){
+      av=el('button','avatbtn');
+      av.id='hdrAvatar';
+      av.title=L.settingsT;
+      av.onclick=function(){renderSettings();};
+      h.appendChild(av);
+    }
+    // keep the avatar's face in sync with the current logo/initial
+    var store=window.__ownerStore;
+    var img=av.querySelector('img');
+    var chipImg=document.querySelector('.brand-chip img');
+    if(chipImg&&!img){
+      var i=document.createElement('img');i.src=chipImg.src;i.alt='';
+      av.innerHTML='';av.appendChild(i);
+    }else if(!chipImg&&store){
+      av.textContent=(store.name||'A').trim().charAt(0).toUpperCase();
+    }
+    av.style.display=show?'':'none';
+  }
+  function langToggle(show){
+    var t=document.querySelector('.lang');
+    if(t)t.style.display=show?'':'none';
   }
   // Owner-panel size chips — the seeded set (server slugifies + matches).
   var SIZES=['XS','S','M','L','XL','XXL','One Size','38','39','40','41','42','43','44'];
@@ -1009,6 +1048,9 @@
   }
   function loadShop(){
     var attempt=0;
+    // Shopper page: bilingual with the EN/AM toggle; no panel avatar.
+    langToggle(true);
+    headerAvatar(false);
     function rpc(fn){
       return fetch(API+'/rest/v1/rpc/'+fn,{
         method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
@@ -1636,19 +1678,33 @@
   }
   function dropSession(){ try{ localStorage.removeItem(SKEY); }catch(e){} }
   function storedRefresh(){ try{ return localStorage.getItem(SKEY)||null; }catch(e){ return null; } }
-  function refreshLogin(){
-    var rt=storedRefresh(); if(!rt)return Promise.resolve(null);
+  function refreshLogin(tries){
+    // v51: failures are two different animals. 'auth' = the token was
+    // rejected (expired/rotated) — session is gone, login screen is HONEST.
+    // 'net' = we couldn't reach Supabase — retrying is right, and the user
+    // must NEVER land on the login form because of a bad network moment.
+    tries=tries||0;
+    var rt=storedRefresh(); if(!rt)return Promise.resolve('none');
     return fetch(API+'/auth/v1/token?grant_type=refresh_token',{
       method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
       body:JSON.stringify({refresh_token:rt})
-    }).then(function(r){return r.ok?r.json():null;})
-      .then(function(s){
-        if(!s||!s.access_token){dropSession();return null;}
-        session=s.access_token;
-        try{ if(s.refresh_token)localStorage.setItem(SKEY,s.refresh_token); }catch(e){}
-        return s;
-      })
-      .catch(function(){dropSession();return null;});
+    }).then(function(r){
+      if(r.status===400||r.status===401||r.status===403){dropSession();return 'auth';}
+      if(!r.ok)throw new Error('http'+r.status);
+      return r.json();
+    }).then(function(s){
+      if(!s||!s.access_token){dropSession();return 'auth';}
+      session=s.access_token;
+      try{ if(s.refresh_token)localStorage.setItem(SKEY,s.refresh_token); }catch(e){}
+      return s;
+    }).catch(function(){
+      if(tries<2){
+        return new Promise(function(res){
+          setTimeout(function(){res(refreshLogin(tries+1));},1500);
+        });
+      }
+      return 'net';
+    });
   }
   // The owner's own store row, straight through RLS with their JWT —
   // zero new server surface for the boot restore.
@@ -1807,6 +1863,8 @@
     document.getElementById('storeName').textContent=L.createTitle;
     document.getElementById('storeSub').textContent=L.appSub;
     setLogo(null);
+    langToggle(false);
+    headerAvatar(false);
     var p=el('div','panel');
     // Plain browser (no Telegram identity): the form can never authenticate
     // here — convert the moment instead. One big button into the bot, where
@@ -3080,37 +3138,26 @@
     window.__ownerStore=store;
     if(!window.__tab||window.__tab==='items'||window.__tab==='sales'||window.__tab==='shop')window.__tab='home';
     document.getElementById('storeName').textContent=store.name;
-    document.getElementById('storeSub').textContent=L.affOwnerTitle;
+    // v51 Stitch header: serif name + avatar nav, no subtitle, no toggle,
+    // NO bottom tab bar (the old mini-app skeleton is gone).
+    document.getElementById('storeSub').textContent='';
+    langToggle(false);
+    headerAvatar(true);
     fetch(API+'/rest/v1/rpc/public_storefront_header',{
       method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
       body:JSON.stringify({p_slug:store.slug})
     }).then(function(r){return r.ok?r.json():Promise.reject();})
-      .then(function(h){if(h&&h.length){setLogo(h[0].logo_url||null);applyTheme(h[0].theme);}})
+      .then(function(h){if(h&&h.length){setLogo(h[0].logo_url||null);applyTheme(h[0].theme);headerAvatar(true);}})
       .catch(function(){});
     renderAffTab(window.__tab,fresh);
-    drawTabBar();
   }
 
   function renderAffTab(tab,fresh){
     var c=content();c.innerHTML='';
     var p=el('div','panel');
     if(fresh)p.appendChild(el('div','okmsg',L.created));
-    var store=window.__ownerStore;
-
-    // v50 panel identity row: boutique name + avatar → settings stack.
-    var top=el('div','paneltop');
-    var tm=el('div','pt-main');
-    tm.appendChild(el('div','pt-name',store.name));
-    tm.appendChild(el('div','pt-sub',L.affOwnerTitle));
-    top.appendChild(tm);
-    var av=el('button','avatbtn');
-    var logoImg=document.querySelector('.brand-chip img');
-    if(logoImg){var avIm=document.createElement('img');avIm.src=logoImg.src;avIm.alt='';av.appendChild(avIm);}
-    else av.textContent=(store.name||'A').trim().charAt(0).toUpperCase();
-    av.title=L.settingsT;
-    av.onclick=function(){renderSettings();};
-    top.appendChild(av);
-    p.appendChild(top);
+    headerAvatar(true);
+    langToggle(false);
 
     if(tab==='home'){
       renderAffHome(p);
@@ -3119,6 +3166,9 @@
     }
 
     if(tab==='catalog'){
+      var bkC=el('button','textlink','‹ '+L.tabHome);
+      bkC.onclick=affHome;
+      p.appendChild(bkC);
       p.appendChild(el('h2',null,L.tabCatalog));
       var catBox=el('div');
       catBox.appendChild(el('div','note','…'));
@@ -3161,20 +3211,22 @@
           };
           tools.appendChild(bAll);
           mh.appendChild(tools);
-          var grid=el('div');grid.style.cssText='display:flex;flex-wrap:wrap;gap:8px';
+          // v51 Stitch catalog: 2-column grid, 4:5 editorial photo cards.
+          var grid=el('div');grid.style.cssText='display:grid;grid-template-columns:repeat(2,1fr);gap:10px';
           items.forEach(function(i){
             var on=selected.has(i.id);
             var card=el('div');
-            card.style.cssText='width:96px;flex:none;cursor:pointer;border-radius:12px;border:2px solid '+(on?'var(--accent)':'transparent')+';overflow:hidden;background:var(--card)';
-            var ph=el('div');ph.style.cssText='width:100%;padding-top:100%;position:relative;background:var(--edge)';
+            card.style.cssText='width:100%;cursor:pointer;border-radius:14px;border:2px solid '+(on?'var(--accent)':'transparent')+';overflow:hidden;background:var(--card);box-shadow:var(--shadow-soft)';
+            var ph=el('div');ph.style.cssText='width:100%;padding-top:125%;position:relative;background:var(--edge)';
             if(i.img){var im=document.createElement('img');im.src=i.img;im.alt=i.name;im.loading='lazy';
               im.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover';ph.appendChild(im);}
             else{var emo=el('div',null,'🛍️');emo.style.cssText='position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center';ph.appendChild(emo);}
-            if((i.stock||0)<=0){var out=el('div',null,L.out);out.style.cssText='position:absolute;top:4px;left:4px;font-size:9px;font-weight:700;background:var(--out-soft);color:var(--out);border-radius:7px;padding:2px 6px';ph.appendChild(out);}
-            var nm=el('div',null,i.name);nm.style.cssText='font-size:10px;font-weight:600;padding:4px 5px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
+            if((i.stock||0)<=0){var out=el('div',null,L.out);out.style.cssText='position:absolute;top:6px;left:6px;font-size:9px;font-weight:700;background:var(--out-soft);color:var(--out);border-radius:999px;padding:2px 8px';ph.appendChild(out);}
+            if(on){var chk=el('div',null,'✓');chk.style.cssText='position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center';ph.appendChild(chk);}
+            var nm=el('div',null,i.name);nm.style.cssText='font-size:12px;font-weight:600;padding:7px 9px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
             var myP=window.__myPrices&&window.__myPrices.get(i.id);
             var pr=el('div',null,money(myP!=null?myP:i.sell_price));
-            pr.style.cssText='font-size:10px;font-weight:800;color:var(--amber-ink);padding:0 5px 4px';
+            pr.style.cssText='font-size:12px;font-weight:700;color:var(--amber-ink);padding:2px 9px 9px';
             pr.title=L.yourPriceL;
             pr.onclick=function(ev){
               ev.stopPropagation();
@@ -3220,6 +3272,9 @@
     }
 
     if(tab==='orders'){
+      var bkO=el('button','textlink','‹ '+L.tabHome);
+      bkO.onclick=affHome;
+      p.appendChild(bkO);
       p.appendChild(el('h2',null,L.inboxT));
       var box=el('div');
       box.appendChild(el('div','note','\u2026'));
@@ -3233,8 +3288,8 @@
     renderSettings();
   }
 
-  // ===== v50 HOME tab: the overview, data-first and honest — every number
-  // comes from leads_list/orders_list/loadShelf (existing actions only). =====
+  // ===== v51 HOME: the Stitch dashboard — the panel's front door. =====
+  function affHome(){window.__tab='home';renderAffTab('home');}
   function renderAffHome(p){
     p.appendChild(el('div','subhead',L.homeTitle));
     p.appendChild(el('div','subsub',L.homeSub));
@@ -3268,7 +3323,16 @@
         if(di>=0)days[di]++;
       });
       if(!leads.length){
-        box.appendChild(el('div','note',L.homeEmpty));
+        // v51: a fresh account gets a designed beginning, not a dead end.
+        var ec=el('div','stat');
+        ec.style.cssText='grid-column:1 / -1;align-items:center;text-align:center;padding:28px 18px;gap:8px';
+        ec.appendChild(el('div','s-v','🛍️')).style.fontSize='34px';
+        ec.appendChild(el('div','s-l',L.homeEmpty));
+        var cta=el('button','btn brand',L.homeCtaL);
+        cta.style.cssText='max-width:260px;margin:8px auto 0';
+        cta.onclick=function(){window.__tab='catalog';renderAffTab('catalog');};
+        ec.appendChild(cta);
+        box.appendChild(ec);
         return;
       }
       // Hero: reseller earnings = order volume minus merchant shares.
@@ -3278,11 +3342,33 @@
       hero.appendChild(el('div','s-v',money(Math.max(0,Math.round(earned)))));
       hero.appendChild(el('div','s-x',L.earnedX));
       sg.appendChild(hero);
-      function stat(l,v,x){var s=el('div','stat');s.appendChild(el('div','s-l',l));s.appendChild(el('div','s-v',String(v)));if(x)s.appendChild(el('div','s-x',x));return s;}
-      sg.appendChild(stat(L.ordersStatL,leads.length,null));
+      // v51: stats are TAPPABLE — they navigate (Stitch dashboard behavior).
+      function stat(l,v,fn){
+        var s=el('div','stat');
+        s.appendChild(el('div','s-l',l));
+        s.appendChild(el('div','s-v',String(v)));
+        if(fn){s.style.cursor='pointer';s.onclick=fn;}
+        return s;
+      }
+      sg.appendChild(stat(L.ordersStatL,leads.length,function(){window.__tab='orders';renderAffTab('orders');}));
       sg.appendChild(stat(L.newStatL,nNew,null));
-      sg.appendChild(stat(L.checkStatL,nCheck,null));
+      sg.appendChild(stat(L.checkStatL,nCheck,function(){window.__tab='orders';renderAffTab('orders');}));
+      var shelfStat=stat(L.shelfStatL,'…',function(){window.__tab='catalog';renderAffTab('catalog');});
+      sg.appendChild(shelfStat);
+      loadShelf(function(shelf){
+        var v=shelfStat.querySelector('.s-v');
+        if(v)v.textContent=String(shelf.length);
+      });
       box.appendChild(sg);
+      // v51: explicit navigation pills (no tab bar — these carry it).
+      var nav=el('div','row');
+      nav.style.marginTop='10px';
+      var bCat=el('button','btn',L.tabCatalog+' →');
+      bCat.onclick=function(){window.__tab='catalog';renderAffTab('catalog');};
+      var bOrd=el('button','btn ghost',L.tabOrders+' →');
+      bOrd.onclick=function(){window.__tab='orders';renderAffTab('orders');};
+      nav.appendChild(bCat);nav.appendChild(bOrd);
+      box.appendChild(nav);
       // 7-day activity bars (honest: only real lead counts).
       var mx=Math.max.apply(null,days);
       if(mx>0){
@@ -3298,7 +3384,7 @@
         ch.appendChild(bars);
         box.appendChild(ch);
       }
-      // Recent orders — tap through to the Orders tab.
+      // Recent orders — tap through to the Orders screen.
       var rec=el('div','sect');
       rec.appendChild(el('h3',null,L.recentL));
       leads.slice(0,3).forEach(function(ld){
@@ -3306,10 +3392,6 @@
         rec.appendChild(saleRow(null,ld.name,stTxt,fmtWhen(ld.created_at)));
       });
       box.appendChild(rec);
-      var bGo=el('button','btn ghost',L.inboxT+' →');
-      bGo.style.marginTop='10px';
-      bGo.onclick=function(){window.__tab='orders';renderAffTab('orders');drawTabBar();};
-      box.appendChild(bGo);
     }).catch(function(){
       box.innerHTML='';
       box.appendChild(el('div','note',L.errGeneric));
@@ -3320,7 +3402,6 @@
   function affBack(){
     var t=window.__tab&&window.__tab!=='shop'?window.__tab:'home';
     renderAffTab(t);
-    drawTabBar();
   }
   function renderSettings(){
     killTabBar();
@@ -3329,18 +3410,13 @@
     var store=window.__ownerStore;
     document.getElementById('storeName').textContent=store.name;
     document.getElementById('storeSub').textContent=L.settingsT;
+    headerAvatar(true);
+    langToggle(false);
     var p=el('div','panel');
-    var top=el('div','paneltop');
-    var tm=el('div','pt-main');
-    tm.appendChild(el('div','pt-name',L.settingsT));
-    tm.appendChild(el('div','pt-sub',store.name));
-    top.appendChild(tm);
-    var av=el('button','avatbtn');
-    var logoImg=document.querySelector('.brand-chip img');
-    if(logoImg){var avIm=document.createElement('img');avIm.src=logoImg.src;avIm.alt='';av.appendChild(avIm);}
-    else av.textContent=(store.name||'A').trim().charAt(0).toUpperCase();
-    top.appendChild(av);
-    p.appendChild(top);
+    var bk=el('button','textlink','‹ '+L.tabHome);
+    bk.onclick=affHome;
+    p.appendChild(bk);
+    p.appendChild(el('div','subhead',L.settingsT));
     p.appendChild(el('div','subsub',L.settingsSub));
     function row(icon,title,sub,fn){
       var r=el('button','set-row');
@@ -3552,7 +3628,7 @@
         if(j.ok){
           if(window.__myPrices)window.__myPrices.set(item.id,v);
           okm.textContent=L.updDone;
-          setTimeout(function(){ov.remove();renderAffTab('catalog');drawTabBar();},600);
+          setTimeout(function(){ov.remove();renderAffTab('catalog');},600);
         }else{err.textContent=L.errGeneric+' \u2318 '+(j.error||'');}
       }).catch(function(){b.disabled=false;err.textContent=L.errGeneric;});
     };
@@ -3571,6 +3647,8 @@
     var c=content();c.innerHTML='';
     document.getElementById('storeName').textContent='Adulis';
     document.getElementById('storeSub').textContent='';
+    langToggle(false);
+    headerAvatar(false);
     var wrap=el('div','panel');
     wrap.style.maxWidth='480px';
     var hero=el('div','intro-hero');
@@ -3601,7 +3679,7 @@
       st.appendChild(tx);
       wrap.appendChild(st);
     });
-    var go=el('button','btn brand',detectCur()==='am'?'ድስፍ':'Let\u2019s go');
+    var go=el('button','btn brand','Let\u2019s go');
     go.style.marginTop='16px';
     go.onclick=function(){
       renderThemePick(store,true);
@@ -3658,7 +3736,7 @@
       };
       p.appendChild(card);
     });
-    var skip=el('button','btn ghost',detectCur()==='am'?'Skip':'\u2318 Skip');
+    var skip=el('button','btn ghost','Skip');
     skip.style.marginTop='6px';
     skip.onclick=function(){
       if(window.__storeType==='affiliate')renderAffOwner(store,fresh);
@@ -3944,11 +4022,11 @@
     var linkBox=el('div','linkbox',shortUrl());
     p.appendChild(linkBox);
     var rowA=el('div','row');
-    var bCopyA=el('button','btn ghost',detectCur()==='am'?'ቅዳ':'Copy');
+    var bCopyA=el('button','btn ghost','Copy');
     bCopyA.onclick=function(){
       try{navigator.clipboard.writeText(shortUrl());}catch(e){}
       bCopyA.textContent='✓';
-      setTimeout(function(){bCopyA.textContent=detectCur()==='am'?'ቅዳ':'Copy';},1200);
+      setTimeout(function(){bCopyA.textContent='Copy';},1200);
     };
     var bShare=el('button','btn ghost',L.shareL);
     bShare.onclick=function(){
@@ -3964,7 +4042,7 @@
     if(window.__ownerSubdomain)iSub.value=window.__ownerSubdomain;
     fs.appendChild(iSub);
     var serr=el('div','err');var sok=el('div','okmsg');
-    var bSub=el('button','btn ghost',detectCur()==='am'?'አስቀምጥ':'Save');
+    var bSub=el('button','btn ghost','Save');
     bSub.onclick=function(){
       serr.textContent='';sok.textContent='';
       var v=iSub.value.trim().toLowerCase();
@@ -4237,15 +4315,28 @@
     else{renderHome();}
   }
   setLang(saved);
-  // v50 stay-signed-in: silently restore an email session before routing.
-  // Only for panel entries (no shop slug, no explicit create/reset), never
-  // inside Telegram (their silent initData signin runs instead). On any
-  // failure we fall through to the normal route.
-  if(!slug&&mode!=='create'&&mode!=='reset'&&!initDataOK()&&storedRefresh()){
+  // v50/v51 stay-signed-in: silently restore an email session before
+  // routing. Restores on EVERY panel entry — including ?mode=create
+  // (old bot-era links/autocomplete carry it; a remembered user must
+  // NEVER be shown the signup form). Only ?mode=reset stays explicit.
+  // Never inside Telegram (their silent initData signin runs instead).
+  if(!slug&&mode!=='reset'&&!initDataOK()&&storedRefresh()){
     var c0=content();c0.innerHTML='';
     c0.appendChild(el('div','spin'));
     refreshLogin().then(function(s){
-      if(!s){route();return;}
+      if(s==='net'){
+        // Network unreachable after retries — offer a clean retry, do NOT
+        // fall back to the login form (the session may be perfectly fine).
+        c0.innerHTML='';
+        var stn=el('div','state',L.netRetry);
+        var rb=el('button','btn brand',L.retry);
+        rb.style.cssText='margin:14px auto 0;max-width:220px';
+        rb.onclick=function(){location.reload();};
+        stn.appendChild(rb);
+        c0.appendChild(stn);
+        return;
+      }
+      if(!s||s==='auth'||s==='none'){route();return;}
       return myStore().then(function(st){
         if(!st){dropSession();route();return;}
         window.__storeType=st.store_type||'affiliate';
