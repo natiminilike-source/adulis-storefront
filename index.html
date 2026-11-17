@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/adulis-logo.jpg">
 <title>Adulis</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
@@ -330,6 +333,74 @@
   .paneltop .pt-sub{font-size:11.5px;color:var(--muted);margin-top:1px}
   .avatbtn{width:42px;height:42px;border-radius:50%;border:1px solid var(--edge);background:var(--card);cursor:pointer;font-family:inherit;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:17px;flex:none;padding:0}
   .avatbtn img{width:100%;height:100%;object-fit:cover}
+  /* ===== v52 Material Symbols (self-hosted subset) + phone app shell ===== */
+  @font-face{font-family:'Material Symbols Outlined';font-style:normal;font-weight:400;font-display:block;src:url(fonts/ms.woff2) format('woff2')}
+  .ms{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;font-size:20px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;-webkit-font-smoothing:antialiased;user-select:none}
+  /* Stitch phone header: fixed, blurred, brand mark + live URL + actions */
+  .appbar{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(249,249,250,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 12px rgba(0,0,0,.03)}
+  .appbar .ab-in{height:64px;max-width:1120px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .appbar .ab-left{display:flex;align-items:center;gap:10px;min-width:0}
+  .appbar .ab-logo{width:36px;height:36px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden}
+  .appbar .ab-logo img{width:100%;height:100%;object-fit:cover}
+  .appbar .ab-names{display:flex;flex-direction:column;min-width:0}
+  .appbar .ab-title{display:flex;align-items:center;gap:6px;min-width:0}
+  .appbar .ab-title b{font-size:16px;font-weight:600;color:var(--ink);letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .appbar .ab-title span{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .appbar .ab-url{display:flex;align-items:center;gap:5px;margin-top:1px}
+  .appbar .ab-url .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);flex:none}
+  .appbar .ab-url span{font-size:11px;color:var(--amber-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .appbar .ab-actions{display:flex;align-items:center;gap:2px;flex:none}
+  .appbar .ab-btn{width:44px;height:44px;border:none;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;font-family:inherit;position:relative}
+  .appbar .ab-btn:active{background:var(--accent-soft)}
+  .appbar .ab-av{width:32px;height:32px;border-radius:50%;background:var(--accent-soft);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;overflow:hidden}
+  .appbar .ab-av img{width:100%;height:100%;object-fit:cover}
+  /* Stitch bottom app nav — PHONE ONLY (desktop hides it: web layouts) */
+  .appnav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(249,249,250,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 -2px 16px rgba(0,0,0,.03);display:none}
+  @media (max-width:767px){.appnav{display:flex}}
+  .appnav .an-in{height:64px;width:100%;max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-around;padding:0 4px calc(env(safe-area-inset-bottom,0px) / 4)}
+  .appnav .an-btn{border:none;background:transparent;color:var(--muted);min-width:56px;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-family:inherit}
+  .appnav .an-btn span.lb{font-size:10.5px;font-weight:600}
+  .appnav .an-btn.on{color:var(--ink);font-weight:700}
+  body.appshell .wrap{padding-top:84px}
+  @media (max-width:767px){body.appshell .wrap{padding-bottom:92px}}
+  @media (min-width:768px){body.appshell .wrap{padding-top:96px}}
+  /* Stitch cards + stat + kicker system */
+  .kicker{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber-ink)}
+  .scr-title{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:18px 0 4px}
+  .scr-title .st-main{min-width:0}
+  .scr-title .st-h{font-family:'Playfair Display',Georgia,serif;font-size:26px;font-weight:600;letter-spacing:-.3px;color:var(--ink);line-height:1.15}
+  .scr-title .st-side{font-size:11px;color:var(--muted);flex:none}
+  .scard{background:var(--card);border:1px solid rgba(228,228,231,.6);border-radius:16px;padding:16px;box-shadow:0 1px 2px rgba(10,10,10,.02)}
+  .live-url-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--accent-soft);border-radius:12px;padding:10px}
+  .live-url-row .lu-main{display:flex;align-items:center;gap:8px;min-width:0}
+  .live-url-row .lu-url{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pillbtn{border:none;background:var(--card);color:var(--ink);border-radius:999px;padding:7px 13px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px;box-shadow:0 1px 2px rgba(10,10,10,.04)}
+  .pillbtn:active{transform:scale(.96)}
+  .iconball{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none}
+  .iconball.amber{background:var(--amber-soft);color:var(--amber-ink)}
+  .iconball.neutral{background:var(--accent-soft);color:var(--ink)}
+  .trendrow{display:flex;align-items:center;gap:4px;margin-top:4px}
+  .trendrow .tr-up{font-size:11px;font-weight:700;color:var(--amber-ink)}
+  .trendrow .tr-sub{font-size:11px;color:var(--muted)}
+  .balcard{background:var(--accent);color:var(--on-accent);border-radius:16px;padding:20px;box-shadow:0 4px 16px rgba(10,10,10,.15);position:relative;overflow:hidden}
+  .balcard .bc-glow{position:absolute;right:-30px;top:-30px;width:140px;height:140px;border-radius:50%;background:var(--amber-soft);opacity:.14;filter:blur(30px);pointer-events:none}
+  .balcard .bc-l{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.72}
+  .balcard .bc-v{font-family:'Playfair Display',Georgia,serif;font-size:34px;font-weight:600;letter-spacing:-.5px;margin-top:2px}
+  .balcard .bc-sub{font-size:11.5px;opacity:.72;margin-top:6px}
+  .topitem{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid rgba(228,228,231,.6);border-radius:14px;padding:12px;box-shadow:0 1px 2px rgba(10,10,10,.02)}
+  .topitem .ti-ph{width:72px;height:88px;border-radius:10px;overflow:hidden;flex:none;background:var(--accent-soft);position:relative}
+  .topitem .ti-ph img{width:100%;height:100%;object-fit:cover}
+  .topitem .ti-brand{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .topitem .ti-name{font-size:14px;font-weight:600;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .profitpill{display:inline-flex;align-items:center;padding:2px 8px;border-radius:999px;background:var(--amber-soft);color:var(--amber-ink);font-size:10px;font-weight:700;flex:none}
+  .msr-row{display:flex;align-items:center;gap:12px;padding:15px 4px;border-bottom:1px solid var(--edge);cursor:pointer;font-family:inherit;background:transparent;border-left:none;border-right:none;border-top:none;text-align:left;width:100%}
+  .msr-row:last-child{border-bottom:none}
+  .msr-row .mr-tx{flex:1;min-width:0}
+  .msr-row .mr-t{font-size:14.5px;font-weight:600;color:var(--ink)}
+  .msr-row .mr-s{font-size:11.5px;color:var(--muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .msr-row:active{opacity:.7}
+  .backlink{border:none;background:transparent;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px;padding:6px 0}
+
   </style>
 </head>
 <body>
@@ -383,7 +454,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v51',
+        footer:'Live stock from <b>Adulis</b> · v52',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -400,8 +471,8 @@
         saveBtn:'Save', credSaved:'Saved! Use this email + password in the Adulis app.',
         linkedOk:'Connected! This Telegram shop now runs your Adulis store.',
         errLogin:'Wrong password for that email — check it and try again.',
-        created:'Shop created! 🎉', ownerTitle:'My shop', openShopBtn:'Open my shop',
-        channelL:'Channel username (add @AdulisShopBot as admin first)', postBtn:'Post 🛍 to my channel',
+        created:'Shop created!', ownerTitle:'My shop', openShopBtn:'Open my shop',
+        channelL:'Channel username (add @AdulisShopBot as admin first)', postBtn:'Post to my channel',
         posting:'Posting…', posted:'Posted! Check your channel.',
         getApp:'Get the full Adulis app', getAppNote:'Manage stock, prices and sales from your phone — even offline.',
         errName:'Enter your shop name (2+ letters).', errEmail:'Enter a valid email.',
@@ -465,7 +536,7 @@
         affToggleL:'Allow affiliates (they earn the commission you set)',
         affPctL:'Commission % (e.g. 10)', affPickupL:'Pickup location for deliveries (shown to affiliates when you accept)',
         affPickupPhoneL:'Pickup phone (optional)', affSaved:'Saved ✓',
-        viaLbl:'from', videoBtn:'🎬 Video',
+        viaLbl:'from', videoBtn:'Video',
         // v35
         subAutoL:'Your shop always works at:', subL:'Your own short name (hiwote.adulis.co)',
         subSaved:'Saved ✓ — that address is yours now.', subTaken:'That name is taken — try another.',
@@ -560,6 +631,10 @@
         shelfStatL:'On your shelf',
         homeCtaL:'Pick your first items',
         netRetry:'Couldn\u2019t reach Adulis — check your connection and retry.',
+        // v52: five-tab app shell (Stitch phone set)
+        tabBoutique:'Boutique', tabStudio:'Studio', tabMore:'More',
+        homeShelfX:'Items curated on your storefront',
+        homeCatalogX:'Browse & add from master catalog',
         linkTgBtn:'Link Telegram for order alerts', linkTgDone:'Telegram linked — you will get order pings.',
         linkTgHint:'Optional. You will get a message on Telegram every time a customer orders.'},
     am:{appSub:'የኢትዮጵያ ቡቲክ አውታረ መረብ', sub:'ይመለከቱ · ዘዳግም መልእክት ይላኩ', subNoUser:'ዕቃዎችን ይመለከቱ',
@@ -568,7 +643,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v51',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v52',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -585,8 +660,8 @@
         saveBtn:'አስቀምጥ', credSaved:'ተቀምጧል! ይህን ኢሜይልና ቃል በአዱሊስ መተግበሪያ ይጠቀሙ።',
         linkedOk:'ተገናኝቷል! ይህ የቴሌግራም ሱቅ አሁን የአዱሊስ ሱቅዎ ሆኖ ይሠራል።',
         errLogin:'ለዚያ ኢሜይል ቃሉ አልኮነነም — መርምረው እንደገና ይሞክሩ።',
-        created:'ሱቁ ተፈጥሯል! 🎉', ownerTitle:'ሱቄ', openShopBtn:'ሱቴን ክፈት',
-        channelL:'የቻናል ተጠቃሚ ስም (መጀመሪያ @AdulisShopBotን አስተዳዳሪ ያድርጉ)', postBtn:'🛍 ወደ ቻናሌ ላክ',
+        created:'ሱቁ ተፈጥሯል!', ownerTitle:'ሱቄ', openShopBtn:'ሱቴን ክፈት',
+        channelL:'የቻናል ተጠቃሚ ስም (መጀመሪያ @AdulisShopBotን አስተዳዳሪ ያድርጉ)', postBtn:' ወደ ቻናሌ ላክ',
         posting:'በመላክ ላይ…', posted:'ተልኳል! ቻናልዎን ይመልከቱ።',
         getApp:'ሙሉ የአዱሊስ መተግበሪያ ያውርዱ', getAppNote:'ዕቃ፣ ዋጋና ሽያጭ ከስልክዎ ይቆጣጠሩ — ከኢንተርኔት ውጭ እንኳ።',
         errName:'የሱቅ ስም ያስፈልጋል (ቢያንስ 2 ፊደላት)።', errEmail:'ትክክለኛ ኢሜይል ያስገቡ።',
@@ -650,7 +725,7 @@
         affToggleL:'ኮሚሽነኞችን ፍቀድ (በሚያዘጋጁት ኮሚሽን ያገኛሉ)',
         affPctL:'ኮሚሽን % (ለምሳሌ 10)', affPickupL:'የማድረሻ ቦታ (ሲቀበሉ ለኮሚሽነኞች ይታያል)',
         affPickupPhoneL:'የማድረሻ ስልክ (አማራጭ)', affSaved:'ተቀምጧል ✓',
-        viaLbl:'ከ', videoBtn:'🎬 ቪዲዮ',
+        viaLbl:'ከ', videoBtn:'ቪዲዮ',
         // v35
         subAutoL:'ሱቅዎ ሁሌም እዚህ ይገኛል፦', subL:'የራስዎ አጭር ስም (hiwote.adulis.co)',
         subSaved:'ተቀምጧል ✓ — አድራሻው የእርስዎ ነው።', subTaken:'ስሙ ተወስዷል — ሌላ ይሞክሩ።',
@@ -745,6 +820,10 @@
         shelfStatL:'በመደርደሪያዎ ላይ',
         homeCtaL:'የመጀመሪያ ዕቃዎችዎን ይምረጡ',
         netRetry:'ወደ አዱሊስ መድረስ አልተቻለም — ግንኙነትዎን ያረጋግጡና እንደገና ይሞክሩ።',
+        // v52: five-tab app shell (Stitch phone set)
+        tabBoutique:'ቡቲኬ', tabStudio:'ስቱዲዮ', tabMore:'ተጨማሪ',
+        homeShelfX:'በመደብርዎ ላይ የተመረጡ ዕቃዎች',
+        homeCatalogX:'ከዋናው ካታሎግ ያስገቡ',
         linkTgBtn:'ለትዕዛዝ ማስጠንቀቂያ ቴሌግራም ይገናኙ', linkTgDone:'ቴሌግራም ተገናኝቷል።',
         linkTgHint:'አማራጭ። ደንበኛ በትዕዛዝ ሲያዘዝ ቴሌግራም ላይ ይነገርዎታል።'},
   };
@@ -790,7 +869,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=51;
+  var BUILD=52;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
   // fills them in. Empty until then (the panel shows "coming soon").
@@ -824,7 +903,7 @@
   function webTipIfTelegram(){
     try{
       if(initDataOK()){
-        var t=el('div','note','💡 '+L.webTipL);
+        var t=el('div','note',L.webTipL);
         t.style.cssText='text-align:center;color:var(--muted);font-size:11.5px;margin-bottom:8px';
         var c0=content();
         c0.insertBefore(t,c0.firstChild);
@@ -847,32 +926,95 @@
       box.innerHTML='<img src="'+url+'" alt="" onerror="this.remove()">';
     }
   }
-  // ===== v51 Stitch nav: the global header IS the navigation.=====
-  // Avatar button (right side of the header) opens the settings stack;
-  // shown on reseller panel screens only. The EN/AM toggle lives ONLY on
-  // shopper pages — the reseller surface is English-only (locked split).
-  function headerAvatar(show){
+  // ===== v52 Stitch phone app shell: fixed blurred header + 5-tab nav =====
+  // The reseller surface is an APP (phone) / clean web (desktop). The old
+  // mini-app header (logo + store name + toggle) is retired — the shopper
+  // pages keep their own shop header (the shop's branding, not app chrome).
+  var __origHeader=null;
+  function setHdr(n,s){
+    var a=document.getElementById('storeName'),b=document.getElementById('storeSub');
+    if(a&&n!=null)a.textContent=n;
+    if(b&&s!=null)b.textContent=s;
+  }
+  function clearShell(){
+    var h=document.querySelector('header');
+    if(h&&__origHeader!==null){h.classList.remove('appbar');h.innerHTML=__origHeader;}
+    var n=document.getElementById('appnav');if(n)n.remove();
+    document.body.classList.remove('appshell');
+  }
+  function appShell(activeTab){
     var h=document.querySelector('header');
     if(!h)return;
-    var av=document.getElementById('hdrAvatar');
-    if(!av){
-      av=el('button','avatbtn');
-      av.id='hdrAvatar';
-      av.title=L.settingsT;
-      av.onclick=function(){renderSettings();};
-      h.appendChild(av);
-    }
-    // keep the avatar's face in sync with the current logo/initial
-    var store=window.__ownerStore;
-    var img=av.querySelector('img');
-    var chipImg=document.querySelector('.brand-chip img');
-    if(chipImg&&!img){
-      var i=document.createElement('img');i.src=chipImg.src;i.alt='';
-      av.innerHTML='';av.appendChild(i);
-    }else if(!chipImg&&store){
-      av.textContent=(store.name||'A').trim().charAt(0).toUpperCase();
-    }
-    av.style.display=show?'':'none';
+    if(__origHeader===null)__origHeader=h.innerHTML;
+    document.body.classList.remove('auth-clean');
+    document.body.classList.add('appshell');
+    var store=window.__ownerStore||{};
+    var url=(window.__ownerSubdomain||store.slug||'myboutique')+'.adulis.co';
+    h.classList.add('appbar');
+    h.innerHTML='';
+    var bar=el('div','ab-in');
+    var left=el('div','ab-left');
+    var logo=el('div','ab-logo');
+    var lg=document.createElement('span');lg.className='ms';lg.textContent='sailing';
+    logo.appendChild(lg);
+    left.appendChild(logo);
+    var names=el('div','ab-names');
+    var title=el('div','ab-title');
+    title.appendChild(el('b',null,'Adulis'));
+    title.appendChild(el('span',null,'Atelier'));
+    names.appendChild(title);
+    var urlrow=el('div','ab-url');
+    urlrow.appendChild(el('span','dot'));
+    urlrow.appendChild(el('span',null,url));
+    names.appendChild(urlrow);
+    left.appendChild(names);
+    bar.appendChild(left);
+    var actions=el('div','ab-actions');
+    var bell=el('button','ab-btn');
+    bell.title=L.tabOrders;
+    bell.setAttribute('aria-label',L.tabOrders);
+    var bi=document.createElement('span');bi.className='ms';bi.textContent='notifications';
+    bell.appendChild(bi);
+    bell.onclick=function(){renderOrdersScreen();};
+    actions.appendChild(bell);
+    var av=el('button','ab-btn');
+    av.title=L.settingsT;
+    var avin=el('div','ab-av');
+    if(window.__shopLogo){var ai=document.createElement('img');ai.src=window.__shopLogo;ai.alt='';avin.appendChild(ai);}
+    else avin.textContent=(store.name||'A').trim().charAt(0).toUpperCase();
+    av.appendChild(avin);
+    av.onclick=function(){switchTab('more');};
+    actions.appendChild(av);
+    bar.appendChild(actions);
+    h.innerHTML='';
+    h.appendChild(bar);
+    appNav(activeTab);
+  }
+  function appNav(activeTab){
+    var old=document.getElementById('appnav');if(old)old.remove();
+    var nav=el('div','appnav');nav.id='appnav';
+    var inn=el('div','an-in');
+    // Stitch tabs: Overview / Catalog / Boutique / Studio / More
+    [['overview','insights',L.tabHome],
+     ['catalog','diamond',L.tabCatalog],
+     ['boutique','storefront',L.tabBoutique],
+     ['studio','movie_creation',L.tabStudio],
+     ['more','tune',L.tabMore]].forEach(function(t){
+      var b=el('button','an-btn'+(activeTab===t[0]?' on':''));
+      var ic=document.createElement('span');ic.className='ms';ic.textContent=t[1];
+      b.appendChild(ic);
+      var lb=el('span','lb',t[2]);
+      b.appendChild(lb);
+      b.onclick=function(){switchTab(t[0]);};
+      inn.appendChild(b);
+    });
+    nav.appendChild(inn);
+    var w=document.querySelector('.wrap');
+    if(w)w.appendChild(nav);
+  }
+  function switchTab(tab){
+    window.__tab=tab;
+    renderAffTab(tab);
   }
   function langToggle(show){
     var t=document.querySelector('.lang');
@@ -929,7 +1071,7 @@
       var ph=el('div','ph');
       if(r.image_url){var im=document.createElement('img');im.loading='lazy';im.decoding='async';
         im.alt=r.item_name;im.src=r.image_url;im.onerror=function(){im.remove();};ph.appendChild(im);}
-      else{ph.appendChild(el('div','emo','🛍️'));}
+      else{ph.appendChild(el('div','emo',''));}
       if(r.tier!=='out'){
         var bAdd=el('button','addbtn','+');
         bAdd.onclick=function(ev){
@@ -942,7 +1084,7 @@
       }
       if(r.video_url){
         var bVid=el('button','addbtn');
-        bVid.textContent='🎬';bVid.style.fontSize='15px';bVid.style.left='8px';bVid.style.right='auto';
+        bVid.textContent='VIDEO';bVid.style.fontSize='15px';bVid.style.left='8px';bVid.style.right='auto';
         bVid.onclick=function(ev){
           ev.stopPropagation();
           openTg(r.video_url);
@@ -999,8 +1141,8 @@
       .then(function(h){
         if(h&&h.length){
           var store=h[0];
-          document.getElementById('storeName').textContent=store.store_name;
-          document.getElementById('storeSub').textContent=L.subNoUser;
+          setHdr(store.store_name,null);
+          setHdr(null,L.subNoUser);
           setLogo(store.logo_url);
           applyTheme(store.theme);
           var s=el('div','state',L.emptyShop);
@@ -1028,8 +1170,8 @@
       var c0=content();
       c0.insertBefore(inTg,c0.firstChild);
     }
-    document.getElementById('storeName').textContent=store.store_name||'Shop';
-    document.getElementById('storeSub').textContent = user?L.sub:L.subNoUser;
+    setHdr(store.store_name||'Shop',null);
+    setHdr(null,user?L.sub:L.subNoUser);
     setLogo(store.logo_url);
     document.title=(store.store_name||'Shop')+' · Adulis';
     // Ask assistant grounds on the MERCHANT catalogue RPC — v1 affiliate
@@ -1048,9 +1190,9 @@
   }
   function loadShop(){
     var attempt=0;
-    // Shopper page: bilingual with the EN/AM toggle; no panel avatar.
+    // Shopper page: original shop header, bilingual with the EN/AM toggle.
+    clearShell();
     langToggle(true);
-    headerAvatar(false);
     function rpc(fn){
       return fetch(API+'/rest/v1/rpc/'+fn,{
         method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
@@ -1118,7 +1260,7 @@
               im.style.cssText='flex:1;min-width:0;height:100%;object-fit:cover';
               ph.appendChild(im);
             });
-            if(!ph.childNodes.length)ph.textContent='🛍️';
+            if(!ph.childNodes.length)ph.textContent='';
             card.appendChild(ph);
             card.appendChild(el('div','dm-lbl',f.fit_name));
             var priceRow=el('div');
@@ -1621,13 +1763,13 @@
   // On identity failures: one tap copies the phone's RAW identity string
   // so the exact Telegram payload can be analyzed server-side.
   function diagButton(parent){
-    var b=el('button','btn ghost','📋 Copy diagnostics — paste to developer');
+    var b=el('button','btn ghost','Copy diagnostics — paste to developer');
     b.style.marginTop='8px';
     b.onclick=function(){
       var blob='ADULIS-DIAG\nurl: '+location.href+'\ninitDataLen: '+((tg&&tg.initData)||'').length+'\ninitData: '+((tg&&tg.initData)||'(empty)')+'\n';
       try{navigator.clipboard.writeText(blob);}catch(e){}
       b.textContent='✓ Copied — paste it in the chat';
-      setTimeout(function(){b.textContent='📋 Copy diagnostics — paste to developer';},2000);
+      setTimeout(function(){b.textContent='Copy diagnostics — paste to developer';},2000);
     };
     parent.appendChild(b);
   }
@@ -1823,8 +1965,8 @@
 
   function renderCodeStep(retry,onSuccess){
     var c=content();c.innerHTML='';
-    document.getElementById('storeName').textContent='Adulis';
-    document.getElementById('storeSub').textContent=L.appSub;
+    setHdr('Adulis',null);
+    setHdr(null,L.appSub);
     setLogo(null);
     var p=el('div','panel');
     p.appendChild(el('h2',null,L.codeTitle));
@@ -1860,11 +2002,11 @@
   function renderCreate(errMsg){
     window.__mode='create';
     var c=content();c.innerHTML='';
-    document.getElementById('storeName').textContent=L.createTitle;
-    document.getElementById('storeSub').textContent=L.appSub;
+    setHdr(L.createTitle,null);
+    setHdr(null,L.appSub);
     setLogo(null);
+    clearShell();
     langToggle(false);
-    headerAvatar(false);
     var p=el('div','panel');
     // Plain browser (no Telegram identity): the form can never authenticate
     // here — convert the moment instead. One big button into the bot, where
@@ -1979,8 +2121,8 @@
     window.__ownerStore=store;
     webTipIfTelegram();
     if(!window.__tab)window.__tab='items';
-    document.getElementById('storeName').textContent=store.name;
-    document.getElementById('storeSub').textContent=L.ownerTitle+' · '+L.appSub;
+    setHdr(store.name,null);
+    setHdr(null,L.ownerTitle+' · '+L.appSub);
     // The owner panel wears the shop's logo too (founder ask 2026-09-13):
     // same header badge as the customer view. Header RPC works even for
     // empty shops; no logo / fetch failure → "A" fallback stays.
@@ -2135,7 +2277,7 @@
               setLogo(j.logo_url);
               logoPrev.innerHTML='';
               var nm=document.createElement('img');nm.src=j.logo_url;logoPrev.appendChild(nm);
-            }else{bLogo.textContent=L.changeLogo+' ⚠';setTimeout(function(){bLogo.textContent=L.changeLogo;},1500);}
+            }else{bLogo.textContent=L.changeLogo+' !';setTimeout(function(){bLogo.textContent=L.changeLogo;},1500);}
           });
         });
       };
@@ -2321,8 +2463,8 @@
   function renderFitsPage(){
     window.__mode='fits';
     var c=content();c.innerHTML='';
-    document.getElementById('storeName').textContent=L.fitsTitle;
-    document.getElementById('storeSub').textContent=L.ownerTitle;
+    setHdr(L.fitsTitle,null);
+    setHdr(null,L.ownerTitle);
     setLogo(null);
     var p=el('div','panel');
     var back=el('button','mbtn back',detectCur()==='am'?'‹ ተመለስ':'‹ Back');
@@ -2383,8 +2525,8 @@
     var editing=!!fit;
     window.__mode='fitform';
     var c=content();c.innerHTML='';
-    document.getElementById('storeName').textContent=editing?L.editBtn:L.newFitBtn;
-    document.getElementById('storeSub').textContent=L.fitsTitle;
+    setHdr(editing?L.editBtn:L.newFitBtn,null);
+    setHdr(null,L.fitsTitle);
     setLogo(null);
     var p=el('div','panel');
     var back=el('button','mbtn back',detectCur()==='am'?'‹ ተመለስ':'‹ Back');
@@ -2427,7 +2569,7 @@
           im.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover';
           ph.appendChild(im);
         }else{
-          var emo=el('div',null,'🛍️');
+          var emo=el('div',null,'');
           emo.style.cssText='position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center';
           ph.appendChild(emo);
         }
@@ -2711,8 +2853,8 @@
     var editing=!!item;
     window.__mode='itemform';
     var c=content();c.innerHTML='';
-    document.getElementById('storeName').textContent=editing?L.editBtn:L.addItemBtn;
-    document.getElementById('storeSub').textContent=L.ownerTitle;
+    setHdr(editing?L.editBtn:L.addItemBtn,null);
+    setHdr(null,L.ownerTitle);
     setLogo(null);
     var p=el('div','panel');
     var back=el('button','mbtn back',detectCur()==='am'?'‹ ተመለስ':'‹ Back');
@@ -2919,8 +3061,8 @@
   function renderSoldSheet(item){
     window.__mode='sold';
     var c=content();c.innerHTML='';
-    document.getElementById('storeName').textContent=L.soldTitle;
-    document.getElementById('storeSub').textContent=item.name;
+    setHdr(L.soldTitle,null);
+    setHdr(null,item.name);
     setLogo(null);
     var p=el('div','panel');
     var back=el('button','mbtn back',detectCur()==='am'?'‹ ተመለስ':'‹ Back');
@@ -3015,8 +3157,8 @@
   function renderSaleEdit(s){
     window.__mode='saleedit';
     var c=content();c.innerHTML='';
-    document.getElementById('storeName').textContent=L.saleEditTitle;
-    document.getElementById('storeSub').textContent=s.name;
+    setHdr(L.saleEditTitle,null);
+    setHdr(null,s.name);
     setLogo(null);
     var p=el('div','panel');
     var back=el('button','mbtn back',detectCur()==='am'?'‹ ተመለስ':'‹ Back');
@@ -3136,18 +3278,20 @@
     }
     window.__mode='owner';
     window.__ownerStore=store;
-    if(!window.__tab||window.__tab==='items'||window.__tab==='sales'||window.__tab==='shop')window.__tab='home';
-    document.getElementById('storeName').textContent=store.name;
-    // v51 Stitch header: serif name + avatar nav, no subtitle, no toggle,
-    // NO bottom tab bar (the old mini-app skeleton is gone).
-    document.getElementById('storeSub').textContent='';
+    var LEGACY={home:'overview',orders:'overview',shop:'boutique',settings:'more',items:'catalog',sales:'overview'};
+    if(!window.__tab||LEGACY[window.__tab])window.__tab=LEGACY[window.__tab]||'overview';
     langToggle(false);
-    headerAvatar(true);
     fetch(API+'/rest/v1/rpc/public_storefront_header',{
       method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
       body:JSON.stringify({p_slug:store.slug})
     }).then(function(r){return r.ok?r.json():Promise.reject();})
-      .then(function(h){if(h&&h.length){setLogo(h[0].logo_url||null);applyTheme(h[0].theme);headerAvatar(true);}})
+      .then(function(h){
+        if(h&&h.length){
+          window.__shopLogo=h[0].logo_url||null;
+          applyTheme(h[0].theme);
+          appShell(window.__tab);
+        }
+      })
       .catch(function(){});
     renderAffTab(window.__tab,fresh);
   }
@@ -3156,19 +3300,40 @@
     var c=content();c.innerHTML='';
     var p=el('div','panel');
     if(fresh)p.appendChild(el('div','okmsg',L.created));
-    headerAvatar(true);
+    appShell(tab);
     langToggle(false);
 
-    if(tab==='home'){
-      renderAffHome(p);
+    if(tab==='overview'||tab==='home'){
+      renderOverview(p);
+      c.appendChild(p);
+      return;
+    }
+
+    if(tab==='boutique'){
+      renderBoutiqueTab(p);
+      c.appendChild(p);
+      return;
+    }
+
+    if(tab==='studio'){
+      renderStudioTab(p);
+      c.appendChild(p);
+      return;
+    }
+
+    if(tab==='more'||tab==='settings'){
+      renderMoreTab(p);
+      c.appendChild(p);
+      return;
+    }
+
+    if(tab==='orders'){
+      renderOrdersInto(p);
       c.appendChild(p);
       return;
     }
 
     if(tab==='catalog'){
-      var bkC=el('button','textlink','‹ '+L.tabHome);
-      bkC.onclick=affHome;
-      p.appendChild(bkC);
       p.appendChild(el('h2',null,L.tabCatalog));
       var catBox=el('div');
       catBox.appendChild(el('div','note','…'));
@@ -3220,7 +3385,7 @@
             var ph=el('div');ph.style.cssText='width:100%;padding-top:125%;position:relative;background:var(--edge)';
             if(i.img){var im=document.createElement('img');im.src=i.img;im.alt=i.name;im.loading='lazy';
               im.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover';ph.appendChild(im);}
-            else{var emo=el('div',null,'🛍️');emo.style.cssText='position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center';ph.appendChild(emo);}
+            else{var emo=el('div',null,'');emo.style.cssText='position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center';ph.appendChild(emo);}
             if((i.stock||0)<=0){var out=el('div',null,L.out);out.style.cssText='position:absolute;top:6px;left:6px;font-size:9px;font-weight:700;background:var(--out-soft);color:var(--out);border-radius:999px;padding:2px 8px';ph.appendChild(out);}
             if(on){var chk=el('div',null,'✓');chk.style.cssText='position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center';ph.appendChild(chk);}
             var nm=el('div',null,i.name);nm.style.cssText='font-size:12px;font-weight:600;padding:7px 9px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
@@ -3271,28 +3436,51 @@
       return;
     }
 
-    if(tab==='orders'){
-      var bkO=el('button','textlink','‹ '+L.tabHome);
-      bkO.onclick=affHome;
-      p.appendChild(bkO);
-      p.appendChild(el('h2',null,L.inboxT));
-      var box=el('div');
-      box.appendChild(el('div','note','\u2026'));
-      p.appendChild(box);
-      c.appendChild(p);
-      loadInbox(box);
-      return;
-    }
-
-    // Legacy 'shop' tab → the settings stack now owns all of it.
-    renderSettings();
+    // Any other legacy tab falls home.
+    window.__tab='overview';
+    renderOverview(p);
+    c.appendChild(p);
   }
 
-  // ===== v51 HOME: the Stitch dashboard — the panel's front door. =====
-  function affHome(){window.__tab='home';renderAffTab('home');}
-  function renderAffHome(p){
-    p.appendChild(el('div','subhead',L.homeTitle));
-    p.appendChild(el('div','subsub',L.homeSub));
+  // ===== v52 OVERVIEW: the Stitch phone dashboard, data-first and honest. =====
+  function shopUrl(){return 'https://'+(window.__ownerSubdomain||(window.__ownerStore||{}).slug||'myboutique')+'.adulis.co';}
+  function msIcon(name,cls){var s=document.createElement('span');s.className='ms'+(cls?' '+cls:'');s.textContent=name;return s;}
+  function renderOverview(p){
+    var store=window.__ownerStore||{};
+    // --- Boutique Live card (Stitch): live URL + Copy ---
+    var live=el('div','scard');
+    var lr=el('div');lr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:10px';
+    var lrl=el('div');lrl.style.cssText='display:flex;align-items:center;gap:8px';
+    var pulse=el('span');pulse.style.cssText='width:8px;height:8px;border-radius:50%;background:var(--amber);flex:none';
+    lrl.appendChild(pulse);
+    lrl.appendChild(el('span','kicker','Boutique Live'));
+    lr.appendChild(lrl);
+    live.appendChild(lr);
+    var urlrow=el('div','live-url-row');
+    var um=el('div','lu-main');
+    um.appendChild(msIcon('public'));
+    um.appendChild(el('span','lu-url',shopUrl().replace('https://','')));
+    urlrow.appendChild(um);
+    var cp=el('button','pillbtn');
+    cp.appendChild(msIcon('content_copy'));
+    cp.appendChild(el('span',null,'Copy'));
+    cp.onclick=function(){
+      try{navigator.clipboard.writeText(shopUrl());}catch(e){}
+      cp.lastChild.textContent='Copied';
+      setTimeout(function(){cp.lastChild.textContent='Copy';},1600);
+    };
+    urlrow.appendChild(cp);
+    live.appendChild(urlrow);
+    p.appendChild(live);
+    // --- Section title (kicker + serif) ---
+    var st=el('div','scr-title');
+    var stm=el('div','st-main');
+    stm.appendChild(el('span','kicker','Performance'));
+    stm.appendChild(el('div','st-h',store.name||'My Boutique'));
+    st.appendChild(stm);
+    st.appendChild(el('span','st-side','Live synced'));
+    p.appendChild(st);
+    // --- Data ---
     var box=el('div');
     box.appendChild(el('div','note','…'));
     p.appendChild(box);
@@ -3300,154 +3488,401 @@
       box.innerHTML='';
       if(!j.ok){box.appendChild(el('div','note','ⓘ '+(j.error||'home')));return;}
       var leads=j.leads||[];
-      var vol=0,earned=0,nNew=0,nCheck=0,nPaid=0;
-      var days=[0,0,0,0,0,0,0]; // leads per day, last 7 days
-      var dayKeys=[];
+      var earned=0,nNew=0,nCheck=0;
+      var days7=[0,0,0,0,0,0,0],days30=[];
+      var k7=[],k30=[];
       var now=new Date();
-      for(var d=6;d>=0;d--){
+      for(var d=29;d>=0;d--){
         var dt=new Date(now.getTime()-d*86400000);
-        dayKeys.push(dt.toISOString().slice(0,10));
+        var key=dt.toISOString().slice(0,10);
+        k30.push(key);
+        days30.push(0);
+        if(d<7){k7.push(key);}
       }
       leads.forEach(function(ld){
         var dq=Number(ld.delivery_quote||0);
         var tot=Number(ld.total||0)+dq;
-        vol+=tot;
         var mshare=0;
         (ld.orders||[]).forEach(function(o){mshare+=Number(o.merchant_share||0);});
         if((ld.orders||[]).length)earned+=tot-mshare;
         if(ld.status==='new'||ld.status==='quoted')nNew++;
         else if(ld.status==='checking')nCheck++;
-        else if(ld.status==='paid')nPaid++;
         var day=String(ld.created_at||'').slice(0,10);
-        var di=dayKeys.indexOf(day);
-        if(di>=0)days[di]++;
+        var i7=k7.indexOf(day);if(i7>=0)days7[i7]++;
+        var i30=k30.indexOf(day);if(i30>=0)days30[i30]++;
       });
-      if(!leads.length){
-        // v51: a fresh account gets a designed beginning, not a dead end.
-        var ec=el('div','stat');
-        ec.style.cssText='grid-column:1 / -1;align-items:center;text-align:center;padding:28px 18px;gap:8px';
-        ec.appendChild(el('div','s-v','🛍️')).style.fontSize='34px';
-        ec.appendChild(el('div','s-l',L.homeEmpty));
-        var cta=el('button','btn brand',L.homeCtaL);
-        cta.style.cssText='max-width:260px;margin:8px auto 0';
-        cta.onclick=function(){window.__tab='catalog';renderAffTab('catalog');};
-        ec.appendChild(cta);
-        box.appendChild(ec);
-        return;
-      }
-      // Hero: reseller earnings = order volume minus merchant shares.
-      var sg=el('div','statgrid');
-      var hero=el('div','stat hero');
-      hero.appendChild(el('div','s-l',L.earnedL));
-      hero.appendChild(el('div','s-v',money(Math.max(0,Math.round(earned)))));
-      hero.appendChild(el('div','s-x',L.earnedX));
-      sg.appendChild(hero);
-      // v51: stats are TAPPABLE — they navigate (Stitch dashboard behavior).
-      function stat(l,v,fn){
-        var s=el('div','stat');
-        s.appendChild(el('div','s-l',l));
-        s.appendChild(el('div','s-v',String(v)));
-        if(fn){s.style.cursor='pointer';s.onclick=fn;}
-        return s;
-      }
-      sg.appendChild(stat(L.ordersStatL,leads.length,function(){window.__tab='orders';renderAffTab('orders');}));
-      sg.appendChild(stat(L.newStatL,nNew,null));
-      sg.appendChild(stat(L.checkStatL,nCheck,function(){window.__tab='orders';renderAffTab('orders');}));
-      var shelfStat=stat(L.shelfStatL,'…',function(){window.__tab='catalog';renderAffTab('catalog');});
-      sg.appendChild(shelfStat);
       loadShelf(function(shelf){
-        var v=shelfStat.querySelector('.s-v');
-        if(v)v.textContent=String(shelf.length);
+        drawOverview(box,leads,earned,nNew,nCheck,shelf?shelf.length:0,days7,days30,k7,k30);
       });
-      box.appendChild(sg);
-      // v51: explicit navigation pills (no tab bar — these carry it).
-      var nav=el('div','row');
-      nav.style.marginTop='10px';
-      var bCat=el('button','btn',L.tabCatalog+' →');
-      bCat.onclick=function(){window.__tab='catalog';renderAffTab('catalog');};
-      var bOrd=el('button','btn ghost',L.tabOrders+' →');
-      bOrd.onclick=function(){window.__tab='orders';renderAffTab('orders');};
-      nav.appendChild(bCat);nav.appendChild(bOrd);
-      box.appendChild(nav);
-      // 7-day activity bars (honest: only real lead counts).
-      var mx=Math.max.apply(null,days);
-      if(mx>0){
-        var ch=el('div','sect');
-        ch.appendChild(el('h3',null,L.weekL));
-        var bars=el('div','barchart');
-        days.forEach(function(v){
-          var b=el('div','b'+(v===mx&&v>0?' hi':''));
-          b.style.height=Math.max(4,Math.round(v/mx*84))+'px';
-          b.title=String(v);
-          bars.appendChild(b);
-        });
-        ch.appendChild(bars);
-        box.appendChild(ch);
-      }
-      // Recent orders — tap through to the Orders screen.
-      var rec=el('div','sect');
-      rec.appendChild(el('h3',null,L.recentL));
-      leads.slice(0,3).forEach(function(ld){
-        var stTxt={new:L.leadNew,quoted:L.leadQuoted,checking:L.leadChecking,confirmed:L.leadConfirmed,paid:L.leadPaid}[ld.status]||ld.status;
-        rec.appendChild(saleRow(null,ld.name,stTxt,fmtWhen(ld.created_at)));
-      });
-      box.appendChild(rec);
     }).catch(function(){
       box.innerHTML='';
       box.appendChild(el('div','note',L.errGeneric));
     });
   }
-
-  // ===== v50 SETTINGS STACK (the old Shop tab, Stitch IA): hub + subscreens =====
-  function affBack(){
-    var t=window.__tab&&window.__tab!=='shop'?window.__tab:'home';
-    renderAffTab(t);
+  function drawOverview(box,leads,earned,nNew,nCheck,shelfN,days7,days30,k7,k30){
+    if(!leads.length&&!shelfN){
+      // Designed beginning (Stitch card language), no dead ends.
+      var ec=el('div','scard');
+      ec.style.cssText='text-align:center;padding:30px 18px;display:flex;flex-direction:column;align-items:center;gap:10px';
+      ec.appendChild(el('div','kicker','Get Started'));
+      ec.appendChild(el('div','st-h',L.homeEmpty));
+      var cta=el('button','btn brand',L.homeCtaL);
+      cta.style.cssText='max-width:280px';
+      cta.onclick=function(){switchTab('catalog');};
+      ec.appendChild(cta);
+      box.appendChild(ec);
+      return;
+    }
+    // 2x2 stat cards (Stitch): label + icon ball + serif number + trend line.
+    var sg=el('div','statgrid');
+    function statCard(lbl,icon,ballCls,val,sub,tap){
+      var s=el('div','scard');
+      s.style.cssText+='display:flex;flex-direction:column;justify-content:space-between;gap:10px';
+      if(tap){s.style.cursor='pointer';s.onclick=tap;}
+      var top=el('div');top.style.cssText='display:flex;align-items:center;justify-content:space-between';
+      top.appendChild(el('span','kicker',lbl));
+      var ball=el('span','iconball '+ballCls);
+      ball.appendChild(msIcon(icon));
+      ball.firstChild.style.fontSize='16px';
+      top.appendChild(ball);
+      s.appendChild(top);
+      var v=el('div');
+      v.appendChild(el('div','st-h',String(val))).style.fontSize='24px';
+      if(sub){var tr=el('div','trendrow');tr.appendChild(el('span','tr-sub',sub));v.appendChild(tr);}
+      s.appendChild(v);
+      return s;
+    }
+    sg.appendChild(statCard('Earnings','payments','amber',money(Math.max(0,Math.round(earned))),L.earnedX,null));
+    sg.appendChild(statCard('Orders','shopping_bag','neutral',leads.length,nNew+' new · '+nCheck+' with merchants',function(){renderOrdersScreen();}));
+    sg.appendChild(statCard('On Shelf','storefront','neutral',shelfN,L.homeShelfX,function(){switchTab('boutique');}));
+    sg.appendChild(statCard('Catalog','diamond','amber','→',L.homeCatalogX,function(){switchTab('catalog');}));
+    box.appendChild(sg);
+    // Trajectory line chart (real data only; 7D/30D pills).
+    var ch=el('div','scard');
+    var chr=el('div');chr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:8px';
+    var chl=el('div');
+    chl.appendChild(el('span','kicker','Trajectory'));
+    chl.appendChild(el('div','st-h','Order Flow')).style.fontSize='19px';
+    chr.appendChild(chl);
+    var pills=el('div');pills.style.cssText='display:inline-flex;background:var(--accent-soft);border-radius:999px;padding:3px;gap:3px';
+    var svgBox=el('div');
+    function drawLine(days){
+      svgBox.innerHTML='';
+      var W=320,H=110,P=8;
+      var mx=Math.max.apply(null,days);
+      var pts=[];
+      days.forEach(function(v,i){
+        var x=P+(W-2*P)*(days.length===1?0.5:i/(days.length-1));
+        var y=mx>0?H-P-(H-2*P)*(v/mx):H-P;
+        pts.push(x.toFixed(1)+','+y.toFixed(1));
+      });
+      var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.setAttribute('viewBox','0 0 '+W+' '+H);
+      svg.setAttribute('style','width:100%;height:110px;overflow:visible');
+      var pl=document.createElementNS('http://www.w3.org/2000/svg','polyline');
+      pl.setAttribute('points',pts.join(' '));
+      pl.setAttribute('fill','none');
+      pl.setAttribute('stroke','#9A6A38');
+      pl.setAttribute('stroke-width','2.5');
+      pl.setAttribute('stroke-linecap','round');
+      pl.setAttribute('stroke-linejoin','round');
+      svg.appendChild(pl);
+      days.forEach(function(v,i){
+        if(v>0){
+          var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+          var xy=pts[i].split(',');
+          c.setAttribute('cx',xy[0]);c.setAttribute('cy',xy[1]);c.setAttribute('r','3.5');
+          c.setAttribute('fill','#F9F9FA');c.setAttribute('stroke','#9A6A38');c.setAttribute('stroke-width','2');
+          svg.appendChild(c);
+        }
+      });
+      svgBox.appendChild(svg);
+    }
+    var b7=el('button','fchip on','7D');b7.style.cssText+='padding:5px 12px;font-size:11px';
+    var b30=el('button','fchip','30D');b30.style.cssText+='padding:5px 12px;font-size:11px';
+    b7.onclick=function(){b7.classList.add('on');b30.classList.remove('on');drawLine(days7);};
+    b30.onclick=function(){b30.classList.add('on');b7.classList.remove('on');drawLine(days30);};
+    pills.appendChild(b7);pills.appendChild(b30);
+    chr.appendChild(pills);
+    ch.appendChild(chr);
+    drawLine(days7);
+    ch.appendChild(svgBox);
+    box.appendChild(ch);
+    // Black earnings card (Stitch balance card — honest copy, no fake payouts).
+    var bal=el('div','balcard');
+    bal.appendChild(el('div','bc-glow'));
+    bal.appendChild(el('div','bc-l','Your Earnings'));
+    bal.appendChild(el('div','bc-v',money(Math.max(0,Math.round(earned)))));
+    bal.appendChild(el('div','bc-sub',L.earnedX));
+    box.appendChild(bal);
+    // Recent orders (Stitch "Top Producing Pieces" row language).
+    if(leads.length){
+      var rec=el('div');
+      var rh=el('div','scr-title');
+      var rhm=el('div','st-main');
+      rhm.appendChild(el('span','kicker','Latest'));
+      rhm.appendChild(el('div','st-h',L.recentL)).style.fontSize='19px';
+      rh.appendChild(rhm);
+      var va=el('button','backlink',L.tabOrders+' →');
+      va.onclick=function(){renderOrdersScreen();};
+      rh.appendChild(va);
+      rec.appendChild(rh);
+      leads.slice(0,3).forEach(function(ld){
+        var row=el('div','topitem');
+        var ph=el('div','ti-ph');
+        var fi=(ld.items&&ld.items[0]&&ld.items[0].img);
+        if(fi){var im=document.createElement('img');im.src=fi;im.alt='';ph.appendChild(im);}
+        var main=el('div');main.style.cssText='flex:1;min-width:0';
+        var br=el('div');br.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:6px';
+        br.appendChild(el('span','ti-brand',fmtWhen(ld.created_at)));
+        br.appendChild(el('span','profitpill',money(ld.total+Number(ld.delivery_quote||0))));
+        main.appendChild(br);
+        main.appendChild(el('div','ti-name',ld.name));
+        var stTxt={new:L.leadNew,quoted:L.leadQuoted,checking:L.leadChecking,confirmed:L.leadConfirmed,paid:L.leadPaid}[ld.status]||ld.status;
+        var sub=el('div','trendrow');
+        sub.appendChild(el('span','tr-sub',stTxt+' · '+(ld.items||[]).length+' items'));
+        main.appendChild(sub);
+        row.appendChild(ph);row.appendChild(main);
+        row.style.cursor='pointer';
+        row.onclick=function(){renderOrdersScreen();};
+        rec.appendChild(row);
+        rec.lastChild.style.marginBottom='10px';
+      });
+      box.appendChild(rec);
+    }
   }
-  function renderSettings(){
-    killTabBar();
-    window.__mode='settings';
+  // ===== Orders screen (bell + View-all): the reseller's workplace =====
+  function renderOrdersScreen(){
+    window.__tab='orders';
     var c=content();c.innerHTML='';
-    var store=window.__ownerStore;
-    document.getElementById('storeName').textContent=store.name;
-    document.getElementById('storeSub').textContent=L.settingsT;
-    headerAvatar(true);
-    langToggle(false);
+    appShell('overview');
     var p=el('div','panel');
-    var bk=el('button','textlink','‹ '+L.tabHome);
-    bk.onclick=affHome;
+    renderOrdersInto(p);
+    c.appendChild(p);
+  }
+  function renderOrdersInto(p){
+    var bk=el('button','backlink');
+    bk.appendChild(msIcon('arrow_back'));
+    bk.appendChild(el('span',null,L.tabHome));
+    bk.onclick=function(){switchTab('overview');};
     p.appendChild(bk);
-    p.appendChild(el('div','subhead',L.settingsT));
-    p.appendChild(el('div','subsub',L.settingsSub));
-    function row(icon,title,sub,fn){
-      var r=el('button','set-row');
-      var ic=el('div','sr-ic',icon);
-      var tx=el('div','sr-tx');
-      tx.appendChild(el('div','sr-t',title));
-      tx.appendChild(el('div','sr-s',sub));
-      r.appendChild(ic);r.appendChild(tx);
-      r.appendChild(el('div','sr-ch','›'));
+    var st=el('div','scr-title');
+    var stm=el('div','st-main');
+    stm.appendChild(el('span','kicker','Inbox'));
+    stm.appendChild(el('div','st-h',L.inboxT));
+    st.appendChild(stm);
+    p.appendChild(st);
+    var box=el('div');
+    box.appendChild(el('div','note','…'));
+    p.appendChild(box);
+    loadInbox(box);
+  }
+  // ===== Boutique tab (Stitch "My curated boutique"): storefront HQ =====
+  function renderBoutiqueTab(p){
+    var store=window.__ownerStore||{};
+    // Storefront header card
+    var card=el('div','scard');
+    var top=el('div');top.style.cssText='display:flex;align-items:flex-start;justify-content:space-between;gap:10px';
+    var tl=el('div');tl.style.cssText='display:flex;align-items:center;gap:12px;min-width:0';
+    var logo=el('div');logo.style.cssText='width:48px;height:48px;border-radius:50%;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;flex:none;overflow:hidden';
+    if(window.__shopLogo){var li=document.createElement('img');li.src=window.__shopLogo;li.alt='';li.style.cssText='width:100%;height:100%;object-fit:cover';logo.appendChild(li);}
+    else logo.textContent=(store.name||'A').trim().charAt(0).toUpperCase();
+    tl.appendChild(logo);
+    var nm=el('div');nm.style.cssText='min-width:0';
+    nm.appendChild(el('span','kicker','Atelier Partner'));
+    nm.appendChild(el('div','st-h',store.name||'My Boutique')).style.fontSize='20px';
+    tl.appendChild(nm);
+    top.appendChild(tl);
+    card.appendChild(top);
+    // URL row + Share/Preview pills
+    var urlrow=el('div','live-url-row');
+    urlrow.style.marginTop='12px';
+    var um=el('div','lu-main');
+    um.appendChild(msIcon('link'));
+    um.appendChild(el('span','lu-url',shopUrl().replace('https://','')));
+    urlrow.appendChild(um);
+    var cp=el('button','pillbtn');
+    cp.appendChild(msIcon('content_copy'));
+    cp.appendChild(el('span',null,'Copy'));
+    cp.onclick=function(){
+      try{navigator.clipboard.writeText(shopUrl());}catch(e){}
+      cp.lastChild.textContent='Copied';
+      setTimeout(function(){cp.lastChild.textContent='Copy';},1600);
+    };
+    urlrow.appendChild(cp);
+    card.appendChild(urlrow);
+    var acts=el('div','row');
+    acts.style.cssText+='margin-top:10px';
+    var sh=el('button','pillbtn');
+    sh.appendChild(msIcon('share'));
+    sh.appendChild(el('span',null,L.shareL));
+    sh.onclick=function(){
+      openTg('https://t.me/share/url?url='+encodeURIComponent(shopUrl())+
+        '&text='+encodeURIComponent((store.name||'My shop')+' '));
+    };
+    var pv=el('a','pillbtn');
+    pv.href='?s='+(store.slug||'');
+    pv.appendChild(msIcon('open_in_new'));
+    pv.appendChild(el('span',null,'Preview'));
+    acts.appendChild(sh);acts.appendChild(pv);
+    card.appendChild(acts);
+    p.appendChild(card);
+    // Metrics strip (real numbers only)
+    var mstrip=el('div','scard');
+    var mg=el('div');mg.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:10px';
+    function mcol(l,v){
+      var c=el('div');
+      c.appendChild(el('span','kicker',l));
+      c.appendChild(el('div','st-h',v)).style.fontSize='18px';
+      return c;
+    }
+    var m1=mcol('On Shelf','…'),m2=mcol('Orders','…'),m3=mcol('New','…');
+    mg.appendChild(m1);mg.appendChild(m2);mg.appendChild(m3);
+    mstrip.appendChild(mg);
+    p.appendChild(mstrip);
+    // Shelf list (existing machinery: Get media + price via catalog)
+    var sh2=el('div','scr-title');
+    var sh2m=el('div','st-main');
+    sh2m.appendChild(el('span','kicker','Curation'));
+    sh2m.appendChild(el('div','st-h',L.shelfTitle)).style.fontSize='19px';
+    sh2.appendChild(sh2m);
+    var goCat=el('button','backlink',L.tabCatalog+' →');
+    goCat.onclick=function(){switchTab('catalog');};
+    sh2.appendChild(goCat);
+    p.appendChild(sh2);
+    var shelfBox=el('div');
+    shelfBox.appendChild(el('div','note','…'));
+    p.appendChild(shelfBox);
+    loadShelf(function(shelf){
+      shelfBox.innerHTML='';
+      m1.querySelector('.st-h').textContent=String(shelf.length);
+      if(!shelf.length){shelfBox.appendChild(el('div','note',L.noneYet+' ('+L.tabCatalog+')'));return;}
+      shelf.forEach(function(i){
+        var row=el('div','topitem');
+        row.style.marginBottom='10px';
+        var ph=el('div','ti-ph');
+        if(i.img){var im=document.createElement('img');im.src=i.img;im.alt=i.name;ph.appendChild(im);}
+        var main=el('div');main.style.cssText='flex:1;min-width:0';
+        var br=el('div');br.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:6px';
+        br.appendChild(el('span','ti-brand',(i.merchant?i.merchant.name:'')));
+        br.appendChild(el('span','profitpill',(i.cut!=null?money(i.cut):'—')));
+        main.appendChild(br);
+        main.appendChild(el('div','ti-name',i.name));
+        var btns=el('div');btns.style.cssText='display:flex;gap:6px;margin-top:8px';
+        var bM=el('button','pillbtn');
+        bM.appendChild(msIcon('movie_creation'));
+        bM.appendChild(el('span',null,L.getMediaBtn));
+        bM.onclick=function(){
+          bM.disabled=true;
+          authCall('item_media_send',{item_id:i.id}).then(function(j){
+            bM.disabled=false;
+            if(j.ok||j.error==='empty_media'){
+              bM.lastChild.textContent=j.error==='empty_media'?'No media yet':L.mediaSent;
+              setTimeout(function(){bM.lastChild.textContent=L.getMediaBtn;},2200);
+            }else{bM.lastChild.textContent='ⓘ '+(j.error||'');setTimeout(function(){bM.lastChild.textContent=L.getMediaBtn;},2200);}
+          });
+        };
+        btns.appendChild(bM);
+        main.appendChild(btns);
+        row.appendChild(ph);row.appendChild(main);
+        shelfBox.appendChild(row);
+      });
+    });
+    // Orders/new counts for the strip
+    authCall('leads_list',{}).then(function(j){
+      if(!j.ok)return;
+      var leads=j.leads||[];
+      var nNew=0;
+      leads.forEach(function(ld){if(ld.status==='new'||ld.status==='quoted')nNew++;});
+      m2.querySelector('.st-h').textContent=String(leads.length);
+      m3.querySelector('.st-h').textContent=String(nNew);
+    }).catch(function(){});
+  }
+  // ===== Studio tab (Stitch CapCut lab) — honest until templates arrive =====
+  function renderStudioTab(p){
+    var st=el('div','scr-title');
+    var stm=el('div','st-main');
+    stm.appendChild(el('span','kicker','Marketing'));
+    stm.appendChild(el('div','st-h','Video Studio'));
+    st.appendChild(stm);
+    p.appendChild(st);
+    p.appendChild(el('div','subsub',L.setVideoNote));
+    // Media pack from the shelf rides the bot (Telegram hosts bytes free).
+    var anyLink=CAPCUT.some(function(k){return k.u;});
+    if(anyLink){
+      var grid=el('div','vidgrid');
+      CAPCUT.forEach(function(k){
+        if(!k.u)return;
+        var vc=el('div','vidcard');
+        var ph=el('div','v-ph');
+        var a=document.createElement('a');a.href=k.u;a.target='_blank';
+        a.style.cssText='position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink)';
+        a.appendChild(msIcon('movie_creation'));
+        ph.appendChild(a);
+        vc.appendChild(ph);
+        var tx=el('div','v-tx');
+        tx.appendChild(el('div','v-t',k.t));
+        vc.appendChild(tx);
+        grid.appendChild(vc);
+      });
+      p.appendChild(grid);
+    }else{
+      var ec=el('div','scard');
+      ec.style.cssText='text-align:center;padding:26px 16px;display:flex;flex-direction:column;align-items:center;gap:8px';
+      ec.appendChild(el('div','kicker','Coming'));
+      ec.appendChild(el('div','st-h',L.kitTitle)).style.fontSize='18px';
+      ec.appendChild(el('div','tr-sub',L.kitSoon));
+      ec.appendChild(el('div','tr-sub',L.kitNote));
+      p.appendChild(ec);
+    }
+    // Per-item media lives on the Boutique tab — point there.
+    var go=el('button','btn ghost',L.tabBoutique+' →');
+    go.style.marginTop='8px';
+    go.onclick=function(){switchTab('boutique');};
+    p.appendChild(go);
+  }
+  // ===== More tab (Stitch settings): hairline rows, no emojis =====
+  function renderMoreTab(p){
+    var st=el('div','scr-title');
+    var stm=el('div','st-main');
+    stm.appendChild(el('span','kicker','Account'));
+    stm.appendChild(el('div','st-h',L.settingsT));
+    st.appendChild(stm);
+    p.appendChild(st);
+    var list=el('div','setlist');
+    function mrow(title,sub,fn){
+      var r=el('button','msr-row');
+      var tx=el('div','mr-tx');
+      tx.appendChild(el('div','mr-t',title));
+      tx.appendChild(el('div','mr-s',sub));
+      r.appendChild(tx);
+      var ch=msIcon('chevron_right');
+      ch.style.fontSize='20px';
+      r.appendChild(ch);
       r.onclick=fn;
       return r;
     }
-    var list=el('div','setlist');
-    list.appendChild(row('🪪',L.setBrandT,L.setBrandS,function(){renderSetBrand();}));
-    list.appendChild(row('🔗',L.setDomainT,L.setDomainS,function(){renderSetDomain();}));
-    list.appendChild(row('🎨',L.setThemeT,L.setThemeS,function(){renderThemePick(store);}));
-    list.appendChild(row('🎬',L.setVideoT,L.setVideoS,function(){renderSetVideo();}));
+    list.appendChild(mrow(L.setBrandT,L.setBrandS,function(){renderSetBrand();}));
+    list.appendChild(mrow(L.setDomainT,L.setDomainS,function(){renderSetDomain();}));
+    list.appendChild(mrow(L.setThemeT,L.setThemeS,function(){renderThemePick(window.__ownerStore);}));
+    list.appendChild(mrow(L.inboxT,'',function(){renderOrdersScreen();}));
     p.appendChild(list);
-    // Sign out — kills the stay-signed-in refresh token too.
     var so=el('button','mbtn warn',L.signOutL);
-    so.style.marginTop='14px';so.style.width='100%';
+    so.style.cssText='margin-top:14px;width:100%';
     so.onclick=function(){
       signOutAll();
       location.replace(location.origin+location.pathname);
     };
     p.appendChild(so);
-    c.appendChild(p);
+  }
+  // ===== v50 SETTINGS STACK (the old Shop tab, Stitch IA): hub + subscreens =====
+  function affBack(){
+    var t=window.__tab&&window.__tab!=='shop'?window.__tab:'home';
+    renderAffTab(t);
   }
   function renderSetBrand(){
-    var c=content();c.innerHTML='';
-    document.getElementById('storeSub').textContent=L.setBrandT;
+    appShell('more');    var c=content();c.innerHTML='';
+    setHdr(null,L.setBrandT);
     var p=el('div','panel');
     var bk=el('button','textlink','‹ '+L.settingsT);
     bk.onclick=affBack;
@@ -3502,8 +3937,8 @@
     c.appendChild(p);
   }
   function renderSetDomain(){
-    var c=content();c.innerHTML='';
-    document.getElementById('storeSub').textContent=L.setDomainT;
+    appShell('more');    var c=content();c.innerHTML='';
+    setHdr(null,L.setDomainT);
     var p=el('div','panel');
     var bk=el('button','textlink','‹ '+L.settingsT);
     bk.onclick=affBack;
@@ -3518,60 +3953,6 @@
     p.appendChild(bOpen);
     c.appendChild(p);
   }
-  function renderSetVideo(){
-    var c=content();c.innerHTML='';
-    document.getElementById('storeSub').textContent=L.setVideoT;
-    var p=el('div','panel');
-    var bk=el('button','textlink','‹ '+L.settingsT);
-    bk.onclick=affBack;
-    p.appendChild(bk);
-    p.appendChild(el('div','subhead',L.setVideoT));
-    p.appendChild(el('div','subsub',L.setVideoNote));
-    // MY SHELF — live from the merchants' stock; Get media per item.
-    p.appendChild(el('div','sect'));
-    p.appendChild(el('h3',null,L.shelfTitle));
-    var shelfBox=el('div');
-    shelfBox.appendChild(el('div','note','…'));
-    p.appendChild(shelfBox);
-    loadShelf(function(shelf){
-      shelfBox.innerHTML='';
-      if(!shelf.length){shelfBox.appendChild(el('div','note',L.noneYet+' ('+L.tabCatalog+')'));return;}
-      shelf.forEach(function(i){
-        var line=saleRow(i.img,i.name+' · '+L.viaLbl+' '+(i.merchant?i.merchant.name:'?'),
-          (i.cut!=null?money(i.cut):'—'),L.cutLbl);
-        var bM=el('button','mbtn',L.getMediaBtn);
-        bM.style.cssText='flex-basis:100%;margin-top:4px';
-        bM.onclick=function(){
-          bM.disabled=true;
-          authCall('item_media_send',{item_id:i.id}).then(function(j){
-            bM.disabled=false;
-            if(j.ok||j.error==='empty_media'){
-              bM.textContent=j.error==='empty_media'?'📷?':L.mediaSent;
-              setTimeout(function(){bM.textContent=L.getMediaBtn;},2500);
-            }else{bM.textContent='ⓘ '+(j.error||'');setTimeout(function(){bM.textContent=L.getMediaBtn;},2500);}
-          });
-        };
-        line.appendChild(bM);
-        shelfBox.appendChild(line);
-      });
-    });
-    // MARKETING KIT — CapCut links (founder-curated; lazy path stated).
-    p.appendChild(el('h3',null,L.kitTitle));
-    p.appendChild(el('div','note',L.kitNote));
-    var anyLink=CAPCUT.some(function(k){return k.u;});
-    if(anyLink){
-      CAPCUT.forEach(function(k){
-        if(!k.u)return;
-        var b=el('a','btn ghost',k.t);
-        b.href=k.u;b.target='_blank';b.style.marginTop='6px';
-        p.appendChild(b);
-      });
-    }else{
-      p.appendChild(el('div','note',L.kitSoon));
-    }
-    c.appendChild(p);
-  }
-
   function loadAffOrders(box){
     authCall('orders_list',{}).then(function(j){
       box.innerHTML='';
@@ -3645,10 +4026,10 @@
     window.__mode='intro';
     document.body.classList.remove('auth-clean');
     var c=content();c.innerHTML='';
-    document.getElementById('storeName').textContent='Adulis';
-    document.getElementById('storeSub').textContent='';
+    setHdr('Adulis',null);
+    setHdr(null,'');
+    clearShell();
     langToggle(false);
-    headerAvatar(false);
     var wrap=el('div','panel');
     wrap.style.maxWidth='480px';
     var hero=el('div','intro-hero');
@@ -3704,10 +4085,10 @@
      btn:'background:#C9184A;color:#FFFFFF'}
   ];
   function renderThemePick(store,fresh){
-    window.__mode='themepick';
+    clearShell();    window.__mode='themepick';
     var c=content();c.innerHTML='';
-    document.getElementById('storeName').textContent=L.pickTheme;
-    document.getElementById('storeSub').textContent=L.themePickNote;
+    setHdr(L.pickTheme,null);
+    setHdr(null,L.themePickNote);
     setLogo(null);
     var p=el('div','panel');
     if(fresh)p.appendChild(el('div','okmsg',L.created));
@@ -3904,8 +4285,8 @@
   function renderOrderSheet(){
     window.__mode='orderform';
     var c=content();c.innerHTML='';
-    document.getElementById('storeName').textContent=L.commitTitle;
-    document.getElementById('storeSub').textContent=L.affOwnerTitle;
+    setHdr(L.commitTitle,null);
+    setHdr(null,L.affOwnerTitle);
     setLogo(null);
     var p=el('div','panel');
     var back=el('button','mbtn back',detectCur()==='am'?'‹ ተመለስ':'‹ Back');
@@ -4031,7 +4412,7 @@
     var bShare=el('button','btn ghost',L.shareL);
     bShare.onclick=function(){
       openTg('https://t.me/share/url?url='+encodeURIComponent(shortUrl())+
-        '&text='+encodeURIComponent((store.name||'My shop')+' 🛍'));
+        '&text='+encodeURIComponent((store.name||'My shop')+' '));
     };
     rowA.appendChild(bCopyA);rowA.appendChild(bShare);
     p.appendChild(rowA);
@@ -4091,8 +4472,8 @@
     window.__mode='home';
     var c=content();c.innerHTML='';
     if(!initDataOK()){
-      document.getElementById('storeName').textContent='Adulis';
-      document.getElementById('storeSub').textContent=L.appSub;
+      setHdr('Adulis',null);
+      setHdr(null,L.appSub);
       renderCreate();return;
     }
     c.appendChild(el('div','state',L.signin));
@@ -4140,8 +4521,8 @@
     document.body.classList.add('auth-clean');
     setLang('en',true);
     var c=content();c.innerHTML='';
-    document.getElementById('storeName').textContent='Adulis';
-    document.getElementById('storeSub').textContent=L.appSub;
+    setHdr('Adulis',null);
+    setHdr(null,L.appSub);
     setLogo(null);
     var p=el('div','panel');
     p.appendChild(el('h2',null,L.forgotTitle));
@@ -4190,8 +4571,8 @@
     document.body.classList.add('auth-clean');
     setLang('en',true);
     var c=content();c.innerHTML='';
-    document.getElementById('storeName').textContent='Adulis';
-    document.getElementById('storeSub').textContent=L.appSub;
+    setHdr('Adulis',null);
+    setHdr(null,L.appSub);
     setLogo(null);
     var q=null;try{q=new URLSearchParams(location.search);}catch(e){}
     var th=q?q.get('token_hash')||'':'',ty=q?q.get('type')||'':'';
@@ -4291,7 +4672,7 @@
     killTabBar();
     var cf=document.getElementById('cartfab');if(cf)cf.remove();
     if(slug){
-      window.__mode='shop';document.getElementById('storeName').textContent='…';
+      window.__mode='shop';setHdr('…',null);
       // Short links: a subdomain label (pretty claim or slug) arrives as
       // ?s=<label> — resolve once at boot to the canonical slug (pretty
       // claims included). Failure falls through to the plain lookup.
