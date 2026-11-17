@@ -121,7 +121,11 @@
     .wrap{max-width:1120px;padding:32px 24px 64px}
     .grid{grid-template-columns:repeat(4,1fr);gap:20px}
   }
-  header{display:flex;align-items:center;gap:14px;padding:10px 2px 18px}
+  /* v53: the static header NEVER paints by default — the old mini-app
+     chrome flashed for 1-2s on panel loads before the app shell swapped
+     in. Shopper/auth/intro surfaces opt in via body.show-hdr (clearShell). */
+  header{display:none;align-items:center;gap:14px;padding:10px 2px 18px}
+  body.show-hdr header{display:flex}
   .logo{width:52px;height:52px;border-radius:14px;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;flex:none;overflow:hidden}
   .logo img{width:100%;height:100%;object-fit:cover;display:block}
   .hgroup{flex:1;min-width:0}
@@ -400,6 +404,31 @@
   .msr-row .mr-s{font-size:11.5px;color:var(--muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .msr-row:active{opacity:.7}
   .backlink{border:none;background:transparent;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px;padding:6px 0}
+  /* ===== v53 desktop sidebar (web screenshots' layout) ===== */
+  .websidebar{position:fixed;top:0;left:0;bottom:0;width:250px;background:var(--bg);border-right:1px solid var(--edge);display:none;flex-direction:column;padding:20px 14px 16px;gap:4px;z-index:40;overflow-y:auto}
+  .wsb-brand{display:flex;align-items:center;gap:10px;padding:6px 8px 16px;border-bottom:1px solid var(--edge);margin-bottom:12px}
+  .wsb-brand .b-logo{width:36px;height:36px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;flex:none}
+  .wsb-brand .b-t{font-size:16px;font-weight:600;letter-spacing:-.2px}
+  .wsb-brand .b-s{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:1px}
+  .wsb-item{display:flex;align-items:center;gap:12px;padding:12px;border:none;background:transparent;border-radius:12px;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;text-align:left;width:100%;transition:background .12s ease-out}
+  .wsb-item.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow-soft)}
+  .wsb-item .ms{font-size:20px}
+  .wsb-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--edge)}
+  .wsb-prof{display:flex;align-items:center;gap:10px;padding:8px;cursor:pointer;border-radius:12px}
+  .wsb-prof:active{background:var(--accent-soft)}
+  .wsb-prof .p-av{width:34px;height:34px;border-radius:50%;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;overflow:hidden;flex:none}
+  .wsb-prof .p-av img{width:100%;height:100%;object-fit:cover}
+  .wsb-prof .p-n{font-size:13.5px;font-weight:600}
+  .wsb-prof .p-s{font-size:11px;color:var(--muted);margin-top:1px}
+  @media (min-width:768px){
+    body.appshell .websidebar{display:flex}
+    body.appshell .appbar{display:none}
+    body.appshell .appnav{display:none}
+    body.appshell .wrap{margin-left:250px;padding-top:32px;max-width:none;padding-right:32px}
+  }
+  @media (min-width:768px) and (max-width:1023px){
+    body.appshell .wrap{margin-left:250px;padding-left:24px}
+  }
 
   </style>
 </head>
@@ -454,7 +483,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v52',
+        footer:'Live stock from <b>Adulis</b> · v53',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -643,7 +672,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v52',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v53',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -869,7 +898,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=52;
+  var BUILD=53;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
   // fills them in. Empty until then (the panel shows "coming soon").
@@ -940,13 +969,17 @@
     var h=document.querySelector('header');
     if(h&&__origHeader!==null){h.classList.remove('appbar');h.innerHTML=__origHeader;}
     var n=document.getElementById('appnav');if(n)n.remove();
+    var sb=document.getElementById('websidebar');if(sb)sb.remove();
     document.body.classList.remove('appshell');
+    // v53: shopper/auth/intro surfaces opt INTO the static shop header.
+    document.body.classList.add('show-hdr');
   }
   function appShell(activeTab){
     var h=document.querySelector('header');
     if(!h)return;
     if(__origHeader===null)__origHeader=h.innerHTML;
     document.body.classList.remove('auth-clean');
+    document.body.classList.remove('show-hdr');
     document.body.classList.add('appshell');
     var store=window.__ownerStore||{};
     var url=(window.__ownerSubdomain||store.slug||'myboutique')+'.adulis.co';
@@ -989,6 +1022,54 @@
     h.innerHTML='';
     h.appendChild(bar);
     appNav(activeTab);
+    webSidebar(activeTab);
+  }
+  // v53: the DESKTOP sidebar (the web screenshots' layout) — phone keeps
+  // the appbar + bottom tabs; ≥768px swaps both for this left rail.
+  function webSidebar(activeTab){
+    var old=document.getElementById('websidebar');if(old)old.remove();
+    var store=window.__ownerStore||{};
+    var sb=el('div','websidebar');sb.id='websidebar';
+    var brand=el('div','wsb-brand');
+    var bl=el('div','b-logo');
+    var bli=document.createElement('span');bli.className='ms';bli.textContent='sailing';
+    bl.appendChild(bli);
+    brand.appendChild(bl);
+    var bn=el('div');
+    bn.appendChild(el('div','b-t','Adulis'));
+    bn.appendChild(el('div','b-s','Atelier'));
+    brand.appendChild(bn);
+    sb.appendChild(brand);
+    [['overview','insights','Home Analytics'],
+     ['catalog','diamond',L.tabCatalog],
+     ['boutique','storefront','My Boutique'],
+     ['studio','movie_creation','Video Studio'],
+     ['orders','notifications',L.tabOrders],
+     ['more','tune','Settings']].forEach(function(t){
+      var b=el('button','wsb-item'+((activeTab===t[0])?' on':''));
+      var ic=document.createElement('span');ic.className='ms';ic.textContent=t[1];
+      b.appendChild(ic);
+      b.appendChild(el('span',null,t[2]));
+      b.onclick=function(){
+        if(t[0]==='orders'){renderOrdersScreen();return;}
+        switchTab(t[0]);
+      };
+      sb.appendChild(b);
+    });
+    var foot=el('div','wsb-foot');
+    var prof=el('div','wsb-prof');
+    var pav=el('div','p-av');
+    if(window.__shopLogo){var pi=document.createElement('img');pi.src=window.__shopLogo;pi.alt='';pav.appendChild(pi);}
+    else pav.textContent=(store.name||'A').trim().charAt(0).toUpperCase();
+    prof.appendChild(pav);
+    var pn=el('div');
+    pn.appendChild(el('div','p-n',store.name||'My Boutique'));
+    pn.appendChild(el('div','p-s',(window.__ownerSubdomain||store.slug||'')+'.adulis.co'));
+    prof.appendChild(pn);
+    prof.onclick=function(){switchTab('more');};
+    foot.appendChild(prof);
+    sb.appendChild(foot);
+    document.body.appendChild(sb);
   }
   function appNav(activeTab){
     var old=document.getElementById('appnav');if(old)old.remove();
@@ -3655,7 +3736,7 @@
   function renderOrdersScreen(){
     window.__tab='orders';
     var c=content();c.innerHTML='';
-    appShell('overview');
+    appShell('orders');
     var p=el('div','panel');
     renderOrdersInto(p);
     c.appendChild(p);
