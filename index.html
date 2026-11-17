@@ -92,7 +92,7 @@
   .how{display:flex;gap:10px;margin:26px 0 8px}
   .how .h-card{flex:1;background:var(--card);border:1px solid var(--edge);border-radius:16px;padding:16px 12px;text-align:center}
   /* V46: auth screens go chrome-free (founder adjustment) */
-  .auth-clean header{display:none}
+  .auth-clean header{display:none!important}
   .textlink{background:none;border:none;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:underline;text-underline-offset:3px;padding:8px}
   .textlink:active{color:var(--ink)}
   .intro-hero{text-align:center;padding:48px 20px 20px}
@@ -167,7 +167,7 @@
   @media (min-width:768px){.panel{padding:32px 28px;max-width:560px;margin:0 auto;width:100%}}
   .panel h2{font-family:'Playfair Display',Georgia,serif;font-size:23px;font-weight:600;letter-spacing:-.2px}
   .panel .note{font-size:12.5px;color:var(--muted);line-height:1.55;white-space:pre-line}
-  .field label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin:0 0 5px 2px;letter-spacing:.05em;text-transform:uppercase}
+  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 5px 2px}
   .field input{width:100%;border:1px solid var(--edge);border-radius:10px;background:var(--bg);color:var(--ink);font-size:16px;padding:14px 14px;min-height:48px;font-family:inherit;outline:none;transition:border-color .15s ease-out,box-shadow .15s ease-out}
   .field input:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(10,10,10,.05)}
   .btn{background:var(--accent);color:var(--on-accent);border:none;border-radius:999px;padding:14px 18px;min-height:48px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;display:block;transition:transform .12s ease-out,opacity .15s ease-out,background .15s ease-out}
@@ -483,7 +483,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v53',
+        footer:'Live stock from <b>Adulis</b> · v54',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -499,15 +499,15 @@
         credNote:'Already use the Adulis app? Enter that email + password — this Telegram shop connects to your existing store.\nNew here? This becomes your app login.',
         saveBtn:'Save', credSaved:'Saved! Use this email + password in the Adulis app.',
         linkedOk:'Connected! This Telegram shop now runs your Adulis store.',
-        errLogin:'Wrong password for that email — check it and try again.',
+        errLogin:'Wrong password for that email . check it and try again.',
         created:'Shop created!', ownerTitle:'My shop', openShopBtn:'Open my shop',
         channelL:'Channel username (add @AdulisShopBot as admin first)', postBtn:'Post to my channel',
         posting:'Posting…', posted:'Posted! Check your channel.',
         getApp:'Get the full Adulis app', getAppNote:'Manage stock, prices and sales from your phone — even offline.',
         errName:'Enter your shop name (2+ letters).', errEmail:'Enter a valid email.',
-        errPass:'Password must be 6+ characters.', errTaken:'That email is already registered — use a different one.',
+        errPass:'Password must be 6+ characters.', errTaken:'That email is already registered . use a different one.',
         errHasStore:'You already have a shop — opening it.', errChannel:'Could not post. Make sure @AdulisShopBot is an ADMIN of that channel.',
-        errGeneric:'Something went wrong — try again.', signin:'Signing you in…',
+        errGeneric:'Something went wrong . try again.', signin:'Signing you in…',
         codeTitle:'Confirm it\'s you', codeSent:'We sent a 6-digit code in Telegram — open the @AdulisShopBot chat and type it below.',
         codeL:'6-digit code', verifyBtn:'Verify', verifying:'Verifying…',
         errCode:'Wrong or expired code — check @AdulisShopBot and try again.',
@@ -609,16 +609,16 @@
         askAboutL:'Ask about this item', webTipL:'Easier on the web: adulis.co',
         dmAsk:function(n){return 'Selam! Is the '+n+' available?';},
         // v41 — Gmail signup
-        emailL:'Email (Gmail)', passCreateL:'Create a password for Adulis — not your Gmail password (6+ characters)',
+        emailL:'Email (Gmail)', passCreateL:'Password for Adulis (not your Gmail password), at least 6 characters',
         haveAcctL:'Already have an account? Sign in', noAcctL:'New here? Create your boutique',
         emailSignupBtn:'Create my boutique', emailLoginBtn:'Sign in',
         resetNote:'Forgot your password? We can help — just ask.',
         // v50 reset + stay-signed-in strings
         forgotL:'Forgot your password?',
         forgotTitle:'Reset your password',
-        forgotNote:'Enter your Gmail — we will send you a reset link.',
+        forgotNote:'Enter your Gmail . we will send you a reset link.',
         forgotBtn:'Send reset link',
-        forgotSent:'✓ Check your Gmail — the reset link is on its way.',
+        forgotSent:'✓ Check your Gmail . the reset link is on its way.',
         forgotRate:'Too many reset emails right now — wait an hour and try again.',
         forgotBack:'Back to sign in',
         resetTitle:'Choose a new password',
@@ -634,7 +634,7 @@
         // v50 panel IA (Stitch): Home tab + settings stack
         tabHome:'Home',
         homeTitle:'Your boutique at a glance',
-        homeSub:'Real numbers from your orders — nothing invented.',
+        homeSub:'Real numbers from your orders . nothing invented.',
         homeEmpty:'Your numbers appear with your first orders. Share your shop link to get started.',
         earnedL:'Your earnings',
         earnedX:'Order value kept after merchant shares',
@@ -659,7 +659,7 @@
         // v51: Stitch-faithful nav + resilient session restore
         shelfStatL:'On your shelf',
         homeCtaL:'Pick your first items',
-        netRetry:'Couldn\u2019t reach Adulis — check your connection and retry.',
+        netRetry:'Couldn\u2019t reach Adulis . check your connection and retry.',
         // v52: five-tab app shell (Stitch phone set)
         tabBoutique:'Boutique', tabStudio:'Studio', tabMore:'More',
         homeShelfX:'Items curated on your storefront',
@@ -672,7 +672,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v53',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v54',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -688,15 +688,15 @@
         credNote:'አዱሊስ መተግበሪያ አሁንም ይጠቀማሉ? ያንን ኢሜይልና ቃል ይጻፉ — የቴሌግራም ሱቁ ከነባር ሱቅዎ ጋር ይገናኛል።\nአዲስ ነዎት? ይህ የመተግበሪያዎ መግቢያ ይሆናል።',
         saveBtn:'አስቀምጥ', credSaved:'ተቀምጧል! ይህን ኢሜይልና ቃል በአዱሊስ መተግበሪያ ይጠቀሙ።',
         linkedOk:'ተገናኝቷል! ይህ የቴሌግራም ሱቅ አሁን የአዱሊስ ሱቅዎ ሆኖ ይሠራል።',
-        errLogin:'ለዚያ ኢሜይል ቃሉ አልኮነነም — መርምረው እንደገና ይሞክሩ።',
+        errLogin:'ለዚያ ኢሜይል ቃሉ አልኮነነም ። መርምረው እንደገና ይሞክሩ።',
         created:'ሱቁ ተፈጥሯል!', ownerTitle:'ሱቄ', openShopBtn:'ሱቴን ክፈት',
         channelL:'የቻናል ተጠቃሚ ስም (መጀመሪያ @AdulisShopBotን አስተዳዳሪ ያድርጉ)', postBtn:' ወደ ቻናሌ ላክ',
         posting:'በመላክ ላይ…', posted:'ተልኳል! ቻናልዎን ይመልከቱ።',
         getApp:'ሙሉ የአዱሊስ መተግበሪያ ያውርዱ', getAppNote:'ዕቃ፣ ዋጋና ሽያጭ ከስልክዎ ይቆጣጠሩ — ከኢንተርኔት ውጭ እንኳ።',
         errName:'የሱቅ ስም ያስፈልጋል (ቢያንስ 2 ፊደላት)።', errEmail:'ትክክለኛ ኢሜይል ያስገቡ።',
-        errPass:'የመግቢያ ቃል ቢያንስ 6 ፊደላት መሆን አለበት።', errTaken:'ኢሜይሉ ቀድሞ ተመዝግቧል — ሌላ ይጠቀሙ።',
+        errPass:'የመግቢያ ቃል ቢያንስ 6 ፊደላት መሆን አለበት።', errTaken:'ኢሜይሉ ቀድሞ ተመዝግቧል ። ሌላ ይጠቀሙ።',
         errHasStore:'ሱቅ ቀድሞ አለዎት — በመክፈት ላይ።', errChannel:'ልክ አልተቻለም። @AdulisShopBot የዚያ ቻናል አስተዳዳሪ መሆኑን ያረጋግጡ።',
-        errGeneric:'ችግር አጋጥሟል — እንደገና ይሞክሩ።', signin:'በማስገባት ላይ…',
+        errGeneric:'ችግር አጋጥሟል ። እንደገና ይሞክሩ።', signin:'በማስገባት ላይ…',
         codeTitle:'ማንነትዎን ያረጋግጡ', codeSent:'የ6-አሃዝ ኮድ በቴሌግራም ተልኳል — የ@AdulisShopBot ውይይት ክፈተው እዚህ ይጻፉት።',
         codeL:'የ6-አሃዝ ኮድ', verifyBtn:'አረጋግጥ', verifying:'በማረጋገጥ ላይ…',
         errCode:'ኮዱ ልክ ወይም ጊዜው አልፏል — @AdulisShopBotን መርምረው እንደገና ይሞክሩ።',
@@ -805,9 +805,9 @@
         // v50 reset + stay-signed-in strings
         forgotL:'የይለፍ ቃል ረስተዋል?',
         forgotTitle:'የይለፍ ቃል ይመልሱ',
-        forgotNote:'ጂሜይልዎን ይጻፉ — የመልሻ አገናኝ እንልክልዎታለን።',
+        forgotNote:'ጂሜይልዎን ይጻፉ ። የመልሻ አገናኝ እንልክልዎታለን።',
         forgotBtn:'አገናኙን ይላክ',
-        forgotSent:'✓ ጂሜይልዎን ይመልከቱ — አገናኙ በመንገድ ላይ ነው።',
+        forgotSent:'✓ ጂሜይልዎን ይመልከቱ ። አገናኙ በመንገድ ላይ ነው።',
         forgotRate:'በጣም ብዙ የመልሻ ኢሜይሎች አሁን — አንድ ሰዓት ይጠብቁ።',
         forgotBack:'ወደ መግቢያ ተመለስ',
         resetTitle:'አዲስ የይለፍ ቃል ይምረጡ',
@@ -823,7 +823,7 @@
         // v50 panel IA (Stitch): Home tab + settings stack
         tabHome:'መነሻ',
         homeTitle:'ቡቲኮዎ በአንድ እይታ',
-        homeSub:'ከትዕዛዞችዎ የመጡ እውነተኛ ቁጥሮች — ምንም የተፈጠረ ነገር የለም።',
+        homeSub:'ከትዕዛዞችዎ የመጡ እውነተኛ ቁጥሮች ። ምንም የተፈጠረ ነገር የለም።',
         homeEmpty:'ቁጥሮችዎ ከመጀመሪያዎቹ ትዕዛዞችዎ ጋር ይታያሉ። ለመጀመር የመደብርዎን አገናኝ ያጋሩ።',
         earnedL:'የእርስዎ ገቢ',
         earnedX:'ከነጋዴዎች ድርሻ በኋላ የቀረው የትዕዛዝ እሴት',
@@ -848,7 +848,7 @@
         // v51: Stitch-faithful nav + resilient session restore
         shelfStatL:'በመደርደሪያዎ ላይ',
         homeCtaL:'የመጀመሪያ ዕቃዎችዎን ይምረጡ',
-        netRetry:'ወደ አዱሊስ መድረስ አልተቻለም — ግንኙነትዎን ያረጋግጡና እንደገና ይሞክሩ።',
+        netRetry:'ወደ አዱሊስ መድረስ አልተቻለም ። ግንኙነትዎን ያረጋግጡና እንደገና ይሞክሩ።',
         // v52: five-tab app shell (Stitch phone set)
         tabBoutique:'ቡቲኬ', tabStudio:'ስቱዲዮ', tabMore:'ተጨማሪ',
         homeShelfX:'በመደብርዎ ላይ የተመረጡ ዕቃዎች',
@@ -898,15 +898,17 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=53;
+  var BUILD=54;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
-  // fills them in. Empty until then (the panel shows "coming soon").
+  // fills them in. v54: TEST placeholder links (generic CapCut template
+  // pages) so the Studio flow is exercisable end-to-end before the pilot;
+  // the founder swaps in his real template links when he makes them.
   var CAPCUT=[
-    {t:'New arrival',u:''},
-    {t:'Item showcase',u:''},
-    {t:'Price drop',u:''},
-    {t:'Sizes',u:''}
+    {t:'New arrival reveal',u:'https://www.capcut.com/templates'},
+    {t:'Item showcase',u:'https://www.capcut.com/templates'},
+    {t:'Price drop alert',u:'https://www.capcut.com/templates'},
+    {t:'Size guide',u:'https://www.capcut.com/templates'}
   ];
   try{
     fetch(location.origin+location.pathname.replace(/[^/]*$/,'')+'version.txt?cb='+Date.now())
@@ -1244,13 +1246,10 @@
     if(!window.__visited){window.__visited=true;beacon('visit');}
     var store=rows[0], user=store.telegram_username;
     window.__shopUser=user;
-    // Opened in a plain browser (WhatsApp/bio links)? Offer the jump
-    // into Telegram's fullscreen mini app — the browser stays a fallback.
-    if(!(tg&&tg.initData&&tg.initData.length)){
-      inTg.style.marginBottom='10px';
-      var c0=content();
-      c0.insertBefore(inTg,c0.firstChild);
-    }
+    // v54: the retired "Open in Telegram" button left undefined-variable
+    // debris here that only fired for a stocked shop in a plain browser
+    // (never exercised until the seed dressed Agora). Removed — the shop
+    // simply renders (v39 doctrine: no redirects, no jump buttons).
     setHdr(store.store_name||'Shop',null);
     setHdr(null,user?L.sub:L.subNoUser);
     setLogo(store.logo_url);
@@ -1970,7 +1969,7 @@
       p.appendChild(el('h2',null,L.ownerTitle));
     }
     p.appendChild(el('div','note',emailMode==='signup'
-      ?'Just your Gmail and a password — your boutique is ready in a minute.'
+      ?'Just your Gmail and a password. Your boutique is ready in a minute.'
       :'Enter your email and password to open your panel.'));
     var fE=el('div','field');fE.appendChild(el('label',null,L.emailL));
     var iEm=document.createElement('input');iEm.type='email';iEm.autocomplete='email';
