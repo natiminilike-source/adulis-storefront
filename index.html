@@ -56,28 +56,6 @@
      default; Editorial = warm paper + bronze; Vivid = raspberry energy.
      The store's theme arrives via the header RPC as data-theme — web and
      Telegram dress identically. */
-  [data-theme="editorial"]{
-    --bg:#FAF8F3; --card:#FFFFFF; --ink:#26221C; --muted:#8B8578;
-    --accent:#6E5B3C; --on-accent:#ffffff; --accent-soft:#F0EADC;
-    --ok:#4C7A4C; --ok-soft:#E9F0E6;
-    --warn:#9A6B1F; --warn-soft:#F6ECD9;
-    --out:#948A76; --out-soft:#F1EDE4;
-    --edge:#E5DFD2; --err:#BA1A1A;
-  }
-  [data-theme="editorial"] h1,[data-theme="editorial"] .det-name{font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:600;letter-spacing:.2px}
-  [data-theme="editorial"] .price{font-family:'Playfair Display',Georgia,serif}
-  .dark[data-theme="editorial"]{--bg:#1C1915; --card:#26221B; --ink:#F3EFE7; --muted:#A89F8D; --accent:#C9A869; --on-accent:#1C1915; --accent-soft:rgba(201,168,105,.14); --ok:#8BB98B; --ok-soft:#1D2B1D; --warn:#D9AE62; --warn-soft:#33290F; --out:#A39A86; --out-soft:#282419; --edge:#37301F;}
-  [data-theme="vivid"]{
-    --bg:#FFFFFF; --card:#FAFAFB; --ink:#141419; --muted:#6F6D8A;
-    --accent:#C9184A; --on-accent:#ffffff; --accent-soft:#FCE9EF;
-    --ok:#00A884; --ok-soft:#E2F8F2;
-    --warn:#C2410C; --warn-soft:#FEF0E6;
-    --out:#8F8DA3; --out-soft:#F0F0F4;
-    --edge:#E8E6F0; --err:#BA1A1A;
-  }
-  [data-theme="vivid"] h1{letter-spacing:-.3px}
-  [data-theme="vivid"] .buy{box-shadow:0 3px 10px rgba(201,24,74,.22)}
-  .dark[data-theme="vivid"]{--bg:#151220; --card:#1E1C30; --ink:#F4F3FB; --muted:#9A97B8; --accent:#FF5C8A; --on-accent:#151220; --accent-soft:rgba(255,92,138,.16); --ok:#3ECFAE; --ok-soft:#12312A; --warn:#E8A23D; --warn-soft:#33290F; --out:#8F8DA3; --out-soft:#232036; --edge:#2C2942;}
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Plus Jakarta Sans',-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-tap-highlight-color:transparent}
   .wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
@@ -135,9 +113,6 @@
   .lang button{border:none;background:transparent;color:var(--muted);font-size:12px;font-weight:700;padding:6px 11px;cursor:pointer;font-family:inherit}
   .lang button.on{background:var(--ink);color:var(--bg)}
   .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-  .item{background:var(--card);border:1px solid var(--edge);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-soft);transition:transform .15s ease-out,box-shadow .15s ease-out}
-  .item:hover{transform:translateY(-2px);box-shadow:var(--shadow-lift)}
-  .item.out{opacity:.55}
   /* Photo that works on OLD WebViews too: padding-top box + absolute img.
      v50: 4:5 editorial ratio (Obsidian Atelier spec). */
   .ph{position:relative;width:100%;padding-top:125%;overflow:hidden;background:var(--edge)}
@@ -150,9 +125,6 @@
   .neg{font-size:10.5px;color:var(--amber-ink);background:var(--amber-soft);padding:2px 8px;border-radius:999px;font-weight:700}
   .tier{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;align-self:flex-start;letter-spacing:.02em}
   .t-in{color:var(--sage-ink);background:var(--sage-soft)} .t-low{color:var(--amber-ink);background:var(--warn-soft)} .t-out{color:var(--out);background:var(--out-soft)}
-  .buy{margin-top:auto;background:var(--accent);color:var(--on-accent);border:none;border-radius:999px;min-height:44px;padding:11px 10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .12s ease-out}
-  .buy:active{transform:scale(.97)}
-  .buy:disabled{background:var(--out-soft);color:var(--out);cursor:default}
   .state{padding:60px 20px;text-align:center;color:var(--muted);font-size:14px;line-height:1.6}
   /* V43 entrance: asymmetric ease-out — fast start, smooth settle */
   @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -253,17 +225,6 @@
   .det-mini .dm-lbl{font-size:10px;color:var(--muted);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .sectt{font-size:11px;color:var(--muted);font-weight:700;margin:16px 0 2px;letter-spacing:.06em;text-transform:uppercase}
   /* --- shopper cart --- */
-  .addbtn{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;
-    border:none;background:var(--accent);color:var(--on-accent);font-size:20px;font-weight:700;
-    cursor:pointer;font-family:inherit;line-height:1;box-shadow:0 2px 8px rgba(10,10,10,.25);
-    display:flex;align-items:center;justify-content:center}
-  .addbtn:active{transform:scale(.92)}
-  .addbtn.done{background:var(--ok)}
-  .cartfab{position:fixed;right:14px;bottom:16px;z-index:60;border:none;cursor:pointer;
-    background:var(--accent);color:var(--on-accent);border-radius:999px;padding:12px 18px;
-    font-size:13px;font-weight:700;font-family:inherit;box-shadow:var(--shadow-lift);
-    display:flex;align-items:center;gap:8px}
-  .cartfab:active{transform:scale(.96)}
   .cartrow{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--edge)}
   .cartrow:last-child{border-bottom:none}
   .cartrow .cr-name{flex:1;min-width:0;font-size:13px}
@@ -404,6 +365,37 @@
   .msr-row .mr-s{font-size:11.5px;color:var(--muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .msr-row:active{opacity:.7}
   .backlink{border:none;background:transparent;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px;padding:6px 0}
+  /* ===== v55 One Web Truth: shopper editorial components ===== */
+  .shopnav{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0 10px;border-bottom:1px solid var(--edge);margin-bottom:6px}
+  .shopnav .sn-brand{display:flex;align-items:center;gap:9px;min-width:0}
+  .shopnav .sn-word{font-family:'Playfair Display',Georgia,serif;font-size:17px;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+  .shopnav .sn-right{display:flex;align-items:center;gap:4px;flex:none}
+  .iconbtn{width:42px;height:42px;border:none;background:transparent;color:var(--muted);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;position:relative}
+  .iconbtn:active{background:var(--accent-soft)}
+  .iconbtn.on{color:var(--ink)}
+  .iconbtn .cnt{position:absolute;top:4px;right:4px;min-width:16px;height:16px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px}
+  .shero{padding:22px 0 6px}
+  .shero .sh-tag{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber-ink)}
+  .shero .sh-name{font-family:'Playfair Display',Georgia,serif;font-size:34px;font-weight:600;letter-spacing:-.5px;line-height:1.1;margin:4px 0 6px}
+  .shero .sh-sub{font-size:13.5px;color:var(--muted)}
+  .pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+  @media (min-width:768px){.pgrid{grid-template-columns:repeat(3,1fr);gap:16px}}
+  @media (min-width:1200px){.pgrid{grid-template-columns:repeat(4,1fr);gap:18px}}
+  .pcard{background:var(--card);border:1px solid rgba(228,228,231,.6);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-soft);transition:transform .15s ease-out,box-shadow .15s ease-out;cursor:pointer;position:relative}
+  .pcard:hover{transform:translateY(-2px);box-shadow:var(--shadow-lift)}
+  .pcard.out{opacity:.55}
+  .pcard .pc-ph{position:relative;width:100%;padding-top:125%;background:var(--accent-soft);overflow:hidden}
+  .pcard .pc-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .pcard .pc-add{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;border:none;background:var(--accent);color:var(--on-accent);font-size:20px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(10,10,10,.25)}
+  .pcard .pc-add:active{transform:scale(.92)}
+  .pcard .pc-add.done{background:var(--ok)}
+  .pcard .pc-badge{position:absolute;top:10px;left:10px;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 9px}
+  .pcard .pc-in{padding:11px 12px 13px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .pcard .pc-name{font-size:13px;font-weight:600;line-height:1.35;color:var(--ink);min-height:2.6em}
+  .pcard .pc-row{display:flex;align-items:baseline;justify-content:space-between;gap:6px;margin-top:auto}
+  .pcard .pc-price{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .pcard .pc-sizes{font-size:10.5px;color:var(--muted);font-weight:600}
+  .pcard .pc-neg{align-self:flex-start}
   /* ===== v53 desktop sidebar (web screenshots' layout) ===== */
   .websidebar{position:fixed;top:0;left:0;bottom:0;width:250px;background:var(--bg);border-right:1px solid var(--edge);display:none;flex-direction:column;padding:20px 14px 16px;gap:4px;z-index:40;overflow-y:auto}
   .wsb-brand{display:flex;align-items:center;gap:10px;padding:6px 8px 16px;border-bottom:1px solid var(--edge);margin-bottom:12px}
@@ -483,7 +475,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v54',
+        footer:'Live stock from <b>Adulis</b> · v55',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -656,6 +648,7 @@
         setVideoT:'Video studio',
         setVideoS:'Media pack & CapCut marketing kit',
         setVideoNote:'Photos and clips of your shelf items — ready to post.',
+        filterAll:'All',
         // v51: Stitch-faithful nav + resilient session restore
         shelfStatL:'On your shelf',
         homeCtaL:'Pick your first items',
@@ -672,7 +665,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v54',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v55',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -845,6 +838,7 @@
         setVideoT:'የቪዲዮ ስቱዲዮ',
         setVideoS:'የሚዲያ ጥቅል እና የCapCut ገበያ ጥቅል',
         setVideoNote:'የመደርደሪያ ዕቃዎችዎ ፎቶዎች እና ክሊፖች — ለማስረጸት ዝግጁ።',
+        filterAll:'ሁሉም',
         // v51: Stitch-faithful nav + resilient session restore
         shelfStatL:'በመደርደሪያዎ ላይ',
         homeCtaL:'የመጀመሪያ ዕቃዎችዎን ይምረጡ',
@@ -885,10 +879,13 @@
 
   // Theme: Telegram's declared mode is the ONLY thing we take from the
   // host — our complete palettes do the rest. No themeParams copying.
-  try{ if(tg&&tg.initData!==undefined){
-    if(tg.colorScheme==='dark') document.documentElement.classList.add('dark');
-    tg.ready(); tg.expand&&tg.expand();
-  }}catch(e){}
+  try{
+    var __mode=storedMode();
+    if(__mode==='dark')document.documentElement.classList.add('dark');
+    else if(__mode==='light')document.documentElement.classList.remove('dark');
+    else if(tg&&tg.initData!==undefined&&tg.colorScheme==='dark')document.documentElement.classList.add('dark');
+  }catch(e){}
+  try{ if(tg&&tg.initData!==undefined){ tg.ready(); tg.expand&&tg.expand(); } }catch(e){}
 
   function money(n){return Number(n).toLocaleString('en-US')+' ETB';}
   function appLink(s){return 'https://t.me/AdulisShopBot/app?startapp='+encodeURIComponent(s);}
@@ -898,7 +895,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=54;
+  var BUILD=55;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
   // fills them in. v54: TEST placeholder links (generic CapCut template
@@ -942,11 +939,8 @@
     }catch(e){}
   }
   function applyTheme(t){
-    try{
-      var root=document.documentElement;
-      if(t==='editorial'||t==='vivid')root.setAttribute('data-theme',t);
-      else root.removeAttribute('data-theme');
-    }catch(e){}
+    // v55: themes paused — one standard look; Light/Dark on shopper pages.
+    // No-op kept so old callers (header RPC payloads) stay harmless.
   }
   function setLogo(url){
     // v45: the brand chip is the sailboat mark; a shop logo (merchant
@@ -1148,15 +1142,16 @@
   // v34+: affiliate-shelf rows look exactly like merchant rows (the
   // source merchant is NEVER revealed to customers — channel protection,
   // v35); video_url badges appear when a public clip exists.
+  // v55: the ONE product card (web mockup editorial style) — serves the
+  // main grid, the detail's related section, and chat cards identically.
   function buildShopCard(r,user){
-      var card=el('div','item'+(r.tier==='out'?' out':''));
+      var card=el('div','pcard'+(r.tier==='out'?' out':''));
       card.onclick=function(){renderDetail(r);};
-      var ph=el('div','ph');
+      var ph=el('div','pc-ph');
       if(r.image_url){var im=document.createElement('img');im.loading='lazy';im.decoding='async';
         im.alt=r.item_name;im.src=r.image_url;im.onerror=function(){im.remove();};ph.appendChild(im);}
-      else{ph.appendChild(el('div','emo',''));}
       if(r.tier!=='out'){
-        var bAdd=el('button','addbtn','+');
+        var bAdd=el('button','pc-add','+');
         bAdd.onclick=function(ev){
           ev.stopPropagation();
           cartAdd({name:r.item_name,price:Number(r.sell_price),uid:r.item_uid||null});
@@ -1166,53 +1161,83 @@
         ph.appendChild(bAdd);
       }
       if(r.video_url){
-        var bVid=el('button','addbtn');
-        bVid.textContent='VIDEO';bVid.style.fontSize='15px';bVid.style.left='8px';bVid.style.right='auto';
+        var bVid=el('button','pc-add');
+        bVid.textContent='VIDEO';bVid.style.fontSize='11px';bVid.style.fontWeight='700';bVid.style.left='10px';bVid.style.right='auto';
         bVid.onclick=function(ev){
           ev.stopPropagation();
           openTg(r.video_url);
         };
         ph.appendChild(bVid);
       }
-      var info=el('div','info');
-      info.appendChild(el('div','name',r.item_name));
-      var pr=el('div','pricerow');
-      pr.appendChild(el('span','price',money(r.sell_price)));
-      if(r.tier!=='out')pr.appendChild(el('span','neg',r.negotiable===false?'':L.neg));
-      info.appendChild(pr);
-      if(r.size_labels&&r.tier!=='out'){
-        var szrow=el('div','ir-sub');
-        String(r.size_labels).split(',').forEach(function(s){
-          szrow.appendChild(el('span','tier t-in',shortSize(s)));
-        });
-        info.appendChild(szrow);
-      }
       var tierCls={in:'t-in',low:'t-low',out:'t-out'}[r.tier]||'t-in';
       var tierTxt={in:L.in,low:L.low,out:L.out}[r.tier]||L.in;
-      info.appendChild(el('span','tier '+tierCls,tierTxt));
-      var btn=el('button','buy');
+      ph.appendChild(el('span','pc-badge '+tierCls,tierTxt));
       var fixed=r.negotiable===false;
-      if(r.tier==='out'){btn.disabled=true;btn.textContent=L.buyOut;}
-      else if(!user){btn.textContent=L.buyNoUser;btn.disabled=true;btn.style.display='none';}
-      else{btn.textContent=L.buyBtn;
-        var sizesArr=r.size_labels?String(r.size_labels).split(',').map(function(x){return shortSize(x);}).filter(Boolean):[];
-        btn.onclick=function(ev){
-          ev.stopPropagation();
-          if(sizesArr.length>1){renderDetail(r);return;}
-          beacon(fixed?'buy':'negotiate');
-          if(window.__affShop&&!(tg&&tg.initData&&tg.initData.length)){
-            renderCheckout([{name:r.item_name,price:Number(r.sell_price),qty:1,uid:r.item_uid||null}]);
-            return;
-          }
-          var msg=fixed?L.dmBuy(r.item_name,money(r.sell_price)):L.dm(r.item_name,money(r.sell_price));
-          openTg('https://t.me/'+encodeURIComponent(user)+'?text='+encodeURIComponent(msg));
-        };}
-      info.appendChild(btn);
-      if(r.tier!=='out'&&!user)info.appendChild(el('div','note',L.noUserShop));
+      var info=el('div','pc-in');
+      info.appendChild(el('div','pc-name',r.item_name));
+      var row=el('div','pc-row');
+      row.appendChild(el('span','pc-price',money(r.sell_price)));
+      if(r.size_labels&&r.tier!=='out'){
+        var sizes=String(r.size_labels).split(',').map(function(x){return shortSize(x);}).filter(Boolean);
+        row.appendChild(el('span','pc-sizes',sizes.slice(0,4).join(' · ')+(sizes.length>4?' +':'')));
+      }
+      info.appendChild(row);
+      if(r.tier!=='out'&&r.negotiable!==false)info.appendChild(el('span','neg pc-neg',L.neg));
       card.appendChild(ph);card.appendChild(info);
       return card;
   }
   window.__rows=null;
+  // v55 Light/Dark: shopper-owned mode (persisted). Telegram's declared
+  // scheme is only the FIRST default; the shopper's choice wins after.
+  function applyMode(dark){
+    document.documentElement.classList.toggle('dark',!!dark);
+  }
+  function storedMode(){
+    try{return localStorage.getItem('adulis_mode');}catch(e){return null;}
+  }
+  function drawShopNav(){
+    // The web mockup's slim top bar: wordmark left; light/dark + EN/AM +
+    // cart right. Replaces the old static shop header entirely.
+    var nav=el('div','shopnav');
+    var brand=el('div','sn-brand');
+    var chip=el('div','brand-chip');chip.style.width='34px';chip.style.height='34px';chip.style.borderRadius='10px';
+    var chipImg=document.querySelector('.brand-chip img');
+    if(window.__shopLogo){var ci=document.createElement('img');ci.src=window.__shopLogo;ci.alt='';chip.appendChild(ci);}
+    brand.appendChild(chip);
+    brand.appendChild(el('span','sn-word','Adulis'));
+    nav.appendChild(brand);
+    var right=el('div','sn-right');
+    var bl=el('button','iconbtn');bl.title='Light';
+    var li=document.createElement('span');li.className='ms';li.textContent='light_mode';bl.appendChild(li);
+    bl.onclick=function(){applyMode(false);try{localStorage.setItem('adulis_mode','light');}catch(e){}};
+    var bd=el('button','iconbtn');bd.title='Dark';
+    var di=document.createElement('span');di.className='ms';di.textContent='dark_mode';bd.appendChild(di);
+    bd.onclick=function(){applyMode(true);try{localStorage.setItem('adulis_mode','dark');}catch(e){}};
+    right.appendChild(bl);right.appendChild(bd);
+    var lang=el('div','lang');
+    var be=el('button',null,'EN');be.id='langEn2';
+    var ba=el('button',null,'አማ');ba.id='langAm2';
+    be.className=detectCur()==='en'?'on':'';ba.className=detectCur()==='am'?'on':'';
+    be.onclick=function(){setLang('en');be.className='on';ba.className='';};
+    ba.onclick=function(){setLang('am');ba.className='on';be.className='';};
+    lang.appendChild(be);lang.appendChild(ba);
+    right.appendChild(lang);
+    var bc=el('button','iconbtn');bc.title=L.cartTitle;
+    var ci2=document.createElement('span');ci2.className='ms';ci2.textContent='shopping_cart';bc.appendChild(ci2);
+    var cnt=el('span','cnt','0');cnt.id='snCartCnt';cnt.style.display='none';
+    bc.appendChild(cnt);
+    bc.onclick=renderCart;
+    right.appendChild(bc);
+    nav.appendChild(right);
+    return nav;
+  }
+  function updateCartBadge(){
+    var b=document.getElementById('snCartCnt');
+    if(!b)return;
+    var n=cartCount();
+    b.textContent=String(n);
+    b.style.display=n?'flex':'none';
+  }
   function renderShop(rows){
     var c=content(); c.innerHTML='';
     if(!rows||!rows.length){
@@ -1224,10 +1249,13 @@
       .then(function(h){
         if(h&&h.length){
           var store=h[0];
-          setHdr(store.store_name,null);
-          setHdr(null,L.subNoUser);
-          setLogo(store.logo_url);
-          applyTheme(store.theme);
+          window.__shopLogo=store.logo_url||null;
+          c.appendChild(drawShopNav());
+          var hero=el('div','shero');
+          hero.appendChild(el('div','sh-tag','Adulis'));
+          hero.appendChild(el('div','sh-name',store.store_name||'Shop'));
+          hero.appendChild(el('div','sh-sub',L.subNoUser));
+          c.appendChild(hero);
           var s=el('div','state',L.emptyShop);
           if(APK_LAUNCHED){
             var b=el('a','btn',L.getApp);b.href=APK;b.target='_blank';
@@ -1242,37 +1270,81 @@
       return;
     }
     window.__rows=rows;
-    applyTheme(null);
     if(!window.__visited){window.__visited=true;beacon('visit');}
     var store=rows[0], user=store.telegram_username;
     window.__shopUser=user;
-    // v54: the retired "Open in Telegram" button left undefined-variable
-    // debris here that only fired for a stocked shop in a plain browser
-    // (never exercised until the seed dressed Agora). Removed — the shop
-    // simply renders (v39 doctrine: no redirects, no jump buttons).
-    setHdr(store.store_name||'Shop',null);
-    setHdr(null,user?L.sub:L.subNoUser);
-    setLogo(store.logo_url);
+    window.__shopLogo=store.logo_url||null;
     document.title=(store.store_name||'Shop')+' · Adulis';
+    c.appendChild(drawShopNav());
+    // Hero (web mockup): tag, serif name, live count.
+    var hero=el('div','shero');
+    hero.appendChild(el('div','sh-tag','Adulis · Live'));
+    hero.appendChild(el('div','sh-name',store.store_name||'Shop'));
+    var inStock=rows.filter(function(r){return r.tier!=='out';}).length;
+    hero.appendChild(el('div','sh-sub',inStock+' '+(inStock===1?'piece':'pieces')+' · '+L.subNoUser));
+    c.appendChild(hero);
+    // Size filter chips (live, client-side).
+    var sizesSeen=[];
+    rows.forEach(function(r){
+      if(r.tier==='out'||!r.size_labels)return;
+      String(r.size_labels).split(',').forEach(function(s){
+        var k=shortSize(s);
+        if(k&&sizesSeen.indexOf(k)<0)sizesSeen.push(k);
+      });
+    });
+    var activeFilter=null;
+    var g=el('div','pgrid');
+    function drawGrid(){
+      g.innerHTML='';
+      rows.forEach(function(r){
+        if(activeFilter){
+          var has=r.size_labels&&String(r.size_labels).split(',').some(function(s){return shortSize(s)===activeFilter;});
+          if(!has)return;
+        }
+        g.appendChild(buildShopCard(r,user));
+      });
+    }
+    if(sizesSeen.length>1){
+      var chips=el('div','chiprow');chips.style.marginTop='12px';
+      var ball=el('button','fchip on',L.filterAll);
+      ball.onclick=function(){
+        activeFilter=null;drawGrid();
+        ball.classList.add('on');
+        chips.querySelectorAll('.fchip').forEach(function(x){if(x!==ball)x.classList.remove('on');});
+      };
+      chips.appendChild(ball);
+      sizesSeen.slice(0,8).forEach(function(sz){
+        var b=el('button','fchip',sz);
+        b.onclick=function(){
+          activeFilter=sz;drawGrid();
+          b.classList.add('on');
+          chips.querySelectorAll('.fchip').forEach(function(x){if(x!==b)x.classList.remove('on');});
+        };
+        chips.appendChild(b);
+      });
+      c.appendChild(chips);
+    }
     // Ask assistant grounds on the MERCHANT catalogue RPC — v1 affiliate
     // shelves skip the AI (their shoppers get the affiliate's own help).
     if(!window.__affShop){
-    var bAsk=el('button','btn ghost',L.askBtn);
-    bAsk.style.marginBottom='12px';
-    bAsk.onclick=function(){renderAsk();};
-    c.appendChild(bAsk);
+      var bAsk=el('button','pillbtn');
+      bAsk.style.marginTop='12px';
+      var ai=document.createElement('span');ai.className='ms';ai.textContent='auto_awesome';
+      bAsk.appendChild(ai);
+      bAsk.appendChild(el('span',null,L.askBtn));
+      bAsk.onclick=function(){renderAsk();};
+      c.appendChild(bAsk);
     }
     drawFitsStrip(c);
-    var g=el('div','grid');
-    rows.forEach(function(r){g.appendChild(buildShopCard(r,user));});
+    drawGrid();
     c.appendChild(g);
-    drawCartFab();
+    updateCartBadge();
   }
   function loadShop(){
     var attempt=0;
-    // Shopper page: original shop header, bilingual with the EN/AM toggle.
+    // Shopper page: the v55 shopnav (in content) owns everything.
     clearShell();
-    langToggle(true);
+    document.body.classList.remove('show-hdr');
     function rpc(fn){
       return fetch(API+'/rest/v1/rpc/'+fn,{
         method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},
@@ -1437,14 +1509,10 @@
   function cartCount(){return window.__cart.reduce(function(a,c){return a+c.qty;},0);}
   function cartTotal(){return window.__cart.reduce(function(a,c){return a+c.qty*c.price;},0);}
   function drawCartFab(){
+    // v55: the floating fab is gone — the shopnav cart badge carries the
+    // count (updateCartBadge) and renderCart opens from the nav button.
     var old=document.getElementById('cartfab');if(old)old.remove();
-    if(!window.__cart.length||window.__mode!=='shop')return;
-    var fab=el('button','cartfab');
-    fab.id='cartfab';
-    var n=cartCount();
-    fab.appendChild(document.createTextNode((detectCur()==='am'?'የተመረጡ':'Picked')+' · '+n+' · '+money(cartTotal())));
-    fab.onclick=renderCart;
-    document.body.appendChild(fab);
+    updateCartBadge();
   }
   function renderCart(){
     var old=document.getElementById('cartSheet');if(old)old.remove();
@@ -2300,10 +2368,6 @@
 
     // ---- SHOP tab: look, link, share, channel, credentials, APK ----
     p.appendChild(el('h2',null,store.name));
-    var lookBtn=el('button','btn ghost',L.themeT+' \u2192');
-    lookBtn.style.marginBottom='10px';
-    lookBtn.onclick=function(){renderThemePick(store);};
-    p.appendChild(lookBtn);
     // Channel-less + username-less merchants get guided, not stuck:
     // without a @username the shop's Buy/Negotiate buttons can't open a
     // DM (Telegram has no link to reach them). The note explains; the
@@ -3350,12 +3414,6 @@
 
   function renderAffOwner(store,fresh){
     webTipIfTelegram();
-    // First-ever entry after signup: pick the shop look first (v38).
-    if(fresh===true&&!window.__themePicked){
-      window.__themePicked=true;
-      renderThemePick(store,fresh);
-      return;
-    }
     window.__mode='owner';
     window.__ownerStore=store;
     var LEGACY={home:'overview',orders:'overview',shop:'boutique',settings:'more',items:'catalog',sales:'overview'};
@@ -3944,7 +4002,6 @@
     }
     list.appendChild(mrow(L.setBrandT,L.setBrandS,function(){renderSetBrand();}));
     list.appendChild(mrow(L.setDomainT,L.setDomainS,function(){renderSetDomain();}));
-    list.appendChild(mrow(L.setThemeT,L.setThemeS,function(){renderThemePick(window.__ownerStore);}));
     list.appendChild(mrow(L.inboxT,'',function(){renderOrdersScreen();}));
     p.appendChild(list);
     var so=el('button','mbtn warn',L.signOutL);
@@ -4143,69 +4200,14 @@
     var go=el('button','btn brand','Let\u2019s go');
     go.style.marginTop='16px';
     go.onclick=function(){
-      renderThemePick(store,true);
+      // v55: themes paused — the standard Atelier look is the only look.
+      renderAffOwner(store,true);
     };
     wrap.appendChild(go);
     c.appendChild(wrap);
   }
 
   // v50: previews show the REAL Atelier looks (what shoppers will see).
-  var THEMES=[
-    {id:'classic',name:L.themeClassic,
-     box:'background:#FFFFFF;border:1px solid #E4E4E7',
-     t1:'color:#1A1C1D',t2:'color:#1A1C1D',
-     btn:'background:#0A0A0A;color:#FFFFFF'},
-    {id:'editorial',name:L.themeEditorial,
-     box:'background:#FAF8F3;border:1px solid #E5DFD2',
-     t1:"color:#26221C;font-family:'Playfair Display',Georgia,serif",t2:'color:#6E5B3C',
-     btn:'background:#6E5B3C;color:#FFFFFF'},
-    {id:'vivid',name:L.themeVivid,
-     box:'background:#FFFFFF;border:1px solid #E8E6F0',
-     t1:'color:#141419',t2:'color:#C9184A',
-     btn:'background:#C9184A;color:#FFFFFF'}
-  ];
-  function renderThemePick(store,fresh){
-    clearShell();    window.__mode='themepick';
-    var c=content();c.innerHTML='';
-    setHdr(L.pickTheme,null);
-    setHdr(null,L.themePickNote);
-    setLogo(null);
-    var p=el('div','panel');
-    if(fresh)p.appendChild(el('div','okmsg',L.created));
-    p.appendChild(el('h2',null,L.pickTheme));
-    p.appendChild(el('div','note',L.themePickNote));
-    THEMES.forEach(function(t){
-      var card=el('div','item-card');
-      card.style.cursor='pointer';
-      var prev=el('div');
-      prev.style.cssText='height:96px;border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:12px;'+t.box;
-      var t1=el('div',null,store?store.name:'My Beautiful Shop');
-      t1.style.cssText='font-size:15px;font-weight:700;'+t.t1;
-      var t2=el('div',null,money(2500));
-      t2.style.cssText='font-size:13px;font-weight:700;'+t.t2;
-      var t3=el('div',null,'Buy');
-      t3.style.cssText='align-self:flex-start;margin-top:8px;border-radius:999px;padding:6px 18px;font-size:12px;font-weight:700;'+t.btn;
-      prev.appendChild(t1);prev.appendChild(t2);prev.appendChild(t3);
-      card.appendChild(prev);
-      card.appendChild(el('div','ic-name',t.name)).style.marginTop='8px';
-      card.onclick=function(){
-        authCall('shop_settings_set',{theme:t.id}).then(function(j){
-          applyTheme(t.id);
-          if(window.__storeType==='affiliate')renderAffOwner(store,fresh);
-          else renderOwner(store,fresh);
-        });
-      };
-      p.appendChild(card);
-    });
-    var skip=el('button','btn ghost','Skip');
-    skip.style.marginTop='6px';
-    skip.onclick=function(){
-      if(window.__storeType==='affiliate')renderAffOwner(store,fresh);
-      else renderOwner(store,fresh);
-    };
-    p.appendChild(skip);
-    c.appendChild(p);
-  }
 
   // ---- v38 Orders inbox: the reseller's one workplace -------------------
   var LEAD_CHIP={new:'t-in',quoted:'t-low',checking:'t-in',confirmed:'t-in',
