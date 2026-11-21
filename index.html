@@ -327,7 +327,6 @@
   .appnav .an-btn span.lb{font-size:10.5px;font-weight:600}
   .appnav .an-btn.on{color:var(--ink);font-weight:700}
   body.appshell .wrap{padding-top:84px}
-  @media (max-width:767px){body.appshell .wrap{padding-bottom:92px}}
   @media (min-width:768px){body.appshell .wrap{padding-top:96px}}
   /* Stitch cards + stat + kicker system */
   .kicker{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber-ink)}
@@ -415,12 +414,23 @@
   @media (min-width:768px){
     body.appshell .websidebar{display:flex}
     body.appshell .appbar{display:none}
-    body.appshell .appnav{display:none}
     body.appshell .wrap{margin-left:250px;padding-top:32px;max-width:none;padding-right:32px}
   }
   @media (min-width:768px) and (max-width:1023px){
     body.appshell .wrap{margin-left:250px;padding-left:24px}
   }
+  /* v56: ONE nav — on phone the SAME sidebar slides in as a drawer behind
+     the appbar's menu button. Bottom tabs are gone (founder decision). */
+  @media (max-width:767px){
+    .websidebar{display:flex;position:fixed;top:0;left:-266px;bottom:0;width:250px;
+      transition:left .22s ease-out;z-index:80;box-shadow:0 0 40px rgba(0,0,0,.18)}
+    body.nav-open .websidebar{left:0}
+    .navoverlay{position:fixed;inset:0;background:rgba(10,10,10,.38);z-index:70;display:none}
+    body.nav-open .navoverlay{display:block}
+    .ab-menu{display:flex}
+  }
+  .ab-menu{width:44px;height:44px;border:none;background:transparent;color:var(--ink);
+    display:none;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;font-family:inherit;flex:none}
 
   </style>
 </head>
@@ -454,6 +464,15 @@
   var q=new URLSearchParams(location.search);
   var slug=(q.get('s')||'').trim();
   var mode=(q.get('mode')||'').trim();
+  // v56: SUBDOMAIN LINKS (<label>.adulis.co). The Worker adds ?s= only to
+  // its ORIGIN fetch — the browser URL never carries it, so subdomain links
+  // opened the auth/panel instead of the shop (silently broken since v35).
+  // Read the label from the HOSTNAME; public_resolve_slug maps it at boot.
+  if(!slug&&!mode&&location.hostname.length>9&&location.hostname.slice(-9)==='.adulis.co'
+     &&location.hostname!=='www.adulis.co'){
+    var __lbl=location.hostname.slice(0,-9);
+    if(__lbl&&__lbl!=='www')slug=__lbl.toLowerCase();
+  }
   var tg=window.Telegram&&window.Telegram.WebApp;
   // Direct mini-app links (t.me/<bot>/app?startapp=<slug>) hand the slug
   // to the page through start_param — no query string involved. Bio
@@ -475,7 +494,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v55',
+        footer:'Live stock from <b>Adulis</b> · v56',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -665,7 +684,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v55',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v56',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -895,7 +914,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=55;
+  var BUILD=56;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
   // fills them in. v54: TEST placeholder links (generic CapCut template
@@ -982,6 +1001,11 @@
     h.classList.add('appbar');
     h.innerHTML='';
     var bar=el('div','ab-in');
+    var menu=el('button','ab-menu');
+    menu.title='Menu';
+    menu.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>';
+    menu.onclick=function(){document.body.classList.toggle('nav-open');};
+    bar.appendChild(menu);
     var left=el('div','ab-left');
     var logo=el('div','ab-logo');
     var lg=document.createElement('span');lg.className='ms';lg.textContent='sailing';
@@ -1017,7 +1041,6 @@
     bar.appendChild(actions);
     h.innerHTML='';
     h.appendChild(bar);
-    appNav(activeTab);
     webSidebar(activeTab);
   }
   // v53: the DESKTOP sidebar (the web screenshots' layout) — phone keeps
@@ -1047,6 +1070,7 @@
       b.appendChild(ic);
       b.appendChild(el('span',null,t[2]));
       b.onclick=function(){
+        document.body.classList.remove('nav-open');
         if(t[0]==='orders'){renderOrdersScreen();return;}
         switchTab(t[0]);
       };
@@ -1066,28 +1090,11 @@
     foot.appendChild(prof);
     sb.appendChild(foot);
     document.body.appendChild(sb);
-  }
-  function appNav(activeTab){
-    var old=document.getElementById('appnav');if(old)old.remove();
-    var nav=el('div','appnav');nav.id='appnav';
-    var inn=el('div','an-in');
-    // Stitch tabs: Overview / Catalog / Boutique / Studio / More
-    [['overview','insights',L.tabHome],
-     ['catalog','diamond',L.tabCatalog],
-     ['boutique','storefront',L.tabBoutique],
-     ['studio','movie_creation',L.tabStudio],
-     ['more','tune',L.tabMore]].forEach(function(t){
-      var b=el('button','an-btn'+(activeTab===t[0]?' on':''));
-      var ic=document.createElement('span');ic.className='ms';ic.textContent=t[1];
-      b.appendChild(ic);
-      var lb=el('span','lb',t[2]);
-      b.appendChild(lb);
-      b.onclick=function(){switchTab(t[0]);};
-      inn.appendChild(b);
-    });
-    nav.appendChild(inn);
-    var w=document.querySelector('.wrap');
-    if(w)w.appendChild(nav);
+    if(!document.getElementById('navoverlay')){
+      var ov=el('div','navoverlay');ov.id='navoverlay';
+      ov.onclick=function(){document.body.classList.remove('nav-open');};
+      document.body.appendChild(ov);
+    }
   }
   function switchTab(tab){
     window.__tab=tab;
@@ -1560,7 +1567,10 @@
     };
     var bSend=el('button',null,L.cartSend);
     bSend.style.flex='1';
-    bSend.disabled=!window.__cart.length||!window.__shopUser;
+    // v56: an affiliate shop in a plain browser checks out HERE (no DM
+    // needed) — the button must never be dead while the cart has items.
+    var __co=window.__affShop&&!(tg&&tg.initData&&tg.initData.length);
+    bSend.disabled=!window.__cart.length||(!window.__shopUser&&!__co);
     bSend.onclick=function(){
       if(window.__affShop&&!(tg&&tg.initData&&tg.initData.length)){
         chat.remove();
@@ -3595,6 +3605,12 @@
     lr.appendChild(lrl);
     live.appendChild(lr);
     var urlrow=el('div','live-url-row');
+    urlrow.style.cursor='pointer';
+    urlrow.title='Open my shop';
+    urlrow.onclick=function(ev){
+      if(ev.target.closest('button'))return;
+      window.open(shopUrl(),'_blank');
+    };
     var um=el('div','lu-main');
     um.appendChild(msIcon('public'));
     um.appendChild(el('span','lu-url',shopUrl().replace('https://','')));
