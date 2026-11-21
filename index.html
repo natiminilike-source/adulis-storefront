@@ -468,9 +468,10 @@
   // its ORIGIN fetch — the browser URL never carries it, so subdomain links
   // opened the auth/panel instead of the shop (silently broken since v35).
   // Read the label from the HOSTNAME; public_resolve_slug maps it at boot.
-  if(!slug&&!mode&&location.hostname.length>9&&location.hostname.slice(-9)==='.adulis.co'
-     &&location.hostname!=='www.adulis.co'){
-    var __lbl=location.hostname.slice(0,-9);
+  // ('.adulis.co' is TEN chars — the v56 first cut sliced nine and never
+  // matched. Caught live on agora.adulis.co; fixed v57.)
+  if(!slug&&!mode&&location.hostname.length>10&&location.hostname.slice(-10)==='.adulis.co'){
+    var __lbl=location.hostname.slice(0,-10);
     if(__lbl&&__lbl!=='www')slug=__lbl.toLowerCase();
   }
   var tg=window.Telegram&&window.Telegram.WebApp;
@@ -494,7 +495,7 @@
         unavailable:'This shop is not available right now.', retry:'Retry',
         emptyShop:'No items yet — the shop is getting ready.\nእስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።',
         noslug:'No shop selected. Open this page from a shop\'s link.',
-        footer:'Live stock from <b>Adulis</b> · v56',
+        footer:'Live stock from <b>Adulis</b> · v57',
         dm:function(n,p){return 'Selam! '+n+' ('+p+') — is the price negotiable?';},
         openBot:'Open @AdulisShopBot in Telegram to continue.\nይህን በቴሌግራም ውስጥ ይክፈቱ፦ @AdulisShopBot',
         createTitle:'Create your shop', createIntro:'Just name your shop — your Telegram is the login.',
@@ -684,7 +685,7 @@
         unavailable:'ይህ ሱቅ አሁን አይገኝም።', retry:'እንደገና ይሞክሩ',
         emptyShop:'እስካሁን ዕቃ አልተረዳትም — ሱቁ እየተዘጋጀ ነው።\nNo items yet.',
         noslug:'ሱቅ አልተመረጠም። አገናኙን ከሱቁ ይክፈቱ።',
-        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v56',
+        footer:'ዕቃ ቆጠራ ከ<b>አዱሊስ</b> ጋር በቀጥታ ይታደሳል · v57',
         dm:function(n,p){return 'ሰላም! '+n+' ('+p+') — ዋጋው ይደራደራል?';},
         openBot:'ለመቀጠል @AdulisShopBotን በቴሌግራም ይክፈቱ።',
         createTitle:'ሱቅዎን ይፍጠሩ', createIntro:'የሱቁን ስም ብቻ ይጻፉ — ቴሌግራሙ ቁልፍዎ ነው።',
@@ -914,7 +915,7 @@
   // stale entry point (old message button, menu button, cached webview),
   // the page silently reloads itself onto the current build — no /start
   // rituals, no force-close folklore.
-  var BUILD=56;
+  var BUILD=57;
   // Marketing kit: CapCut template links by job. The founder creates the
   // templates once in CapCut and sends the share links — a page release
   // fills them in. v54: TEST placeholder links (generic CapCut template
